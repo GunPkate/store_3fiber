@@ -28,7 +28,7 @@ npm i @react-three/fiber @react-three/drei
 * reset XYZ axis and adjust camera, Field of View
 * prevents camera from going under the floor
 <div align="center">
-<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/41644f85-e68b-4cf2-b53d-423f0e7342ad" />
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/0ab3e92f-09e9-44cc-8ced-f37a1b330ff8" />
 </div>
 ## Expanding the ESLint configuration
 

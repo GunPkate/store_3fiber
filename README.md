@@ -22,7 +22,13 @@ npm i @react-three/fiber @react-three/drei
 
 * create wall of store
 <div align="center">
-<img width="1280" height="800" alt="image" src="https://github.com/user-attachments/assets/41644f85-e68b-4cf2-b53d-423f0e7342ad" />
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/41644f85-e68b-4cf2-b53d-423f0e7342ad" />
+</div>
+
+* reset XYZ axis and adjust camera, Field of View
+* prevents camera from going under the floor
+<div align="center">
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/41644f85-e68b-4cf2-b53d-423f0e7342ad" />
 </div>
 ## Expanding the ESLint configuration
 

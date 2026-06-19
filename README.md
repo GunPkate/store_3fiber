@@ -1,7 +1,9 @@
-# React + Vite
+# STORE R3FIBER
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+React + Vite using RReact3Fiber.
 
+use claude to gen prototype 3d model
+https://gunpkate.github.io/minimart3js/
 Currently, two official plugins are available:
 
 - [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)

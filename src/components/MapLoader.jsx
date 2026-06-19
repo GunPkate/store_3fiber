@@ -1,6 +1,7 @@
+import StoreFloor from "./store/StoreFloor";
+
 export default function MapLoader(){
-    return <mesh>
-        <boxGeometry/>
-        <meshNormalMaterial/>
-    </mesh>
+    return <>
+        <StoreFloor/>
+      </>
 }

@@ -4,14 +4,21 @@ React + Vite using RReact3Fiber.
 
 use claude to gen prototype 3d model
 https://gunpkate.github.io/minimart3js/
-Currently, two official plugins are available:
+<div align="center">
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/81b206bc-f1ba-4b34-848b-c982f1c8250f" />
+</div>
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## Dev Step
+Use react 3 fiber and drei
+```
+npm i @react-three/fiber @react-three/drei
+```
 
-## React Compiler
-
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+* use orbital control to enable camera control 
+* use array to create mesh tags to 9x9 tiles
+<div align="center">
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/f9305875-021b-4a2d-a35b-ea9499ba10dd" />
+</div>
 
 ## Expanding the ESLint configuration
 

@@ -7,7 +7,7 @@ export default function MapLoader(){
         <StoreFloor/>
     </group>
 
-    <group position={[0, 0, 0]} rotation={[0, Math.PI / 2, 0]}>
+    <group position={[0, 0, 0]} >
         <WallSection/>
     </group>
       </>

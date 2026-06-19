@@ -4,14 +4,15 @@ const floors = []
     for(let i =-4; i <=4; i ++){
         for(let y =-4; y <=4; y ++){
             num++
-            floors.push({id: num, position: [i,y,0],  color: num%2==0  ? '#635d5d' : '#eeeeee' }) 
+            floors.push({id: num, position: [i,0,y],  color: num%2==0  ? '#635d5d' : '#eeeeee', rotation:[-Math.PI/2,0,0]  }) 
         }
     }
  
     return floors.map(square => {
-        return <mesh key={square.id} position={square.position}>
+        return <mesh key={square.id} position={square.position} rotation={square.rotation}>
             <planeGeometry args={[1, 1]} />
-            <meshStandardMaterial color={square.color}  />
+              <axesHelper args={[2]} /> 
+            <meshStandardMaterial color={square.color} />
         </mesh>
     })
 }

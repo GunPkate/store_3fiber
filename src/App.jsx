@@ -2,8 +2,14 @@ import { Canvas } from '@react-three/fiber'
 import './App.css'
 import MapLoader from './components/MapLoader'
 import { OrbitControls } from '@react-three/drei'
+import { useState } from 'react'
+// import UseWaypointGraph from './components/npc/UseWaypointGraph'
+
 
 function App() {
+  // const { graph, version, addNode, removeNode, linkNodes } = UseWaypointGraph();
+  const [showWP, setShowWP] = useState(false);
+  const [selectedWP, setSelectedWP] = useState(null);
   return (
     <div div style={{ width: '100%', height: '100vh', position: 'relative' }}>
       <Canvas camera={{ position: [7, 7, 0] }}>

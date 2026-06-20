@@ -1,12 +1,11 @@
 // import { TransformControls } from '@react-three/drei'
 // import { useRef } from 'react'
 
-export default function Shelf(){
+export default function Shelf(props){
 const shelfs = []
-    
-    let originX = 0
-    let originY = 0
-    let originZ = 0
+    let originX = props.originXYZ[0]
+    let originY = props.originXYZ[1]
+    let originZ = props.originXYZ[2]
     let num = 0
     let shelfThick = 1.5
     let originMainBody = [originX, originY+2, originZ]

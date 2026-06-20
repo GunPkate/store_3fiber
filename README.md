@@ -30,8 +30,12 @@ npm i @react-three/fiber @react-three/drei
 <div align="center">
 <img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/0ab3e92f-09e9-44cc-8ced-f37a1b330ff8" />
 </div>
+* gen 1 shelf
+<div align="center">
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/53fdcb3b-5d18-4e19-a7e6-dee71d28001a" />
+</div>
 
-*Multiple Shelves!!
+* Multiple Shelves!!
 <div align="center">
 <img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/200824aa-b3af-4ec6-8fbe-6b5d58d8f244" />
 </div>

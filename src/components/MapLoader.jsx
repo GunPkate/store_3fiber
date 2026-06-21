@@ -1,6 +1,7 @@
 import Shelf from "./facilities/Shelf";
 import StoreFloor from "./store/StoreFloor";
 import WallSection from "./store/WallSection";
+import Character from "./npc/Character";
 
 const shelfUnits = [[0,0,1] ,[0,0,3], [0,0,-1]]
 export default function MapLoader(){
@@ -11,6 +12,10 @@ export default function MapLoader(){
 
     <group position={[0, 0, 0]} >
         <WallSection/>
+    </group>
+
+    <group position={[0, 0, 0]} >
+        <Character/>
     </group>
 
     <group position={[0, 0, 0]} >

@@ -1,8 +1,8 @@
 import Shelf from "./facilities/Shelf";
 import StoreFloor from "./store/StoreFloor";
 import WallSection from "./store/WallSection";
-import Character from "./npc/Character";
 import { genStoreLayout } from "./store/genStoreLayout";
+import CharacterManager from "./npc/CharacterManager";
 
 const shelfUnits = [[0,0,1] ,[0,0,3], [0,0,-1]]
 export default function MapLoader(){
@@ -18,7 +18,7 @@ export default function MapLoader(){
     </group>
 
     <group position={[0, 0, 0]} >
-        <Character/>
+        <CharacterManager/>
     </group>
 
     <group position={[0, 0, 0]} >

@@ -1,5 +1,5 @@
 import Shelf from "./facilities/Shelf";
-import StoreFloor from "./store/StoreFloor";
+import StoreModel from "./store/StoreModel";
 import WallSection from "./store/WallSection";
 import { genStoreLayout } from "./store/genStoreLayout";
 import CharacterManager from "./npc/CharacterManager";
@@ -9,9 +9,7 @@ export default function MapLoader(){
     let layOut = genStoreLayout()
 
     return <>
-    <group position={[0, 1, 0]} >
-        <StoreFloor layOut ={layOut}/>
-    </group>
+    <StoreModel/>
 
     <group position={[0, 0, 0]} >
         <WallSection/>

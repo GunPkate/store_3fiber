@@ -4,12 +4,12 @@ import { FLOOR_D, FLOOR_W } from "../../config/storeLayout/storeLayoutLv1";
 export default function StoreModel() {
   function Floor({ onFloorClick }) {
     const lines = useMemo(() => {
-      const out = [];
+      const position = [];
       for (let i = -FLOOR_W / 2; i <= FLOOR_W / 2; i += 1.5) {
-        out.push({ axis: 'x', i });
-        out.push({ axis: 'z', i });
+        position.push({ axis: 'x', i });
+        position.push({ axis: 'z', i });
       }
-      return out;
+      return position; 
     }, []);
 
     return (
@@ -35,4 +35,8 @@ export default function StoreModel() {
       </group>
     );
   }
+
+  return(<>
+    <Floor/>
+  </>)
 }

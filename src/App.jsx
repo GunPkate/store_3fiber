@@ -1,12 +1,13 @@
 import { Canvas } from '@react-three/fiber'
 import './App.css'
 import MapLoader from './components/MapLoader'
-import { OrbitControls } from '@react-three/drei'
+import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 
 function App() {
   return (
     <div div style={{ width: '100%', height: '100vh', position: 'relative' }}>
-      <Canvas camera={{ position: [7, 7, 0] }}>
+      <Canvas>
+        <PerspectiveCamera makeDefault fov={55} near={0.1} far={100} position={[0, 5, 14.56]} />
         <ambientLight intensity={0.5} />
         <directionalLight position={[5, 5, 5]} />
         <MapLoader/>

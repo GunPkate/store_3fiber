@@ -1,7 +1,8 @@
 import { useMemo } from "react";
-import { FLOOR_D, FLOOR_W, OBJECT_3D } from "../../config/storeLayout/storeLayoutLv1";
+import { FLOOR_D, FLOOR_W, OBJECT_3D, ATM_OBSTACLE } from "../../config/storeLayout/storeLayoutLv1";
 
 export default function StoreModel() {
+  const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
   const fridgeObs = OBJECT_3D.filter((o) => o.label.startsWith('Fridge'));
 
   function Floor({ onFloorClick }) {
@@ -64,6 +65,21 @@ export default function StoreModel() {
     );
   }
 
+  function ShelfUnit({ o }) {
+  return (
+    <group>
+      <Box w={o.hw * 2} h={2.2} d={0.08} color={0x999999} x={o.x} y={1.1} z={o.z} />
+      {[0, 1, 2].map((i) => (
+        <Box key={i} w={o.hw * 2} h={0.06} d={0.45} color={0x8b6914} x={o.x} y={0.35 + i * 0.72} z={o.z + 0.15} />
+      ))}
+      {[-1, 1].map((s) => (
+        <Box key={s} w={0.06} h={2.2} d={0.45} color={0x8b6914} x={o.x + s * (o.hw - 0.03)} y={1.1} z={o.z + 0.15} />
+      ))}
+    </group>
+  );
+}
+
+
   function Fridge({ o }) {
     return (
       <group>
@@ -77,11 +93,27 @@ export default function StoreModel() {
     );
   }
 
-  return(<>
+  function Atm({ atmObstacle }) {
+  return (
+    <group>
+      <Box w={atmObstacle.hw * 2} h={1.8} d={atmObstacle.hd * 2} color={0x222222} x={atmObstacle.x} y={0.9} z={atmObstacle.z} />
+      <mesh position={[atmObstacle.x, 1.2, atmObstacle.z - atmObstacle.hd - 0.02]}>
+        <boxGeometry args={[0.5, 0.3, 0.02]} />
+        <meshBasicMaterial color={0x2255ff} />
+      </mesh>
+    </group>
+  );
+}
+
+  return(<group>
     <Floor/>
     <Walls/>
+    {shelfObs.map((o, i) => (
+        <ShelfUnit key={i} o={o} />
+    ))}
     {fridgeObs.map((o, i) => (
         <Fridge key={i} o={o} />
-      ))}
-  </>)
+    ))}
+    <Atm atmObstacle={ATM_OBSTACLE} />
+  </group>)
 }

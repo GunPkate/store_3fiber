@@ -8,7 +8,7 @@ function App() {
   return (
     <div style={{ width: '100%', height: '100vh', position: 'relative', zIndex:2 }}>
       {/* <div style={{position: 'absolute', zIndex: 1 }}  className="backdrop-blur-md bg-gray-600/20 border border-white/10 rounded-2xl shadow-xl p-8 max-w-sm text-white"> */}
-      <div style={{position: 'absolute', zIndex: 1 }}  className = {row_menu +" "+glass_text+" "+ glass_bg} >
+      <div style={{position: 'absolute', bottom:"20px", left:"20px", zIndex: 1 }}  className = {row_menu +" "+glass_text+" "+ glass_bg} >
   
         <div>Dashboard</div>
         <div>Employee</div>

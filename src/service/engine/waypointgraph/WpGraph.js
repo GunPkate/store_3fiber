@@ -1,4 +1,5 @@
 import { inObs } from "../../../config/storeLayout/storeLayoutLv1";
+import { uid } from "../uid";
 
 export class WpGraph {
     constructor(specialPoints, shelfPoints) {
@@ -38,6 +39,14 @@ export class WpGraph {
                 }
             }
         }
+    }
+
+    _los(a, b) {
+        for (let i = 1; i < 16; i++) {
+            const t = i / 16;
+            if (inObs(a.x + (b.x - a.x) * t, a.z + (b.z - a.z) * t, 0.1)) return false;
+        }
+        return true;
     }
 
 }

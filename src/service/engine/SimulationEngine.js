@@ -1,8 +1,9 @@
 import { SHELF3D, ATM3D, POS3D, EXIT3D, SPAWN3D, BREAK3D, STOCK3D, WAIT3D, createItems } from "../../config/storeLayout/storeLayoutLv1";
+import { WpGraph } from "./waypointgraph/WpGraph";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
 const DAY_GAME = 1440; // game-minutes per day
-ATM3D
+
 export class SimulationEngine {
     constructor() {
         this.CFG = {
@@ -20,6 +21,19 @@ export class SimulationEngine {
         this.BREAK3D = BREAK3D;
         this.STOCK3D = STOCK3D;
         this.WAIT3D = WAIT3D;
+
+        this.graph = new WpGraph(
+            [
+                ['atm', ATM3D],
+                ['pos', POS3D],
+                ['exit', EXIT3D],
+                ['spawn', SPAWN3D],
+                ['break', BREAK3D],
+                ['stock', STOCK3D],
+                ['waiting', WAIT3D],
+            ],
+            SHELF3D
+        );
 
         this.npcs = [];
         this.posQueue = [];

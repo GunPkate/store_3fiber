@@ -49,6 +49,9 @@ export class WpGraph {
         return true;
     }
 
+    getNode(id) {
+        return this.nodes.find((n) => n.id === id);
+    }
 }
 
 export const WP_COLOR = {

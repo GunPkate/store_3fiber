@@ -1,30 +1,16 @@
-import Shelf from "./facilities/Shelf";
-import StoreFloor from "./store/StoreFloor";
-import WallSection from "./store/WallSection";
-import { genStoreLayout } from "./store/genStoreLayout";
+import StoreModel from "./store/StoreModel";
 import CharacterManager from "./npc/CharacterManager";
+import WayPoint from "./waypoint/WayPoint";
 
 const shelfUnits = [[0,0,1] ,[0,0,3], [0,0,-1]]
 export default function MapLoader(){
-    let layOut = genStoreLayout()
 
     return <>
-    <group position={[0, 1, 0]} >
-        <StoreFloor layOut ={layOut}/>
-    </group>
-
-    <group position={[0, 0, 0]} >
-        <WallSection/>
-    </group>
-
+    <StoreModel/>
+    <WayPoint/>
     <group position={[0, 0, 0]} >
         <CharacterManager/>
     </group>
 
-    <group position={[0, 0, 0]} >
-        {shelfUnits.map(unit => {
-            return <Shelf originXYZ={unit}/>
-        })}
-    </group>
       </>
 }

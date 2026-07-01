@@ -6,10 +6,10 @@ export const simulationEngine = new SimulationEngine()
 export const useUIStore = create( (set) => ({
     timeSpeed: 1,
     setTimeSpeed: (s) => {
-        engine.CFG.timeSpeed = s;
+        simulationEngine.CFG.timeSpeed = s;
         set({ timeSpeed: s });
     },
 
     hud: simulationEngine.getSnapshot(),
-    refreshHud: () => set({ hud: engine.getSnapshot() }),
+    refreshHud: () => set({ hud: simulationEngine.getSnapshot() }),
 }))

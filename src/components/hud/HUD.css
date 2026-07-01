@@ -1,0 +1,255 @@
+* {
+    box-sizing: border-box
+}
+
+.panel {
+    position: fixed;
+    background: rgba(8, 10, 22, .88);
+    border: 1px solid rgba(255, 255, 255, .1);
+    border-radius: 10px;
+    color: #dde;
+    font-size: 11.5px;
+    padding: 10px 12px;
+    backdrop-filter: blur(6px);
+    z-index: 10;
+    font-family: 'Segoe UI', sans-serif
+}
+
+#hud-tl {
+    top: 10px;
+    left: 10px;
+    min-width: 200px;
+    max-width: 230px;
+    max-height: 82vh;
+    overflow-y: auto
+}
+
+#hud-tr {
+    top: 10px;
+    right: 10px;
+    min-width: 190px;
+    text-align: right
+}
+
+.ph {
+    font-size: 10px;
+    color: #6688cc;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+    margin-bottom: 5px;
+    padding-bottom: 3px;
+    border-bottom: 1px solid rgba(255, 255, 255, .07)
+}
+
+.er {
+    display: flex;
+    justify-content: space-between;
+    gap: 8px;
+    padding: 2px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, .04);
+    font-size: 10.5px
+}
+
+.rc {
+    color: #88aaff
+}
+
+.tc {
+    color: #ffcc88
+}
+
+.sc {
+    color: #88ffcc
+}
+
+#clockbar {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(8, 10, 22, .9);
+    border: 1px solid rgba(255, 255, 255, .12);
+    border-radius: 24px;
+    padding: 6px 18px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    z-index: 10;
+    color: #dde;
+    font-size: 12px;
+    white-space: nowrap;
+    font-family: 'Segoe UI', sans-serif
+}
+
+#clk {
+    font-size: 15px;
+    font-weight: 700;
+    color: #ffe
+}
+
+#shift-lbl {
+    color: #88aaff;
+    font-size: 10px;
+    min-width: 70px
+}
+
+.spd {
+    background: rgba(255, 255, 255, .08);
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: #ccd;
+    padding: 2px 8px;
+    border-radius: 10px;
+    cursor: pointer;
+    font-size: 11px;
+    transition: .15s
+}
+
+.spd:hover,
+.spd.on {
+    background: #334daa;
+    border-color: #5577ff;
+    color: #fff
+}
+
+#toolbar {
+    position: fixed;
+    bottom: 12px;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 7px;
+    z-index: 10;
+    flex-wrap: wrap;
+    justify-content: center;
+    max-width: 96vw
+}
+
+.tb {
+    background: rgba(8, 12, 35, .92);
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: #dde;
+    padding: 6px 13px;
+    border-radius: 18px;
+    cursor: pointer;
+    font-size: 11.5px;
+    transition: .15s;
+    white-space: nowrap;
+    font-family: 'Segoe UI', sans-serif
+}
+
+.tb:hover,
+.tb.on {
+    background: #2a40aa;
+    border-color: #4466dd
+}
+
+#settings-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .7);
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center
+}
+
+#settings-modal.open {
+    display: flex
+}
+
+#settings-box {
+    background: #0d1025;
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 12px;
+    padding: 22px 26px;
+    min-width: 300px;
+    color: #dde;
+    font-family: 'Segoe UI', sans-serif
+}
+
+#settings-box h2 {
+    font-size: 14px;
+    color: #88aaff;
+    margin-bottom: 16px;
+    letter-spacing: 1px
+}
+
+.sf {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 10px 0;
+    font-size: 12px;
+    gap: 14px
+}
+
+.sf label {
+    color: #aab
+}
+
+.sf input[type=number] {
+    width: 80px;
+    background: #1a2040;
+    border: 1px solid rgba(255, 255, 255, .18);
+    color: #fff;
+    padding: 4px 8px;
+    border-radius: 6px;
+    font-size: 12px
+}
+
+.sf input[type=range] {
+    width: 100px
+}
+
+#settings-close {
+    margin-top: 16px;
+    width: 100%;
+    padding: 8px;
+    background: #334;
+    border: 1px solid #556;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px
+}
+
+#wp-panel {
+    position: fixed;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    min-width: 170px
+}
+
+#wp-panel button {
+    display: block;
+    width: 100%;
+    margin: 3px 0;
+    padding: 5px 8px;
+    background: rgba(255, 255, 255, .06);
+    border: 1px solid rgba(255, 255, 255, .12);
+    color: #dde;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 11px;
+    text-align: left
+}
+
+#wp-panel button:hover {
+    background: #2a40aa
+}
+
+#tip {
+    position: fixed;
+    pointer-events: none;
+    background: rgba(6, 8, 20, .9);
+    border: 1px solid rgba(255, 255, 255, .15);
+    color: #dde;
+    font-size: 11px;
+    padding: 6px 11px;
+    border-radius: 7px;
+    z-index: 30;
+    max-width: 200px;
+    line-height: 1.5;
+    font-family: 'Segoe UI', sans-serif
+}

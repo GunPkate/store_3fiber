@@ -11,5 +11,5 @@ export const useUIStore = create( (set) => ({
     },
 
     hud: simulationEngine.getSnapshot(),
-    refreshHud: () => set({ hud: engine.getSnapshot() }),
+    refreshHud: () => set({ hud: simulationEngine.getSnapshot() }),
 }))

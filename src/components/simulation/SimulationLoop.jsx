@@ -4,7 +4,7 @@ import { simulationEngine, useUIStore } from '../../service/state/uiState'
 
 const HUD_HZ = 10; // refresh the HUD overlay ~10x/sec instead of every frame
 
-export default function GameLoop() {
+export default function SimulationLoop() {
   const refreshHud = useUIStore((s) => s.refreshHud);
   const acc = useRef(0);
 

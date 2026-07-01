@@ -57,7 +57,7 @@ export class WpGraph {
 export const WP_COLOR = {
   generic: '#4488ff',
   shelf: '#ffaa22',
-  pos: '#44aaff',
+  pos: '#7d03ff',
   atm: '#ff44aa',
   exit: '#44ff88',
   spawn: '#88ff44',

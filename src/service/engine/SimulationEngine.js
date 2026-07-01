@@ -10,6 +10,7 @@ export class SimulationEngine {
             customerLimit: 50,
             spawnInterval: 15,
             timeSpeed: 1,
+            showPaths: true,
         };
 
         this.items = createItems();
@@ -88,5 +89,17 @@ export class SimulationEngine {
                 .map((e) => ({ id: e.id, role: e.role.role, task: e.curTask, state: e.state })),
             events: this.evts.slice(0, 6),
         };
+    }
+
+    createNPC(type, x, z) {
+        const npc = type === 'customer' ? new Customer(this, x, z) : new Employee(this, x, z);
+        this.npcs.push(npc);
+        if (type === 'employee') this._initEmpTask(npc);
+        this.notifyNpcs();
+        return npc;
+    }
+
+    notifyNpcs() {
+        this._npcListeners.forEach((cb) => cb());
     }
 }

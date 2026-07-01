@@ -1,8 +1,8 @@
 import { useState } from 'react';
-import { simulationEngine, useUIStore } from '../../service/state/uiState';
+import { engine, useUiStore } from '../state/uiStore.js';
 import './HUD.css'
 
-const SPEEDS = [ 0, 1, 1.5, 2, 2.5, 3, 5];
+const SPEEDS = [0,1, 1.5, 2, 2.5, 3, 5];
 
 const TOOLS = [
   { tool: 'none', label: '🎥 View' },
@@ -20,26 +20,26 @@ const SPAWN_TOOLS = [
 const WP_TYPES = ['generic', 'shelf', 'pos', 'atm', 'exit', 'spawn', 'break', 'stock', 'waiting'];
 
 export default function HUD() {
-  const hud = useUIStore((s) => s.hud);
-  const currentTool = useUIStore((s) => s.currentTool);
-  const setTool = useUIStore((s) => s.setTool);
-  const showWP = useUIStore((s) => s.showWP);
-  const toggleShowWP = useUIStore((s) => s.toggleShowWP);
-  const timeSpeed = useUIStore((s) => s.timeSpeed);
-  const setTimeSpeed = useUIStore((s) => s.setTimeSpeed);
-  const settingsOpen = useUIStore((s) => s.settingsOpen);
-  const setSettingsOpen = useUIStore((s) => s.setSettingsOpen);
-  const applySettings = useUIStore((s) => s.applySettings);
-  const selectedWP = useUIStore((s) => s.selectedWP);
-  const setSelectedWP = useUIStore((s) => s.setSelectedWP);
-  const setLinkingWP = useUIStore((s) => s.setLinkingWP);
-  const hoveredNpc = useUIStore((s) => s.hoveredNpc);
-  const pointerPos = useUIStore((s) => s.pointerPos);
-  const fov = useUIStore((s) => s.fov);
+  const hud = useUiStore((s) => s.hud);
+  const currentTool = useUiStore((s) => s.currentTool);
+  const setTool = useUiStore((s) => s.setTool);
+  const showWP = useUiStore((s) => s.showWP);
+  const toggleShowWP = useUiStore((s) => s.toggleShowWP);
+  const timeSpeed = useUiStore((s) => s.timeSpeed);
+  const setTimeSpeed = useUiStore((s) => s.setTimeSpeed);
+  const settingsOpen = useUiStore((s) => s.settingsOpen);
+  const setSettingsOpen = useUiStore((s) => s.setSettingsOpen);
+  const applySettings = useUiStore((s) => s.applySettings);
+  const selectedWP = useUiStore((s) => s.selectedWP);
+  const setSelectedWP = useUiStore((s) => s.setSelectedWP);
+  const setLinkingWP = useUiStore((s) => s.setLinkingWP);
+  const hoveredNpc = useUiStore((s) => s.hoveredNpc);
+  const pointerPos = useUiStore((s) => s.pointerPos);
+  const fov = useUiStore((s) => s.fov);
 
-  const [cfgLimit, setCfgLimit] = useState(simulationEngine.CFG.customerLimit);
-  const [cfgSpawn, setCfgSpawn] = useState(simulationEngine.CFG.spawnInterval);
-  const [cfgShowPaths, setCfgShowPaths] = useState(simulationEngine.CFG.showPaths);
+  const [cfgLimit, setCfgLimit] = useState(engine.CFG.customerLimit);
+  const [cfgSpawn, setCfgSpawn] = useState(engine.CFG.spawnInterval);
+  const [cfgShowPaths, setCfgShowPaths] = useState(engine.CFG.showPaths);
   const [cfgFov, setCfgFov] = useState(fov);
 
   return (
@@ -168,7 +168,7 @@ export default function HUD() {
             onClick={() => {
               const t = prompt(`Type (${WP_TYPES.join(',')})`, selectedWP.type);
               if (t && WP_TYPES.includes(t)) {
-                simulationEngine.setWaypointType(selectedWP.id, t);
+                engine.setWaypointType(selectedWP.id, t);
                 setSelectedWP({ ...selectedWP, type: t });
               }
             }}
@@ -177,7 +177,7 @@ export default function HUD() {
           </button>
           <button
             onClick={() => {
-              simulationEngine.removeWaypoint(selectedWP.id);
+              engine.removeWaypoint(selectedWP.id);
               setSelectedWP(null);
             }}
           >
@@ -255,4 +255,3 @@ export default function HUD() {
     </>
   );
 }
-

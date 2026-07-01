@@ -1,3 +1,8 @@
+// ══════════════════════════════════════════════════════════
+// STORE LAYOUT DATA — pure data, no Three.js / React dependency
+// Store floor: 16 × 12, centred at origin. Units ≈ metres.
+// ══════════════════════════════════════════════════════════
+
 export const FLOOR_W = 20;
 export const FLOOR_D = 16;
 
@@ -5,7 +10,7 @@ export const FLOOR_D = 16;
  * Obstacle rectangles used for collision + waypoint generation.
  * x,z = centre, hw = half-width (x axis), hd = half-depth (z axis).
  */
-export const OBJECT_3D = [
+export const OBS3D = [
   // shelves row 1 (left column)
   { x: -5.5, z: -3.5, hw: 0.9, hd: 0.25, label: 'Shelf Cola/Water' },
   { x: -5.5, z: -2, hw: 0.9, hd: 0.25, label: 'Shelf Snacks' },
@@ -36,7 +41,7 @@ export const OBJECT_3D = [
 ];
 
 export function inObs(px, pz, margin = 0.25) {
-  for (const o of OBJECT_3D) {
+  for (const o of OBS3D) {
     if (
       px >= o.x - o.hw - margin &&
       px <= o.x + o.hw + margin &&
@@ -63,25 +68,25 @@ export function createItems() {
   ];
 }
 
-const posObstacle = OBJECT_3D.find((o) => o.label === 'POS Counter');
-const atmObstacle = OBJECT_3D.find((o) => o.label === 'ATM');
-const stkObstacle = OBJECT_3D.find((o) => o.label === 'Stock Room');
-const breakObstacle = OBJECT_3D.find((o) => o.label === 'Break Room');
+const posO = OBS3D.find((o) => o.label === 'POS Counter');
+const atmO = OBS3D.find((o) => o.label === 'ATM');
+const stkO = OBS3D.find((o) => o.label === 'Stock Room');
+const brkO = OBS3D.find((o) => o.label === 'Break Room');
 
 // Shelf centre positions (3D) — the "browsing" point just in front of each shelf
-export const SHELF3D = OBJECT_3D.filter((o) => o.label.startsWith('Shelf')).map((o) => ({
+export const SHELF3D = OBS3D.filter((o) => o.label.startsWith('Shelf')).map((o) => ({
   x: o.x,
   z: o.z + 0.5,
 }));
-export const ATM3D = { x: atmObstacle.x, z: atmObstacle.z - 1 };
-export const POS3D = { x: posObstacle.x, z: posObstacle.z - 1.2 };
+export const ATM3D = { x: atmO.x, z: atmO.z - 1 };
+export const POS3D = { x: posO.x, z: posO.z - 1.2 };
 export const EXIT3D = { x: 0, z: 7.5 };
 export const SPAWN3D = { x: 0, z: 6.8 };
-export const BREAK3D = { x: breakObstacle.x, z: breakObstacle.z - 0.5 };
-export const STOCK3D = { x: stkObstacle.x + 1.2, z: stkObstacle.z + 1.5 };
+export const BREAK3D = { x: brkO.x, z: brkO.z - 0.5 };
+export const STOCK3D = { x: stkO.x + 1.2, z: stkO.z + 1.5 };
 export const WAIT3D = { x: 6, z: 2 };
 
-export const POS_OBSTACLE = posObstacle;
-export const ATM_OBSTACLE = atmObstacle;
-export const STOCK_OBSTACLE = stkObstacle;
-export const BREAK_OBSTACLE = breakObstacle;
+export const POS_OBSTACLE = posO;
+export const ATM_OBSTACLE = atmO;
+export const STOCK_OBSTACLE = stkO;
+export const BREAK_OBSTACLE = brkO;

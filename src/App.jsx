@@ -3,6 +3,7 @@ import './App.css'
 import MapLoader from './components/MapLoader'
 import { OrbitControls, PerspectiveCamera } from '@react-three/drei'
 import { glass_bg, row_menu, glass_text } from './config/uimenu/uimenu'
+import HUD from './components/hud/HUD'
 
 function App() {
   return (
@@ -27,6 +28,7 @@ function App() {
           makeDefault
         />
       </Canvas>
+      <HUD/>
     </div>
   )
 }

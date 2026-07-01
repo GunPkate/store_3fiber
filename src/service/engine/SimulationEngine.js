@@ -89,4 +89,16 @@ export class SimulationEngine {
             events: this.evts.slice(0, 6),
         };
     }
+
+    update(rawDt) {
+        const dt = rawDt * this.CFG.timeSpeed;
+        
+        this.gameTime += dt * (DAY_GAME / DAY_REAL);
+        if (this.gameTime >= this.day * DAY_GAME) {
+            this.day++;
+            this.addEvt(`🌅 Day ${this.day} begins`);
+        }
+        
+
+    }
 }

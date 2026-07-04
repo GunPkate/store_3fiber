@@ -1,4 +1,6 @@
 import { SHELF3D, ATM3D, POS3D, EXIT3D, SPAWN3D, BREAK3D, STOCK3D, WAIT3D, createItems } from "../../config/storeLayout/storeLayoutLv1";
+import { Customer } from "../npc/Customer";
+import { Employee } from "../npc/Employee";
 import { WpGraph } from "./waypointgraph/WpGraph";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
@@ -47,6 +49,7 @@ export class SimulationEngine {
 
         this.evts = [];
 
+        this.createNPC('employee', -1, 3.2);
     }
 
     getTimeHelper() {
@@ -98,7 +101,27 @@ export class SimulationEngine {
             this.day++;
             this.addEvt(`🌅 Day ${this.day} begins`);
         }
-        
+    }
 
+    createNPC(type, x, z) {
+        const npc = type === 'customer' ? new Customer(this, x, z) : new Employee(this, x, z);
+        this.npcs.push(npc);
+        if (type === 'employee') this.initEmpTask(npc);
+        this.notifyNpcs();
+        return npc;
+    }
+
+    initEmpTask(emp) {
+        const cashiers = this.npcs.filter((n) => n.type === 'employee' && n.curTask === 'cashier').length;
+        if (cashiers < 1 && emp.role.role === 'cashier') {
+            emp.setTask('cashier');
+            return;
+        }
+        const ROLE_TASK = { cashier: 'patrol', floorStaff: 'cleaningFloor', stocker: 'restock' };
+        emp.setTask(ROLE_TASK[emp.role.role] || 'idle');
+    }
+
+    notifyNpcs() {
+        this._npcListeners.forEach((cb) => cb());
     }
 }

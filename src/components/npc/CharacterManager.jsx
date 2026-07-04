@@ -2,6 +2,7 @@ import { useState, useEffect, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { Vector3 }  from 'three';
 import Character from './Character';
+import { simulationEngine } from '../../service/state/uiState';
 
 // Configuration constants
 const START_END_POS = [5, 0, 0];
@@ -75,9 +76,11 @@ export default function CharacterManager() {
 
     return (
         <>
-            {characters.map((char) => (
-                <Character key={char.id} position={char.position} color={char.color} />
-            ))}
+    <group>
+      {simulationEngine.npcs.map((npc) => (
+        <Character key={npc.id} npc={npc} />
+      ))}
+    </group>
         </>
     );
 }

@@ -48,7 +48,7 @@ export class SimulationEngine {
         this.totalWait = 0;
 
         this.evts = [];
-
+        this._npcListeners = new Set();
         this.createNPC('employee', -1, 3.2);
     }
 

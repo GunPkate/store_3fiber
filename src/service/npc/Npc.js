@@ -11,7 +11,7 @@ export class Npc {
     this.rotationY = 0;
     this.path = [];
     this.pathIdx = 0;
-    this.speed = SPEED + (Math.random() * 0.6 - 0.3);
+    this.speed = 2.8 + (Math.random() * 0.6 - 0.3);
     this._wTimer = 0;
     this._wTarget = null;
     // label text shown above head, kept up to date by subclasses

@@ -53,6 +53,24 @@ export class WpGraph {
         return this.nodes.find((n) => n.id === id);
     }
 
+    addNode(x, z, type = 'generic') {
+      if (inObs(x, z, 0.15)) return null;
+      const n = this._rawAdd(x, z, type);
+      this._connect(n, 2.2);
+      return n;
+    }
+
+    removeNode(id) {
+      this.nodes = this.nodes.filter((n) => n.id !== id);
+      this.nodes.forEach((n) => (n.edges = n.edges.filter((e) => e !== id)));
+    }
+
+    linkNodes(a, b) {
+      if (!a || !b) return;
+      if (!a.edges.includes(b.id)) a.edges.push(b.id);
+      if (!b.edges.includes(a.id)) b.edges.push(a.id);
+    }
+
     nearest(x, z, type = null) {
         let best = null,
         bd = Infinity;
@@ -134,12 +152,22 @@ export class WpGraph {
         pts.push({ x: tx, z: tz });
         return pts;
     }
+      
+    _connect(node, maxD) {
+        for (const n of this.nodes) {
+          if (n.id === node.id) continue;
+          if (Math.hypot(n.x - node.x, n.z - node.z) < maxD && this._los(node, n)) {
+            if (!node.edges.includes(n.id)) node.edges.push(n.id);
+            if (!n.edges.includes(node.id)) n.edges.push(node.id);
+          }
+        }
+    }
 }
 
 export const WP_COLOR = {
   generic: '#4488ff',
   shelf: '#ffaa22',
-  pos: '#44aaff',
+  pos: '#ff44ff',
   atm: '#ff44aa',
   exit: '#44ff88',
   spawn: '#88ff44',

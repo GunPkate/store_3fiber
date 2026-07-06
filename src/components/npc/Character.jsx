@@ -2,11 +2,14 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
+import { Vector3 } from 'three';
 
 export default function Character({ npc }){
     const groupRef = useRef();
     const lineRef = useRef();
     const labelRef = useRef();
+    const currentTool = useUIStore((s) => s.currentTool);
+    const setHoveredNpc = useUIStore((s) => s.setHoveredNpc);
 
     const bodyColor = npc.type === 'customer' ? npc.color : npc.bodyColor;
     const headColor = npc.type === 'customer' ? npc.color : npc.headColor;
@@ -25,23 +28,46 @@ export default function Character({ npc }){
             const pts = npc.remainingPath();
             if (pts && pts.length > 1 && lineRef.current) {
                 lineRef.current.visible = true;
-                lineRef.current.geometry.setFromPoints(pts.map((p) => new THREE.Vector3(p.x, 0.1, p.z)));
+                lineRef.current.geometry.setFromPoints(pts.map((p) => new Vector3(p.x, 0.1, p.z)));
             } else if (lineRef.current) {
                 lineRef.current.visible = false;
             }
         } else if (lineRef.current) {
             lineRef.current.visible = false;
         }
-
-        // if (groupRef.current && position) {
-        //     groupRef.current.position.set(position.x, position.y, position.z);
-        // }
     });
+
+    const handleClick = (e) => {
+        e.stopPropagation();
+        if (currentTool === 'rm-npc') {
+          simulationEngine.removeNPC(npc.id);
+          simulationEngine.addEvt('🗑 NPC removed');
+        }
+    };
+
+    const handleOver = (e) => {
+        e.stopPropagation();
+        if (currentTool !== 'none') return;
+        setHoveredNpc({ id: npc.id, lines: npc.getTooltipLines() }, { x: e.clientX, y: e.clientY });
+    };
+
+    const handleMove = (e) => {
+        if (currentTool !== 'none') return;
+        setHoveredNpc(useUIStore.getState().hoveredNpc, { x: e.clientX, y: e.clientY });
+    };
+
+    const handleOut = () => {
+        setHoveredNpc(null);
+    };
 
 return (
     <group>
         <group
-            ref={groupRef}
+          ref={groupRef}
+          onClick={handleClick}
+          onPointerOver={handleOver}
+          onPointerMove={handleMove}
+          onPointerOut={handleOut}
         >
             <mesh position={[0, 0.35, 0]} castShadow>
             <cylinderGeometry args={[0.18, 0.22, 0.7, 10]} />

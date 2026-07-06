@@ -1,16 +1,36 @@
-import { SHELF3D, ATM3D, POS3D, EXIT3D, SPAWN3D, BREAK3D, STOCK3D, WAIT3D, createItems } from "../../config/storeLayout/storeLayoutLv1";
 import { Customer } from "../npc/Customer";
 import { Employee } from "../npc/Employee";
 import { WpGraph } from "./waypointgraph/WpGraph";
 
+import {
+  inObs,
+  createItems,
+  SHELF3D,
+  ATM3D,
+  POS3D,
+  EXIT3D,
+  SPAWN3D,
+  BREAK3D,
+  STOCK3D,
+  WAIT3D,
+} from '../../config/storeLayout/storeLayoutLv1.js';
+
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
 const DAY_GAME = 1440; // game-minutes per day
 
+/**
+ * GameEngine owns ALL simulation state and runs independently of React's
+ * render cycle. React components read from it inside useFrame (for smooth
+ * per-frame visuals) or subscribe to its pub/sub channels (for list
+ * add/remove and HUD snapshots, throttled).
+ */
 export class SimulationEngine {
     constructor() {
         this.CFG = {
             customerLimit: 50,
             spawnInterval: 15,
+            showWP: false,
+            showPaths: true,
             timeSpeed: 1,
         };
 
@@ -86,6 +106,64 @@ export class SimulationEngine {
         if (this.evts.length > 10) this.evts.pop();
     }
 
+  // ── NPC management ──────────────────────────────────────
+  findAvailEmp() {
+    return this.npcs.find((n) => n.type === 'employee' && n.state !== 'occupied' && n.state !== 'break');
+  }
+  
+  // ── waypoint tool actions ───────────────────────────────
+  addWaypoint(x, z, type = 'generic') {
+    if (inObs(x, z, 0.15)) return null;
+    const n = this.graph.addNode(x, z, type);
+    if (n) {
+      this.addEvt('📍 Waypoint added');
+      this.notifyGraphChange();
+    } else {
+      this.addEvt('⚠️ Blocked by obstacle');
+    }
+    return n;
+  }
+  removeWaypoint(id) {
+    this.graph.removeNode(id);
+    this.addEvt('🗑 WP removed');
+    this.notifyGraphChange();
+  }
+  linkWaypoints(a, b) {
+    this.graph.linkNodes(a, b);
+    this.addEvt('🔗 Linked');
+    this.notifyGraphChange();
+  }
+  setWaypointType(id, type) {
+    const n = this.graph.getNode(id);
+    if (n) {
+      n.type = type;
+      this.notifyGraphChange();
+    }
+  }
+
+  // ── spawn / remove via tools ────────────────────────────
+  spawnCustomerAt(x, z) {
+    if (inObs(x, z, 0.2)) return null;
+    if (this.custInStore() >= this.CFG.customerLimit) {
+      this.addEvt('⚠️ Customer limit reached');
+      return null;
+    }
+    const nc = this.createNPC('customer', x, z);
+    const item = nc.curItem();
+    if (item) {
+      const shelf = nc.shelfFor(item.name);
+      if (shelf) nc.moveTo(shelf.x, shelf.z);
+    }
+    this.addEvt('👤 Customer spawned');
+    return nc;
+  }
+  spawnEmployeeAt(x, z) {
+    if (inObs(x, z, 0.2)) return null;
+    const e = this.createNPC('employee', x, z);
+    this.addEvt('👷 Employee spawned');
+    return e;
+  }
+
     getSnapshot() {
         const custs = this.custInStore();
         const sq = this.items.reduce((s, i) => s + i.qty, 0);
@@ -138,7 +216,6 @@ export class SimulationEngine {
     }
 
     custInStore() {
-        console.log("Cust", this.npcs.filter((n) => n.type === 'customer').length )
         return this.npcs.filter((n) => n.type === 'customer' && n.state !== 'done').length;
     }
 
@@ -202,6 +279,11 @@ export class SimulationEngine {
         }
     }
 
+  // ── HUD snapshot (call at a throttled rate, not every frame) ──
+    notifyGraphChange() {
+      this._graphListeners.forEach((cb) => cb());
+    }
+
     onNpcsChange(cb) {
         this._npcListeners.add(cb);
         return () => this._npcListeners.delete(cb);
@@ -216,3 +298,5 @@ export class SimulationEngine {
         this._npcListeners.forEach((cb) => cb());
     }
 }
+
+export { DAY_REAL, DAY_GAME };

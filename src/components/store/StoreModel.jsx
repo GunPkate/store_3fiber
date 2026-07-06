@@ -1,12 +1,10 @@
-import { useMemo } from "react";
-import { FLOOR_D, FLOOR_W, OBJECT_3D, ATM_OBSTACLE } from "../../config/storeLayout/storeLayoutLv1";
+import { useMemo, useRef } from 'react';
+import { useFrame } from '@react-three/fiber';
+import { FLOOR_W, FLOOR_D, OBJECT_3D, POS_OBSTACLE, ATM_OBSTACLE, STOCK_OBSTACLE, BREAK_OBSTACLE } from '../../config/storeLayout/storeLayoutLv1.js';
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
 
-export default function StoreModel() {
-  const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
-  const fridgeObs = OBJECT_3D.filter((o) => o.label.startsWith('Fridge'));
-
+  /** Floor + faint checkerboard tile lines. */
   function Floor({ onFloorClick }) {
     const lines = useMemo(() => {
       const position = [];
@@ -16,13 +14,12 @@ export default function StoreModel() {
       }
       return position; 
     }, []);
-
     return (
       <group>
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
           receiveShadow
-          // onClick={onFloorClick}
+          onClick={onFloorClick}
         >
           <planeGeometry args={[FLOOR_W, FLOOR_D]} />
           <meshLambertMaterial color={0xe0dbd0} />
@@ -54,7 +51,6 @@ export default function StoreModel() {
     return (
       <group>
 
-        <Box w={FLOOR_W} h={0.1} d={12} color={0xf0ede5} x={0} y={3} z={-6} cast={false} />
         <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} cast={false} />
         <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} cast={false} />
         <Box w={FLOOR_W} h={0.1} d={6.4} color={0xf0ede5} x={0} y={6} z={0} cast={false} recv={false} />
@@ -63,6 +59,69 @@ export default function StoreModel() {
         <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} />
         <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} />
         <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6} z={0} cast={false} />
+      </group>
+    );
+  }
+
+  function CeilingLights() {
+    const positions = [
+      [0, 0],
+      [3, 0],
+      [-3, 0],
+      [0, -3],
+      [3, -3],
+      [-3, -3],
+    ];
+    return (
+      <group>
+        {positions.map(([lx, lz], i) => (
+          <group key={i}>
+            <mesh position={[lx, 5.9, lz]}>
+              <boxGeometry args={[0.3, 0.06, 1.6]} />
+              <meshBasicMaterial color={0xfffacc} />
+            </mesh>
+            <pointLight position={[lx, 5.7, lz]} color={0xfff5e0} intensity={1.1} distance={8} />
+          </group>
+        ))}
+      </group>
+    );
+  }
+
+  /** Neon sign above the entrance, with a gentle flicker animation. */
+  function NeonSign() {
+    const lightRefs = useRef([]);
+    const t = useRef(0);
+    useFrame((_, dt) => {
+      t.current += dt;
+      lightRefs.current.forEach((l, i) => {
+        if (l) l.intensity = 0.4 + Math.sin(t.current * 4 + i) * 0.25 + 0.35;
+      });
+    });
+    const pieces = [
+      [1.2, 0.08, -0.6, 5.4, '#ff2288'],
+      [1.2, 0.08, 0.6, 5.4, '#22ccff'],
+      [0.08, 0.4, -0.3, 5.15, '#ff2288'],
+      [0.08, 0.4, 0.3, 5.15, '#22ccff'],
+      [0.6, 0.08, 0, 5.0, '#ff2288'],
+    ];
+    return (
+      <group>
+        <Box w={3.5} h={0.8} d={0.1} color={0x111122} x={0} y={5.3} z={-5.9} />
+        {pieces.map(([w, h, x, y, color], i) => (
+          <group key={i}>
+            <mesh position={[x, y, -5.85]}>
+              <boxGeometry args={[w, h, 0.05]} />
+              <meshBasicMaterial color={color} />
+            </mesh>
+            <pointLight
+              ref={(r) => (lightRefs.current[i] = r)}
+              position={[x, y, -5.7]}
+              color={color}
+              intensity={0.5}
+              distance={2}
+            />
+          </group>
+        ))}
       </group>
     );
   }
@@ -81,11 +140,11 @@ export default function StoreModel() {
     );
   }
 
-
   function Fridge({ o }) {
     return (
       <group>
         <Box w={o.hw * 2} h={3.2} d={o.hd * 2} color={0x444466} x={o.x} y={1.6} z={o.z}/>
+
         <mesh position={[o.x, 1.6, o.z + o.hd + 0.05]}>
           <boxGeometry args={[o.hw * 2, 3.0, 0.05]} />
           <meshPhongMaterial color={0x88eeff} transparent opacity={0.35} shininess={120} />
@@ -123,7 +182,7 @@ export default function StoreModel() {
   }
 
   function StockBars({ items }) {
-    // useUiStore((s) => s.hud);
+    useUIStore((s) => s.hud);
     const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
     return (
       <>
@@ -163,18 +222,70 @@ export default function StoreModel() {
       </>
     );
   }
+ 
+  function RegisterScreen({ posObstacle }) {
+      const matRef = useRef();
+      const t = useRef(0);
+      useFrame((_, dt) => {
+        t.current += dt;
+        if (matRef.current) matRef.current.color.setHSL(0.37, 1, 0.4 + Math.sin(t.current * 2) * 0.1);
+      });
+      return (
+        <group>
+          <Box w={posObstacle.hw * 2} h={1.0} d={posObstacle.hd * 2} color={0x5c3d1e} x={posObstacle.x} y={0.5} z={posObstacle.z} />
+          <Box w={posObstacle.hw * 2} h={0.06} d={posObstacle.hd * 2} color={0x222222} x={posObstacle.x} y={1.02} z={posObstacle.z} />
+          <Box w={0.5} h={0.4} d={0.35} color={0x111111} x={-1.2} y={1.24} z={posObstacle.z} />
+          <Box w={0.5} h={0.25} d={0.04} color={0x111111} x={-1.2} y={1.52} z={posObstacle.z - 0.36} />
+          <mesh position={[-1.2, 1.52, posObstacle.z - 0.34]}>
+            <boxGeometry args={[0.38, 0.22, 0.02]} />
+            <meshBasicMaterial ref={matRef} color={0x44ff88} />
+          </mesh>
+        </group>
+      );
+  }
+  
+  export default function StoreModel({ onFloorClick }) {
+    const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
+    const fridgeObs = OBJECT_3D.filter((o) => o.label.startsWith('Fridge'));
 
-  return(<group>
-    <Floor/>
-    <Walls/>
-    {shelfObs.map((o, i) => (
-        <ShelfUnit key={i} o={o} />
-    ))}
-    {fridgeObs.map((o, i) => (
-        <Fridge key={i} o={o} />
-    ))}
-    <Atm atmObstacle={ATM_OBSTACLE} />
-    <Entrance />
-    <StockBars items={simulationEngine.items} />
-  </group>)
+    const handleFloorClick = (e) => {
+      e.stopPropagation();
+      onFloorClick({ x: e.point.x, z: e.point.z });
+    };
+
+    return (<group>
+        <Floor onFloorClick={handleFloorClick} />
+        <Walls />
+        {shelfObs.map((o, i) => (
+          <ShelfUnit key={i} o={o} />
+      ))}
+      {fridgeObs.map((o, i) => (
+          <Fridge key={i} o={o} />
+      ))}
+        <RegisterScreen posObstacle={POS_OBSTACLE} />
+        <Atm atmObstacle={ATM_OBSTACLE} />
+        <Entrance />
+        <StockBars items={simulationEngine.items} />
+        <CeilingLights />
+        <NeonSign />
+        <Box
+          w={STOCK_OBSTACLE.hw * 2}
+          h={3}
+          d={STOCK_OBSTACLE.hd * 2}
+          color={0x554433}
+          x={STOCK_OBSTACLE.x}
+          y={1.5}
+          z={STOCK_OBSTACLE.z}
+        />
+        <Box
+          w={BREAK_OBSTACLE.hw * 2}
+          h={2}
+          d={BREAK_OBSTACLE.hd * 2}
+          color={0x334433}
+          x={BREAK_OBSTACLE.x}
+          y={1}
+          z={BREAK_OBSTACLE.z}
+        />
+
+    </group>);
 }

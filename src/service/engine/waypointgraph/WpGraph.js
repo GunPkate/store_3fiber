@@ -52,6 +52,88 @@ export class WpGraph {
     getNode(id) {
         return this.nodes.find((n) => n.id === id);
     }
+
+    nearest(x, z, type = null) {
+        let best = null,
+        bd = Infinity;
+        for (const n of this.nodes) {
+            if (type && n.type !== type && n.type !== 'generic') continue;
+            const d = Math.hypot(n.x - x, n.z - z);
+            if (d < bd) {
+                bd = d;
+                best = n;
+            }
+        }
+        return best;
+    }
+    
+    astar(startId, goalId) {
+        if (startId === goalId) return [startId];
+            const goal = this.getNode(goalId);
+        if (!goal) return [];
+        const h = (id) => {
+            const n = this.getNode(id);
+            return n ? Math.hypot(n.x - goal.x, n.z - goal.z) : 1e9;
+        };
+        const open = new Map([[startId, true]]);
+        const closed = new Set();
+        const g = new Map([[startId, 0]]);
+        const f = new Map([[startId, h(startId)]]);
+        const came = new Map();
+        while (open.size) {
+            let cur = null,
+            cf = 1e9;
+            for (const [id] of open) {
+                const fv = f.get(id) ?? 1e9;
+                if (fv < cf) {
+                    cf = fv;
+                    cur = id;
+                }
+            }
+            if (cur === goalId) {
+                const path = [];
+                let c = cur;
+                while (came.has(c)) {
+                    path.unshift(c);
+                    c = came.get(c);
+                }
+                path.unshift(startId);
+                return path;
+            }
+            open.delete(cur);
+            closed.add(cur);
+            const node = this.getNode(cur);
+        if (!node) continue;
+        for (const nid of node.edges) {
+            if (closed.has(nid)) continue;
+            const nb = this.getNode(nid);
+            if (!nb) continue;
+            const ng = (g.get(cur) ?? 1e9) + Math.hypot(node.x - nb.x, node.z - nb.z);
+            if (ng < (g.get(nid) ?? 1e9)) {
+                came.set(nid, cur);
+                g.set(nid, ng);
+                f.set(nid, ng + h(nid));
+                open.set(nid, true);
+                }
+            }
+        }
+        return [];
+    }       
+
+    pathXZ(fx, fz, tx, tz) {
+        const sn = this.nearest(fx, fz),
+        gn = this.nearest(tx, tz);
+        if (!sn || !gn) return [{ x: tx, z: tz }];
+        const ids = this.astar(sn.id, gn.id);
+        const pts = ids
+        .map((id) => {
+            const n = this.getNode(id);
+            return n ? { x: n.x, z: n.z } : null;
+        })
+        .filter(Boolean);
+        pts.push({ x: tx, z: tz });
+        return pts;
+    }
 }
 
 export const WP_COLOR = {

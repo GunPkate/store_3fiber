@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { simulationEngine, useUIStore } from '../../service/state/uiState';
 import './HUD.css'
 
-const SPEEDS = [ 0, 1, 1.5, 2, 2.5, 3, 5];
+const SPEEDS = [ 0, 1, 2, 3, 5, 8];
 
 const TOOLS = [
   { tool: 'none', label: '🎥 View' },

@@ -49,7 +49,12 @@ export class SimulationEngine {
 
         this.evts = [];
         this._npcListeners = new Set();
+        this._graphListeners = new Set();
+
         this.createNPC('employee', -1, 3.2);
+        this.createNPC('employee', 1, 3.2);
+        this.createNPC('employee', -3, 0.5);
+        this.addEvt('🏪 Store initialized');
     }
 
     getTimeHelper() {
@@ -71,8 +76,18 @@ export class SimulationEngine {
         return 'CLOSED';
     }
 
+    isOpen() {
+        const { h } = this.getTimeHelper();
+        return h >= 6 && h < 22;
+    }
+
+    addEvt(msg) {
+        this.evts.unshift(`${this.formatTime()} ${msg}`);
+        if (this.evts.length > 10) this.evts.pop();
+    }
+
     getSnapshot() {
-        // const custs = this.custInStore();
+        const custs = this.custInStore();
         const sq = this.items.reduce((s, i) => s + i.qty, 0);
         const mq = this.items.reduce((s, i) => s + i.maxQty, 0);
         const aw = this.served > 0 ? ((this.totalWait / this.served) * (DAY_REAL / DAY_GAME) * 60).toFixed(0) : 0;
@@ -81,6 +96,7 @@ export class SimulationEngine {
             day: this.day,
             shift: this.shiftLabel(),
             revenue: this.revenue,
+            custCount: custs,
             posCount: this.posQueue.length,
             served: this.served,
             stockPct: mq > 0 ? Math.floor((sq / mq) * 100) : 0,
@@ -101,6 +117,29 @@ export class SimulationEngine {
             this.day++;
             this.addEvt(`🌅 Day ${this.day} begins`);
         }
+        
+        this.updateSpawn(rawDt); // raw dt avoids speed-multiplied spawn bursts
+        this.npcs.forEach((n) => n.update(dt));
+        this.updatePOS();
+        
+        if (this.npcsToRemove.length) {
+            this.npcsToRemove.forEach((id) => this.removeNPC(id));
+            this.npcsToRemove = [];
+        }
+        
+        // auto restock check every 2 game hours
+        if (Math.floor(this.gameTime) % 120 === 1) {
+            this.npcs
+            .filter((n) => n.type === 'employee' && n.role.role === 'stocker' && n.curTask !== 'restock')
+            .forEach((e) => {
+                if (this.items.some((s) => s.qty < s.maxQty * 0.4)) e.assignTask('restock');
+            });
+        }
+    }
+
+    custInStore() {
+        console.log("Cust", this.npcs.filter((n) => n.type === 'customer').length )
+        return this.npcs.filter((n) => n.type === 'customer' && n.state !== 'done').length;
     }
 
     createNPC(type, x, z) {
@@ -119,6 +158,58 @@ export class SimulationEngine {
         }
         const ROLE_TASK = { cashier: 'patrol', floorStaff: 'cleaningFloor', stocker: 'restock' };
         emp.setTask(ROLE_TASK[emp.role.role] || 'idle');
+    }
+
+    removeNPC(id) {
+        const npc = this.npcs.find((n) => n.id === id);
+        if (!npc) return;
+        this.posQueue = this.posQueue.filter((c) => c.id !== id);
+        // npc.dispose();
+        this.npcs = this.npcs.filter((n) => n.id !== id);
+        this.notifyNpcs();
+    }
+    
+    updatePOS() {
+         this.npcs.forEach((n) => {
+             if (n.type === 'customer' && n.state === 'checkingout' && n.isAtTarget() && !this.posQueue.includes(n)) {
+                 this.posQueue.push(n);
+                }
+            });
+            this.posQueue.forEach((c, i) => {
+                const tx = this.POS3D.x - 2 + i * 1.1,
+                tz = this.POS3D.z + 0.8;
+                if (Math.hypot(c.x - tx, c.z - tz) > 0.3) c.moveTo(tx, tz);
+            });
+    }
+            
+    updateSpawn(dt) {
+        if (!this.isOpen()) return;
+        if (this.custInStore() >= this.CFG.customerLimit) return;
+        this.custSpawnTimer += dt * (DAY_GAME / DAY_REAL); // advance in game-seconds
+        if (this.custSpawnTimer >= this.CFG.spawnInterval) {
+            this.custSpawnTimer = 0;
+            const n = this.createNPC(
+                'customer',
+                this.SPAWN3D.x + (Math.random() * 0.6 - 0.3),
+                this.SPAWN3D.z
+            );
+            const item = n.curItem();
+            if (item) {
+                const shelf = n.shelfFor(item.name);
+                if (shelf) n.moveTo(shelf.x, shelf.z);
+            }
+            this.addEvt('👤 Customer entered');
+        }
+    }
+
+    onNpcsChange(cb) {
+        this._npcListeners.add(cb);
+        return () => this._npcListeners.delete(cb);
+    }
+
+    onGraphChange(cb) {
+        this._graphListeners.add(cb);
+        return () => this._graphListeners.delete(cb);
     }
 
     notifyNpcs() {

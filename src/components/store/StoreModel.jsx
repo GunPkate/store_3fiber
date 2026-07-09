@@ -3,6 +3,8 @@ import { useFrame } from '@react-three/fiber';
 import { FLOOR_W, FLOOR_D, OBJECT_3D, POS_OBSTACLE, ATM_OBSTACLE, STOCK_OBSTACLE, BREAK_OBSTACLE } from '../../config/storeLayout/storeLayoutLv1.js';
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
+import ShelfItems from './products/ShelfItems.jsx';
+import { SHELFITEMS } from '../../config/storeLayout/ShelfItemsLv1.js';
 
   /** Floor + faint checkerboard tile lines. */
   function Floor({ onFloorClick }) {
@@ -247,6 +249,7 @@ import { Html } from '@react-three/drei';
   export default function StoreModel({ onFloorClick }) {
     const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
     const fridgeObs = OBJECT_3D.filter((o) => o.label.startsWith('Fridge'));
+    const items = SHELFITEMS.filter((o) => o.label.startsWith('Cookies'));
 
     const handleFloorClick = (e) => {
       e.stopPropagation();
@@ -258,10 +261,14 @@ import { Html } from '@react-three/drei';
         <Walls />
         {shelfObs.map((o, i) => (
           <ShelfUnit key={i} o={o} />
-      ))}
-      {fridgeObs.map((o, i) => (
+        ))}
+        {items.map( (o,i) => (
+          <ShelfItems key={i} o={o}/>
+        ))
+        }
+        {fridgeObs.map((o, i) => (
           <Fridge key={i} o={o} />
-      ))}
+        ))}
         <RegisterScreen posObstacle={POS_OBSTACLE} />
         <Atm atmObstacle={ATM_OBSTACLE} />
         <Entrance />

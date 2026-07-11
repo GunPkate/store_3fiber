@@ -263,7 +263,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
           <ShelfUnit key={i} o={o} />
         ))}
         {items.map( (o,i) => (
-          <ShelfItems key={i} o={o} itemOnShelfAmount={simulationEngine.items} />
+          <ShelfItems key={i} o={o} itemOnShelfAmount={simulationEngine.items.filter( item => item.name == o.label) } />
         ))}
         {fridgeObs.map((o, i) => (
           <Fridge key={i} o={o} />

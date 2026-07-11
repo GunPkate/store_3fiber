@@ -48,4 +48,8 @@ npm i @react-three/fiber @react-three/drei
 </div>
 ## Expanding the ESLint configuration
 
+* Gen Item slots on shelf and remove item when selected by customers
+* <div align="center">
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/30816de9-c25f-45fd-b742-f1681ba14f6b" />
+</div>
 If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.

@@ -3,6 +3,8 @@ import { useFrame } from '@react-three/fiber';
 import { FLOOR_W, FLOOR_D, OBJECT_3D, POS_OBSTACLE, ATM_OBSTACLE, STOCK_OBSTACLE, BREAK_OBSTACLE } from '../../config/storeLayout/storeLayoutLv1.js';
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
+import ShelfItems from './products/ShelfItems.jsx';
+import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
 
   /** Floor + faint checkerboard tile lines. */
   function Floor({ onFloorClick }) {
@@ -186,14 +188,14 @@ import { Html } from '@react-three/drei';
     const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
     return (
       <>
-        {items.map((si, i) => {
+        {items.map((shelfItem, i) => {
           const o = shelfObs[i];
           if (!o) return null;
-          const pct = Math.max(0, Math.min(1, si.qty / si.maxQty));
+          const pct = Math.max(0, Math.min(1, shelfItem.qty / shelfItem.maxQty));
           const barColor = pct > 0.5 ? '#44ff88' : pct > 0.2 ? '#ffaa44' : '#ff4444';
           return (
             <Html
-              key={si.name}
+              key={shelfItem.name}
               position={[o.x, 2.8, o.z - 0.1]}
               center
               distanceFactor={9}
@@ -210,7 +212,7 @@ import { Html } from '@react-three/drei';
                 }}
               >
                 <div style={{ color: '#fff', fontSize: 11, fontWeight: 'bold', textAlign: 'center', marginBottom: 3 }}>
-                  {si.name} {si.qty}/{si.maxQty}
+                  {shelfItem.name} {shelfItem.qty}/{shelfItem.maxQty}
                 </div>
                 <div style={{ height: 6, background: 'rgba(255,255,255,.15)', borderRadius: 3 }}>
                   <div style={{ width: `${pct * 100}%`, height: '100%', background: barColor, borderRadius: 3 }} />
@@ -248,6 +250,7 @@ import { Html } from '@react-three/drei';
     const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
     const fridgeObs = OBJECT_3D.filter((o) => o.label.startsWith('Fridge'));
 
+    const items = SHELFLAYOUT
     const handleFloorClick = (e) => {
       e.stopPropagation();
       onFloorClick({ x: e.point.x, z: e.point.z });
@@ -258,10 +261,13 @@ import { Html } from '@react-three/drei';
         <Walls />
         {shelfObs.map((o, i) => (
           <ShelfUnit key={i} o={o} />
-      ))}
-      {fridgeObs.map((o, i) => (
+        ))}
+        {items.map( (o,i) => (
+          <ShelfItems key={i} o={o} itemOnShelfAmount={simulationEngine.items} />
+        ))}
+        {fridgeObs.map((o, i) => (
           <Fridge key={i} o={o} />
-      ))}
+        ))}
         <RegisterScreen posObstacle={POS_OBSTACLE} />
         <Atm atmObstacle={ATM_OBSTACLE} />
         <Entrance />

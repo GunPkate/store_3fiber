@@ -4,7 +4,6 @@ import { WpGraph } from "./waypointgraph/WpGraph";
 
 import {
   inObs,
-  createItems,
   SHELF3D,
   ATM3D,
   POS3D,
@@ -14,6 +13,7 @@ import {
   STOCK3D,
   WAIT3D,
 } from '../../config/storeLayout/storeLayoutLv1.js';
+import { createStoreProductList } from "../../config/storeProductList/lv1/StoreProductList.js";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
 const DAY_GAME = 1440; // game-minutes per day
@@ -34,7 +34,7 @@ export class SimulationEngine {
             timeSpeed: 1,
         };
 
-        this.items = createItems();
+        this.items = createStoreProductList();
         this.SHELF3D = SHELF3D;
         this.ATM3D = ATM3D;
         this.POS3D = POS3D;
@@ -166,8 +166,8 @@ export class SimulationEngine {
 
     getSnapshot() {
         const custs = this.custInStore();
-        const sq = this.items.reduce((s, i) => s + i.qty, 0);
-        const mq = this.items.reduce((s, i) => s + i.maxQty, 0);
+        const stockQty = this.items.reduce((s, i) => s + i.qty, 0);
+        const maxQty = this.items.reduce((s, i) => s + i.maxQty, 0);
         const aw = this.served > 0 ? ((this.totalWait / this.served) * (DAY_REAL / DAY_GAME) * 60).toFixed(0) : 0;
         return {
             clock: this.formatTime(),
@@ -177,7 +177,7 @@ export class SimulationEngine {
             custCount: custs,
             posCount: this.posQueue.length,
             served: this.served,
-            stockPct: mq > 0 ? Math.floor((sq / mq) * 100) : 0,
+            stockPct: maxQty > 0 ? Math.floor((stockQty / maxQty) * 100) : 0,
             avgWait: aw,
             customerLimit: this.CFG.customerLimit,
             employees: this.npcs

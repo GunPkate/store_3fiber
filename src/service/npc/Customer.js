@@ -85,8 +85,8 @@ export class Customer extends Npc {
       return;
     }
     // at shelf
-    const si = eng.items.find((s) => s.name === item.name);
-    if (!si || si.qty <= 0) {
+    const shelfItem = eng.items.find((s) => s.name === item.name);
+    if (!shelfItem || shelfItem.qty <= 0) {
       if (Math.random() > 0.5) {
         const emp = eng.findAvailEmp();
         if (emp) {
@@ -98,9 +98,9 @@ export class Customer extends Npc {
       this._skipItem();
       return;
     }
-    const qty = Math.min(item.qty, si.qty);
-    si.qty -= qty;
-    this.cart.push({ name: item.name, qty, price: si.price, total: si.price * qty });
+    const qty = Math.min(item.qty, shelfItem.qty);
+    shelfItem.qty -= qty;
+    this.cart.push({ name: item.name, qty, price: shelfItem.price, total: shelfItem.price * qty });
     this._itemIdx++;
     this.state = 'thinking';
     this._thinkTimer = 0.4 + Math.random() * 0.8;
@@ -117,8 +117,8 @@ export class Customer extends Npc {
     if (this._thinkTimer > 0) return;
     if (this._itemIdx < this.wantedItem.item.length) {
       const next = this.wantedItem.item[this._itemIdx];
-      const si = eng.items.find((s) => s.name === next?.name);
-      const needed = si ? si.price * next.qty : 0;
+      const shelfItem = eng.items.find((s) => s.name === next?.name);
+      const needed = shelfItem ? shelfItem.price * next.qty : 0;
       if (needed > 0 && this.capital.cash < needed) {
         this.state = 'withdrawing';
         this.moveTo(eng.ATM3D.x, eng.ATM3D.z);

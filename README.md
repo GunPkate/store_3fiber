@@ -1,6 +1,8 @@
 # STORE R3FIBER
 
 React + Vite using RReact3Fiber.
+final version
+https://store-3fiber-fazp6c3ak-gunpkates-projects.vercel.app/
 
 use claude to gen prototype 3d model
 https://gunpkate.github.io/minimart3js/
@@ -38,6 +40,11 @@ npm i @react-three/fiber @react-three/drei
 * Multiple Shelves!!
 <div align="center">
 <img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/200824aa-b3af-4ec6-8fbe-6b5d58d8f244" />
+</div>
+
+* Gen Item slots by coordinates
+<div align="center">
+<img width="700" height="350" alt="image" src="https://github.com/user-attachments/assets/b0b98fa2-11c4-4740-8799-0c283ca72ce4" />
 </div>
 ## Expanding the ESLint configuration
 

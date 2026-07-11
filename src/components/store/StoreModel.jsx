@@ -188,14 +188,14 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
     const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
     return (
       <>
-        {items.map((si, i) => {
+        {items.map((shelfItem, i) => {
           const o = shelfObs[i];
           if (!o) return null;
-          const pct = Math.max(0, Math.min(1, si.qty / si.maxQty));
+          const pct = Math.max(0, Math.min(1, shelfItem.qty / shelfItem.maxQty));
           const barColor = pct > 0.5 ? '#44ff88' : pct > 0.2 ? '#ffaa44' : '#ff4444';
           return (
             <Html
-              key={si.name}
+              key={shelfItem.name}
               position={[o.x, 2.8, o.z - 0.1]}
               center
               distanceFactor={9}
@@ -212,7 +212,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
                 }}
               >
                 <div style={{ color: '#fff', fontSize: 11, fontWeight: 'bold', textAlign: 'center', marginBottom: 3 }}>
-                  {si.name} {si.qty}/{si.maxQty}
+                  {shelfItem.name} {shelfItem.qty}/{shelfItem.maxQty}
                 </div>
                 <div style={{ height: 6, background: 'rgba(255,255,255,.15)', borderRadius: 3 }}>
                   <div style={{ width: `${pct * 100}%`, height: '100%', background: barColor, borderRadius: 3 }} />
@@ -263,7 +263,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
           <ShelfUnit key={i} o={o} />
         ))}
         {items.map( (o,i) => (
-          <ShelfItems key={i} o={o}/>
+          <ShelfItems key={i} o={o} itemOnShelfAmount={simulationEngine.items} />
         ))}
         {fridgeObs.map((o, i) => (
           <Fridge key={i} o={o} />

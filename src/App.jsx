@@ -156,7 +156,7 @@ function CeilLight({ x, z }) {
         <boxGeometry args={[0.2, 0.06, 1.5]} />
         <meshBasicMaterial color={COLORS.lamp} />
       </mesh>
-      <FlickerLight color="#fff5e0" intensity={1.2} distance={7} position={[x, 5.7, z]} />
+      <FlickerLight color="#fff5e0" intensity={15} distance={7} position={[x, 5.7, z]} />
     </group>
   );
 }
@@ -171,7 +171,7 @@ function NeonBar({ w, h, x, y, color }) {
         <boxGeometry args={[w, h, 0.05]} />
         <meshBasicMaterial color={color} />
       </mesh>
-      <FlickerLight color={color} intensity={0.4} distance={2} position={[x, y, -3.7]} />
+      <FlickerLight color={color} intensity={5} distance={2} position={[x, y, -3.7]} />
     </group>
   );
 }
@@ -244,7 +244,7 @@ function Fridge({ x, z, items }) {
         <boxGeometry args={[1.5, 3.0, 0.05]} />
         <meshPhongMaterial color={COLORS.fridgeGlass} transparent opacity={0.35} shininess={120} />
       </mesh>
-      <FlickerLight color="#88ddff" intensity={0.6} distance={1.5} position={[x, 2.5, z + 0.1]} />
+      <FlickerLight color="#88ddff" intensity={7.5} distance={1.5} position={[x, 2.5, z + 0.1]} />
       {[0, 1, 2].map((sh) => (
         <group key={sh}>
           <Box args={[1.4, 0.04, 0.6]} position={[x, 0.5 + sh * 0.9, z - 0.05]} color={COLORS.shelfMetal} />
@@ -648,7 +648,9 @@ export default function App() {
       <Canvas
         shadows={{ type: THREE.PCFSoftShadowMap }}
         dpr={[1, 2]}
-        gl={{ antialias: true }}
+        gl={{ antialias: true, toneMapping: THREE.NoToneMapping }}
+        flat
+        legacy
         camera={{ fov: 55, near: 0.1, far: 100, position: [3.82, 11.54, 5.35] }}
       >
         <color attach="background" args={['#0a0a1a']} />

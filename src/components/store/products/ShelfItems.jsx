@@ -61,7 +61,7 @@ export default function ShelfItems({ o, itemOnShelfAmount }){
             return (
                 <mesh key={i} position={[slot.x, slot.y, slot.z]} visible={!removedIndices.includes(i)}>
                     <boxGeometry args={[ details.size.hw, details.size.hh, details.size.hd ]} />
-                    <meshStandardMaterial
+                    <meshLambertMaterial
                         color={color} 
                         metalness={0.6}  
                         roughness={0.2}  

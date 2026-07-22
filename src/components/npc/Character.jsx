@@ -71,7 +71,7 @@ return (
         >
             <mesh position={[0, 0.35, 0]} castShadow>
             <cylinderGeometry args={[0.18, 0.22, 0.7, 10]} />
-            <meshToonMaterial color={bodyColor} />
+            <meshLambertMaterial color={bodyColor} />
             </mesh>
             <mesh position={[0, 0.95, 0]} castShadow>
             <sphereGeometry args={[0.2, 10, 8]} />

@@ -91,7 +91,7 @@ export const SHELFLAYOUT = [
     shelfRow: 3
   }, 
   { label: 'Shampoo', 
-    color:"#5f47f9",
+    color:"#9588e9",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
         start: { x: 4.2, y:.5, z: -1.9}, //dif x .65 dif y .1

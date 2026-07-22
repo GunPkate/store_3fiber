@@ -24,7 +24,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
           onClick={onFloorClick}
         >
           <planeGeometry args={[FLOOR_W, FLOOR_D]} />
-          <meshLambertMaterial color={0xe0dbd0} />
+          <meshToonMaterial color={0xe0dbd0} />
         </mesh>
         {lines.map(({ axis, i }, idx) => (
           <mesh
@@ -44,7 +44,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
   return (
     <mesh position={[x, y, z]} rotation={[0, ry, 0]} castShadow={cast} receiveShadow={recv}>
       <boxGeometry args={[w, h, d]} />
-      <meshLambertMaterial color={color} transparent={opacity < 1} opacity={opacity} emissive={emissive} />
+      <meshToonMaterial color={color} transparent={opacity < 1} opacity={opacity} emissive={emissive} />
     </mesh>
   );
 }

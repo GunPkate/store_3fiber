@@ -44,7 +44,12 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
   return (
     <mesh position={[x, y, z]} rotation={[0, ry, 0]} castShadow={cast} receiveShadow={recv}>
       <boxGeometry args={[w, h, d]} />
-      <meshToonMaterial color={color} transparent={opacity < 1} opacity={opacity} emissive={emissive} />
+      <meshToonMaterial 
+        color={color} 
+        transparent={opacity < 1} 
+        opacity={opacity} 
+        emissive={emissive}
+      />
     </mesh>
   );
 }

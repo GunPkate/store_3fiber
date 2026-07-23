@@ -59,7 +59,7 @@ export default function Experience() {
       <ambientLight color={0x334466} intensity={0.9} />
       <directionalLight
         color={0xffffff}
-        intensity={0.8}
+        intensity={0.25}
         position={[5, 12, 6]}
         castShadow
         shadow-mapSize-width={2048}

@@ -94,6 +94,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
                 color={0xffffff}
                 intensity={8}
                 position={[lx, positionY, lx]}
+                penumbra={0.5}
                 castShadow
                 shadow-mapSize-width={2048}                                 
                 shadow-mapSize-height={2048}

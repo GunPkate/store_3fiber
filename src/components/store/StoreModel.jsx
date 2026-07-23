@@ -44,7 +44,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
   return (
     <mesh position={[x, y, z]} rotation={[0, ry, 0]} castShadow={cast} receiveShadow={recv}>
       <boxGeometry args={[w, h, d]} />
-      <meshToonMaterial 
+      <meshStandardMaterial 
         color={color} 
         transparent={opacity < 1} 
         opacity={opacity} 
@@ -72,12 +72,12 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
 
   function CeilingLights() {
     const positionsXZ = [
-      [0, 0],
-      [3, 0],
-      [-3, 0],
+      [0, 1],
+      [4, 1],
+      [-4, 1],
       [0, -3],
-      [3, -3],
-      [-3, -3],
+      [4, -3],
+      [-4, -3],
     ];
     const positionY = 5.9
     return (
@@ -89,7 +89,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
               <meshBasicMaterial color={0xfffacc} />
             </mesh>
             <pointLight 
-              position={[lx, 5, lz]}
+              position={[lx, positionY, lz]}
               color={0xfff5e0}
               intensity={1.1}
               distance={8}
@@ -102,7 +102,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
             {i ?
               <spotLight
                 color={0xffffff}
-                intensity={8}
+                intensity={20}
                 position={[lx, positionY, lx]}
                 penumbra={0.5}
                 castShadow

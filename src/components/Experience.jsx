@@ -61,7 +61,6 @@ export default function Experience() {
         color={0xffffff}
         intensity={0.25}
         position={[5, 12, 6]}
-        castShadow
         shadow-mapSize-width={2048}
         shadow-mapSize-height={2048}
       />

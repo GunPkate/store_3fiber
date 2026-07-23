@@ -75,7 +75,7 @@ return (
             </mesh>
             <mesh position={[0, 0.95, 0]} castShadow>
             <sphereGeometry args={[0.2, 10, 8]} />
-            <meshLambertMaterial color={headColor} />
+            <meshToonMaterial color={headColor} />
             </mesh>
             {[-0.07, 0.07].map((ox) => (
                 <mesh key={ox} position={[ox, 0.98, 0.17]}>

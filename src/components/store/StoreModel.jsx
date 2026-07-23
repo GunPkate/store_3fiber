@@ -24,7 +24,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
           onClick={onFloorClick}
         >
           <planeGeometry args={[FLOOR_W, FLOOR_D]} />
-          <meshLambertMaterial color={0xe0dbd0} />
+          <meshToonMaterial color={0xe0dbd0} />
         </mesh>
         {lines.map(({ axis, i }, idx) => (
           <mesh
@@ -44,7 +44,12 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
   return (
     <mesh position={[x, y, z]} rotation={[0, ry, 0]} castShadow={cast} receiveShadow={recv}>
       <boxGeometry args={[w, h, d]} />
-      <meshLambertMaterial color={color} transparent={opacity < 1} opacity={opacity} emissive={emissive} />
+      <meshStandardMaterial 
+        color={color} 
+        transparent={opacity < 1} 
+        opacity={opacity} 
+        emissive={emissive}
+      />
     </mesh>
   );
 }
@@ -55,34 +60,57 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
 
         <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} cast={false} />
         <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} cast={false} />
-        <Box w={FLOOR_W} h={0.1} d={6.4} color={0xf0ede5} x={0} y={6} z={0} cast={false} recv={false} />
-
         <Box w={FLOOR_W} h={6} d={0.2} color={0xf5f2ea} x={0} y={3} z={-6} />
         <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} />
         <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} />
-        <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6} z={0} cast={false} />
+
+        <Box w={FLOOR_W} h={0.1} d={FLOOR_D} color={0xf0ede5} x={0} y={6} z={0} cast={true} recv={false} />
+        <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6+.1} z={0} cast={true} />
       </group>
     );
   }
 
   function CeilingLights() {
-    const positions = [
-      [0, 0],
-      [3, 0],
-      [-3, 0],
+    const positionsXZ = [
+      [0, 1],
+      [4, 1],
+      [-4, 1],
       [0, -3],
-      [3, -3],
-      [-3, -3],
+      [4, -3],
+      [-4, -3],
     ];
+    const positionY = 5.9
     return (
       <group>
-        {positions.map(([lx, lz], i) => (
+        {positionsXZ.map(([lx, lz], i) => (
           <group key={i}>
-            <mesh position={[lx, 5.9, lz]}>
+            <mesh position={[lx, positionY, lz]}>
               <boxGeometry args={[0.3, 0.06, 1.6]} />
               <meshBasicMaterial color={0xfffacc} />
             </mesh>
-            <pointLight position={[lx, 5.7, lz]} color={0xfff5e0} intensity={1.1} distance={8} />
+            <pointLight 
+              position={[lx, positionY, lz]}
+              color={0xfff5e0}
+              intensity={1.1}
+              distance={8}
+              castShadow
+              shadow-mapSize-width={1024}
+              shadow-mapSize-height={1024}
+              shadow-camera-near={0.1}
+              shadow-camera-far={2}
+            />
+            {i ?
+              <spotLight
+                color={0xffffff}
+                intensity={20}
+                position={[lx, positionY, lx]}
+                penumbra={0.5}
+                castShadow
+                shadow-mapSize-width={2048}                                 
+                shadow-mapSize-height={2048}
+              />
+              : <></>
+            }
           </group>
         ))}
       </group>
@@ -120,7 +148,10 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
               position={[x, y, -5.7]}
               color={color}
               intensity={0.5}
-              distance={2}
+              distance={1}
+              shadow-camera-near={0.05}
+              shadow-camera-far={1}
+              shadow-bias={-0.001}
             />
           </group>
         ))}

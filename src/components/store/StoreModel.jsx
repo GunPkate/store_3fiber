@@ -60,12 +60,12 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
 
         <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} cast={false} />
         <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} cast={false} />
-        <Box w={FLOOR_W} h={0.1} d={6.4} color={0xf0ede5} x={0} y={6} z={0} cast={false} recv={false} />
-
         <Box w={FLOOR_W} h={6} d={0.2} color={0xf5f2ea} x={0} y={3} z={-6} />
         <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} />
         <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} />
-        <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6} z={0} cast={false} />
+
+        <Box w={FLOOR_W} h={0.1} d={FLOOR_D} color={0xf0ede5} x={0} y={6} z={0} cast={true} recv={false} />
+        <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6+.1} z={0} cast={true} />
       </group>
     );
   }
@@ -88,7 +88,17 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
               <boxGeometry args={[0.3, 0.06, 1.6]} />
               <meshBasicMaterial color={0xfffacc} />
             </mesh>
-            <pointLight position={[lx, 5.7, lz]} color={0xfff5e0} intensity={1.1} distance={8} />
+            <pointLight 
+              position={[lx, 5, lz]}
+              color={0xfff5e0}
+              intensity={1.1}
+              distance={8}
+              castShadow
+              shadow-mapSize-width={1024}
+              shadow-mapSize-height={1024}
+              shadow-camera-near={0.1}
+              shadow-camera-far={2}
+            />
             {i ?
               <spotLight
                 color={0xffffff}
@@ -138,7 +148,10 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
               position={[x, y, -5.7]}
               color={color}
               intensity={0.5}
-              distance={2}
+              distance={1}
+              shadow-camera-near={0.05}
+              shadow-camera-far={1}
+              shadow-bias={-0.001}
             />
           </group>
         ))}

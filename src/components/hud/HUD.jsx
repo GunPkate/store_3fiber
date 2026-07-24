@@ -80,6 +80,29 @@ export default function HUD() {
           <span>📦 Stock</span>
           <span className="tc">{hud.stockPct}%</span>
         </div>
+        
+        <div className="ph" style={{ marginTop: 8 }}>
+          <div className="ph">Live Stats</div>
+          <div className="er">
+            <span>Limit</span>
+            <span className="tc">
+              {hud.custCount}/{hud.customerLimit}
+            </span>
+          </div>
+          <div className="er">
+            <span>Avg wait</span>
+            <span className="rc">{hud.avgWait}s</span>
+          </div>
+          <div className="er">
+            <span>Day</span>
+            <span className="sc">{hud.day}</span>
+          </div>
+          <div className="er">
+            <span>Shift</span>
+            <span className="tc">{hud.shift}</span>
+          </div>
+        </div>
+        
         <div className="ph" style={{ marginTop: 8 }}>
           Employees
         </div>
@@ -104,29 +127,7 @@ export default function HUD() {
             <div key={i}>{e}</div>
           ))}
         </div>
-      </div>
 
-      {/* HUD top-right */}
-      <div className="panel" id="hud-tr">
-        <div className="ph">Live Stats</div>
-        <div className="er">
-          <span>Limit</span>
-          <span className="tc">
-            {hud.custCount}/{hud.customerLimit}
-          </span>
-        </div>
-        <div className="er">
-          <span>Avg wait</span>
-          <span className="rc">{hud.avgWait}s</span>
-        </div>
-        <div className="er">
-          <span>Day</span>
-          <span className="sc">{hud.day}</span>
-        </div>
-        <div className="er">
-          <span>Shift</span>
-          <span className="tc">{hud.shift}</span>
-        </div>
       </div>
 
       {/* Toolbar */}

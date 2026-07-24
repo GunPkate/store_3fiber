@@ -51,7 +51,7 @@ export class Employee extends Npc {
     const eng = this.engine;
     switch (this.curTask) {
       case 'cashier':
-        this.moveTo(eng.POS3D.x + 1.5, eng.POS3D.z + 0.5);
+        this.moveTo(eng.POS3D.x + (-1.5), eng.POS3D.z + 2);
         break;
       case 'idle':
         this.moveTo(eng.WAIT3D.x + Math.random() * 0.8 - 0.4, eng.WAIT3D.z + Math.random() * 0.8 - 0.4);

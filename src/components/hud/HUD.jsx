@@ -66,6 +66,21 @@ export default function HUD() {
       setStatEvent(!statEvent)
     }
   }
+
+  function toggleAllStat(){
+    if(!statOverview && !statLive && !statEmp && !statEvent){
+      setStatOverview(true)
+      setStatLive(true)
+      setStatEmp(true)
+      setStatEvent(true)
+    }else{
+      setStatOverview(false)
+      setStatLive(false)
+      setStatEmp(false)
+      setStatEvent(false)
+    }
+  }
+
   return (
     <>
       {/* Clock bar */}
@@ -83,30 +98,33 @@ export default function HUD() {
 
       {/* HUD top-left */}
       <div className="panel" id="hud-tl">
+        {!statOverview && !statLive && !statEmp && !statEvent?
+            <button onClick={()=>{toggleAllStat()}}>View All Stat</button>
+        :   <button style={{marginBottom: "4px"}} onClick={()=>{toggleAllStat()}}>Hide All Stat</button>}
         {statOverview ?<>
           <div className="ph">Store Overview</div>
+            <div className="er">
+            <span>💰 Revenue</span>
+            <span className="sc">${hud.revenue.toFixed(2)}</span>
+          </div>    
+
+
           <div className="er">
-          <span>💰 Revenue</span>
-          <span className="sc">${hud.revenue.toFixed(2)}</span>
-        </div>    
-
-
-        <div className="er">
-          <span>👥 In Store</span>
-          <span className="rc">{hud.custCount}</span>
-        </div>
-        <div className="er">
-          <span>🏧 At POS</span>
-          <span className="tc">{hud.posCount}</span>
-        </div>
-        <div className="er">
-          <span>✅ Served</span>
-          <span className="sc">{hud.served}</span>
-        </div>
-        <div className="er">
-          <span>📦 Stock</span>
-          <span className="tc">{hud.stockPct}%</span>
-        </div>
+            <span>👥 In Store</span>
+            <span className="rc">{hud.custCount}</span>
+          </div>
+          <div className="er">
+            <span>🏧 At POS</span>
+            <span className="tc">{hud.posCount}</span>
+          </div>
+          <div className="er">
+            <span>✅ Served</span>
+            <span className="sc">{hud.served}</span>
+          </div>
+          <div className="er">
+            <span>📦 Stock</span>
+            <span className="tc">{hud.stockPct}%</span>
+          </div>
         </> :<></> }
         
         {statLive ? <>

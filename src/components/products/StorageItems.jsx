@@ -1,5 +1,6 @@
 import { Text } from '@react-three/drei'
 import * as THREE from 'three'
+import { Box } from '../../config/storeLayout/BoxItemv1'
 
 export default function StorageItems(){
     const size = 1// Size of the box sides
@@ -13,6 +14,7 @@ export default function StorageItems(){
     const color = "#ded2ad"
     const status = "opened"
     const fontSize = 1 * 0.2 
+    const item = Box[1]
     return (<>
         {/* { true ? <> */}
             <mesh 
@@ -48,8 +50,19 @@ export default function StorageItems(){
                         anchorX="center"
                         anchorY="middle"
                         >
-                        {"Cookies"}
+                        {item.label}
                     </Text>
+                </mesh>
+                <mesh position={[x, y, z+half-.055]}>
+                    {item?<>
+                        <boxGeometry args={[ 
+                            item.details.size.hw,
+                            item.details.size.hh,
+                            item.details.size.hd 
+                        ]} />
+                    
+                    </>
+                    :<></>}
                 </mesh>
 
                 {/* Back */}

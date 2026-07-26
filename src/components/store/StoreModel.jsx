@@ -63,15 +63,23 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
   function Walls() {
     return (
       <group>
+      <mesh>
+        <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={-16.5} y={3} z={0} cast={false} />
+        <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={-9} y={3} z={0} cast={false} />
+        <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={9} y={3} z={0} cast={false} />
+      </mesh>
+        
+      <mesh position={[-3.75,0,0]}>
+        <Box w={FLOOR_W-4.4} h={6} d={0.2} color={0xf5f2ea} x={0} y={3} z={-7.5} />
+      </mesh>
+      <mesh position={[-3.75,0,15]}>
+        {/* <Box w={FLOOR_W-4.4} h={6} d={0.2} color={0xf5f2ea} x={0} y={3} z={-7.5} /> */}
+      </mesh>
 
-        <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} cast={false} />
-        <Box w={0.1} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} cast={false} />
-        <Box w={FLOOR_W} h={6} d={0.2} color={0xf5f2ea} x={0} y={3} z={-6} />
-        <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={-8} y={3} z={0} />
-        <Box w={0.2} h={6} d={FLOOR_D} color={0xf0ede5} x={8} y={3} z={0} />
-
+      <mesh position={[-3.75,0,0]}>
         <Box w={FLOOR_W} h={0.1} d={FLOOR_D} color={0xf0ede5} x={0} y={6} z={0} cast={true} recv={false} />
-        <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6+.1} z={0} cast={true} />
+      </mesh>
+        {/* <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6+.1} z={0} cast={true} /> */}
       </group>
     );
   }

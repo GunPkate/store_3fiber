@@ -11,7 +11,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
     const lines = useMemo(() => {
       const position = [];
       for (let i = -FLOOR_W / 2; i <= FLOOR_W / 2; i += 1.5) {
-        if(i < 8 && i> -6){
+        if(i < 8 && i> -8){
           position.push({ axis: 'x', i });
         }
         if(i < 10){

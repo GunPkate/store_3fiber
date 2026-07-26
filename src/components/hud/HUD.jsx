@@ -1,14 +1,23 @@
 import { useState } from 'react';
 import { simulationEngine, useUIStore } from '../../service/state/uiState';
 import './HUD.css'
+import { row_menu, glass_bg, glass_text } from '../../config/uimenu/uimenu';
 
 const SPEEDS = [ 0, 1, 2, 3, 5, 8];
 
 const TOOLS = [
-  { tool: 'none', label: '🎥 View' },
-  { tool: 'add-wp', label: '➕ Waypoint' },
-  { tool: 'del-wp', label: '❌ Del WP' },
-  { tool: 'link-wp', label: '🔗 Link WP' },
+  // { tool: 'none', label: '🎥 View' },
+  // { tool: 'add-wp', label: '➕ Waypoint' },
+  // { tool: 'del-wp', label: '❌ Del WP' },
+  // { tool: 'link-wp', label: '🔗 Link WP' },
+
+  { tool: 'overview', icon:'🎥', label: 'Overview' },
+  { tool: 'live', icon:'➕', label: 'Live' },
+  { tool: 'emp', icon:'➕', label: 'Employees' },
+  { tool: 'event', icon:'➕', label: 'Events' },
+  // { tool: 'add-wp', icon:'➕', label: 'Order' },
+  // { tool: 'del-wp', icon:'📦', label: 'Stock' },
+  // { tool: 'link-wp', icon:'👥', label: 'Staffs' },
 ];
 
 const SPAWN_TOOLS = [
@@ -37,11 +46,26 @@ export default function HUD() {
   const pointerPos = useUIStore((s) => s.pointerPos);
   const fov = useUIStore((s) => s.fov);
 
+  const [statOverview, setStatOverview] = useState(false);
+  const [statLive, setStatLive] = useState(false);
+  const [statEmp, setStatEmp] = useState(false);
+  const [statEvent, setStatEvent] = useState(false);
   const [cfgLimit, setCfgLimit] = useState(simulationEngine.CFG.customerLimit);
   const [cfgSpawn, setCfgSpawn] = useState(simulationEngine.CFG.spawnInterval);
   const [cfgShowPaths, setCfgShowPaths] = useState(simulationEngine.CFG.showPaths);
   const [cfgFov, setCfgFov] = useState(fov);
 
+  function toggleStat(getBtn){
+    if(getBtn == 'overview'){
+      setStatOverview(!statOverview)
+    }else if(getBtn == 'live'){
+      setStatLive(!statLive)
+    }else if(getBtn == 'emp'){
+      setStatEmp(!statEmp)
+    }else if(getBtn == 'event'){
+      setStatEvent(!statEvent)
+    }
+  }
   return (
     <>
       {/* Clock bar */}
@@ -59,11 +83,14 @@ export default function HUD() {
 
       {/* HUD top-left */}
       <div className="panel" id="hud-tl">
-        <div className="ph">Store Overview</div>
-        <div className="er">
+        {statOverview ?<>
+          <div className="ph">Store Overview</div>
+          <div className="er">
           <span>💰 Revenue</span>
           <span className="sc">${hud.revenue.toFixed(2)}</span>
-        </div>
+        </div>    
+
+
         <div className="er">
           <span>👥 In Store</span>
           <span className="rc">{hud.custCount}</span>
@@ -80,6 +107,33 @@ export default function HUD() {
           <span>📦 Stock</span>
           <span className="tc">{hud.stockPct}%</span>
         </div>
+        </> :<></> }
+        
+        {statLive ? <>
+        <div className="ph" style={{ marginTop: 8 }}>
+          <div className="ph">Live Stats</div>
+          <div className="er">
+            <span>Limit</span>
+            <span className="tc">
+              {hud.custCount}/{hud.customerLimit}
+            </span>
+          </div>
+          <div className="er">
+            <span>Avg wait</span>
+            <span className="rc">{hud.avgWait}s</span>
+          </div>
+          <div className="er">
+            <span>Day</span>
+            <span className="sc">{hud.day}</span>
+          </div>
+          <div className="er">
+            <span>Shift</span>
+            <span className="tc">{hud.shift}</span>
+          </div>
+        </div>
+        </>:<></>}
+        
+        {statEmp? <>
         <div className="ph" style={{ marginTop: 8 }}>
           Employees
         </div>
@@ -96,6 +150,9 @@ export default function HUD() {
             <div style={{ color: '#555', fontSize: 10 }}>None</div>
           )}
         </div>
+        </>:<></>}
+
+        {statEvent? <>
         <div className="ph" style={{ marginTop: 8 }}>
           Events
         </div>
@@ -104,37 +161,18 @@ export default function HUD() {
             <div key={i}>{e}</div>
           ))}
         </div>
-      </div>
-
-      {/* HUD top-right */}
-      <div className="panel" id="hud-tr">
-        <div className="ph">Live Stats</div>
-        <div className="er">
-          <span>Limit</span>
-          <span className="tc">
-            {hud.custCount}/{hud.customerLimit}
-          </span>
-        </div>
-        <div className="er">
-          <span>Avg wait</span>
-          <span className="rc">{hud.avgWait}s</span>
-        </div>
-        <div className="er">
-          <span>Day</span>
-          <span className="sc">{hud.day}</span>
-        </div>
-        <div className="er">
-          <span>Shift</span>
-          <span className="tc">{hud.shift}</span>
-        </div>
+        </>:<></>}
       </div>
 
       {/* Toolbar */}
-      <div id="toolbar">
+      <div id="toolbar" className={`${glass_bg}`}>
         {TOOLS.map((t) => (
-          <button key={t.tool} className={`tb${currentTool === t.tool ? ' on' : ''}`} onClick={() => setTool(t.tool)}>
+          <button key={t.tool} className={`tb${ currentTool === t.tool ? ' on' : '' }`} onClick={() => toggleStat(t.tool)}>
             {t.label}
           </button>
+          // <button key={t.tool} className={`tb${currentTool === t.tool ? ' on' : ''}`} onClick={() => setTool(t.tool)}>
+          //   {t.label}
+          // </button>
         ))}
         <button className="tb" onClick={toggleShowWP}>
           {showWP ? '👁 Hide WP' : '👁 Show WP'}

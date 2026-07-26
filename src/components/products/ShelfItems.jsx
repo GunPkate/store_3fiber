@@ -1,5 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from "react";
-import { simulationEngine, useUIStore } from "../../../service/state/uiState"
+import { simulationEngine, useUIStore } from "../../service/state/uiState";
+
 export default function ShelfItems({ o, itemOnShelfAmount }){
     useUIStore((s) => s.hud);
     const { label, color, details, rowSize, rowStack, shelfRow} = o  

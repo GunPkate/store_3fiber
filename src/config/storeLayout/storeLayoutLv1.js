@@ -1,5 +1,5 @@
-export const FLOOR_W = 20;
-export const FLOOR_D = 16;
+export const FLOOR_W = 30;
+export const FLOOR_D = 20;
 
 /**
  * Obstacle rectangles used for collision + waypoint generation.

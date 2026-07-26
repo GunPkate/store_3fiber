@@ -5,9 +5,9 @@ import { Box } from '../../config/storeLayout/BoxItemv1'
 export default function StorageItems(){
     const size = 1// Size of the box sides
     const half = size/ 2
-    const x= -8.3; 
+    const x= -15.3; 
     const y= 1.5; 
-    const z= .5; 
+    const z= 6.5; 
     // const x= 1.5; 
     // const y= 1.5; 
     // const z= .5; 
@@ -15,10 +15,15 @@ export default function StorageItems(){
     const status = "opened"
     const fontSize = 1 * 0.2 
     const item = Box[1]
+    const boxes = []
+    for(let i = 0; i < 10; i++){
+        boxes.push({   x: x, "z": (i%2==0? z-i: z-i+.2 ) })
+    }
     return (<>
         {/* { true ? <> */}
+        {boxes.map(box =>{ return<>
             <mesh 
-                position={[x,y-1,z]}
+                position={[box.x,y-1,box.z]}
                 rotation={[0,Math.PI/2,0]}
                 >
                 <boxGeometry args={[1,1,1]}/>
@@ -52,17 +57,6 @@ export default function StorageItems(){
                         >
                         {item.label}
                     </Text>
-                </mesh>
-                <mesh position={[x, y, z+half-.055]}>
-                    {item?<>
-                        <boxGeometry args={[ 
-                            item.details.size.hw,
-                            item.details.size.hh,
-                            item.details.size.hd 
-                        ]} />
-                    
-                    </>
-                    :<></>}
                 </mesh>
 
                 {/* Back */}
@@ -102,6 +96,7 @@ export default function StorageItems(){
                 </mesh>
             </group>
         {/* </>} */}
+        </>})}
     </>
     )
 }

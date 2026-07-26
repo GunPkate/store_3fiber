@@ -1,4 +1,4 @@
-export function createStoreProductList() {
+export function createShelfProductList() {
   return [
     { shelfIdx: 0, name: 'Cola', price: 1.5, maxQty: 20, qty: 20 },
     { shelfIdx: 1, name: 'Snacks', price: 2.5, maxQty: 20, qty: 20 },

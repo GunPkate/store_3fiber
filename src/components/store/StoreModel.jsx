@@ -3,8 +3,9 @@ import { useFrame } from '@react-three/fiber';
 import { FLOOR_W, FLOOR_D, OBJECT_3D, POS_OBSTACLE, ATM_OBSTACLE, STOCK_OBSTACLE, BREAK_OBSTACLE } from '../../config/storeLayout/storeLayoutLv1.js';
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
-import ShelfItems from './products/ShelfItems.jsx';
 import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
+import StorageItems from '../products/StorageItems.jsx';
+import ShelfItems from '../products/ShelfItems.jsx';
 
   /** Floor + faint checkerboard tile lines. */
   function Floor({ onFloorClick }) {
@@ -310,6 +311,7 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
         {items.map( (o,i) => (
           <ShelfItems key={i} o={o} itemOnShelfAmount={simulationEngine.items.filter( item => item.name == o.label) } />
         ))}
+        <StorageItems/>
         {fridgeObs.map((o, i) => (
           <Fridge key={i} o={o} />
         ))}

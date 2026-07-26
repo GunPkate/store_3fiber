@@ -11,8 +11,12 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
     const lines = useMemo(() => {
       const position = [];
       for (let i = -FLOOR_W / 2; i <= FLOOR_W / 2; i += 1.5) {
-        position.push({ axis: 'x', i });
-        position.push({ axis: 'z', i });
+        if(i < 8 && i> -6){
+          position.push({ axis: 'x', i });
+        }
+        if(i < 10){
+          position.push({ axis: 'z', i });
+        }
       }
       return position; 
     }, []);
@@ -21,18 +25,20 @@ import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
         <mesh
           rotation={[-Math.PI / 2, 0, 0]}
           receiveShadow
+          position={[-4.5,0,0]}
           onClick={onFloorClick}
         >
-          <planeGeometry args={[FLOOR_W, FLOOR_D]} />
+          <planeGeometry args={[FLOOR_W-3, FLOOR_D]} />
           <meshToonMaterial color={0xe0dbd0} />
         </mesh>
+        
         {lines.map(({ axis, i }, idx) => (
           <mesh
             key={idx}
             rotation={[-Math.PI / 2, 0, 0]}
-            position={[axis === 'z' ? i : 0, 0.001, axis === 'x' ? i : 0]}
+            position={[axis === 'z' ? i : 0 -3.75, 0.001, axis === 'x' ? i : 0]}
           >
-            <planeGeometry args={[axis === 'x' ? FLOOR_W : 0.05, axis === 'z' ? FLOOR_D : 0.05]} />
+            <planeGeometry args={[axis === 'x' ? FLOOR_W -4.5 : 0.05, axis === 'z' ? FLOOR_D - 4.95 : 0.05]} />
             <meshBasicMaterial color={0xccccbb} />
           </mesh>
         ))}

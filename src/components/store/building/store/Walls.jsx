@@ -1,6 +1,7 @@
 import { useMemo, useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { FLOOR_W, FLOOR_D } from '../../../../config/storeLayout/storeLayoutLv1.js';
+import { Box } from '../sharedmesh/Box.jsx';
 
 /** Floor + faint checkerboard tile lines. */
 export function Walls() {
@@ -24,20 +25,6 @@ export function Walls() {
     </mesh>
       {/* <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6+.1} z={0} cast={true} /> */}
     </group>
-  );
-}
-
-function Box({ w, h, d, color, x, y, z, ry = 0, cast = true, recv = true, opacity = 1, emissive }) {
-  return (
-    <mesh position={[x, y, z]} rotation={[0, ry, 0]} castShadow={cast} receiveShadow={recv}>
-      <boxGeometry args={[w, h, d]} />
-      <meshStandardMaterial 
-        color={color} 
-        transparent={opacity < 1} 
-        opacity={opacity} 
-        emissive={emissive}
-      />
-    </mesh>
   );
 }
 

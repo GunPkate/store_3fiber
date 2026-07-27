@@ -6,23 +6,11 @@ import { Html } from '@react-three/drei';
 import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
 import { Walls } from './building/store/Walls.jsx';
 import { Floor } from './building/store/Floor.jsx';
+import { Entrance } from './building/store/Entrance.jsx';
 import { CeilingLights } from './building/store/CeilingLights.jsx';
 import StorageItems from './products/StorageItems.jsx';
 import ShelfItems from './products/ShelfItems.jsx';
-
-  function Box({ w, h, d, color, x, y, z, ry = 0, cast = true, recv = true, opacity = 1, emissive }) {
-  return (
-    <mesh position={[x, y, z]} rotation={[0, ry, 0]} castShadow={cast} receiveShadow={recv}>
-      <boxGeometry args={[w, h, d]} />
-      <meshStandardMaterial 
-        color={color} 
-        transparent={opacity < 1} 
-        opacity={opacity} 
-        emissive={emissive}
-      />
-    </mesh>
-  );
-}
+import { Box } from './building/sharedmesh/Box.jsx';
 
   /** Neon sign above the entrance, with a gentle flicker animation. */
   function NeonSign() {
@@ -101,21 +89,6 @@ import ShelfItems from './products/ShelfItems.jsx';
         <mesh position={[atmObstacle.x, 1.2, atmObstacle.z - atmObstacle.hd - 0.02]}>
           <boxGeometry args={[0.5, 0.3, 0.02]} />
           <meshBasicMaterial color={0x2255ff} />
-        </mesh>
-      </group>
-    );
-  }
-
-  function Entrance() {
-    return (
-      <group>
-        {[-1.2, 1.2].map((x) => (
-          <Box key={x} w={0.1} h={3} d={0.15} color={0x999999} x={x} y={1.5} z={6} />
-        ))}
-        <Box w={2.5} h={0.1} d={0.15} color={0x999999} x={0} y={3.05} z={6} />
-        <mesh position={[0, 1.4, 5.95]}>
-          <boxGeometry args={[2.4, 2.8, 0.04]} />
-          <meshPhongMaterial color={0x88ccff} transparent opacity={0.25} shininess={80} />
         </mesh>
       </group>
     );

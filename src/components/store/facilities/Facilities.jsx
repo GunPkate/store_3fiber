@@ -5,9 +5,9 @@ import { useFrame } from '@react-three/fiber';
 export function ShelfUnit({ o }) {
     return (
         <group>
-        <Box w={o.hw * 2} h={2.2} d={0.08} color={0x999999} x={o.x} y={1.1} z={o.z} />
+        <Box w={o.hw * 1.875} h={2.2} d={0.08} color={0x999999} x={o.x} y={1.1} z={o.z} />
         {[0, 1, 2].map((i) => (
-            <Box key={i} w={o.hw * 2} h={0.06} d={0.45} color={0x8b6914} x={o.x} y={0.35 + i * 0.72} z={o.z + 0.15} />
+            <Box key={i} w={o.hw * 1.875} h={0.06} d={0.45} color={0x8b6914} x={o.x} y={0.35 + i * 0.72} z={o.z + 0.15} />
         ))}
         {[-1, 1].map((s) => (
             <Box key={s} w={0.06} h={2.2} d={0.45} color={0x8b6914} x={o.x + s * (o.hw - 0.03)} y={1.1} z={o.z + 0.15} />
@@ -28,6 +28,61 @@ export function Fridge({ o }) {
         <pointLight position={[o.x, 2.5, o.z]} color={0x88ddff} intensity={0.7} distance={2} />
         </group>
     );
+}
+
+export function DrinkFridge({o,key}){
+    console.log("pos",o)
+    return (
+    <group>
+
+        <mesh position={[o.x, o.y, o.z]}>
+            <boxGeometry args={[o.hw,o.hh,o.hd]} />
+            <meshLambertMaterial color={o.colorMachine}/>
+        </mesh>
+        <mesh position={[o.x, o.y, o.z-2]}>
+            <boxGeometry args={[o.hw,o.hh,o.hd]} />
+            <meshLambertMaterial color={o.colorMachine}/>
+        </mesh>
+        <mesh 
+            position={[o.x, o.y+.9175, o.z-1]}
+            rotation={[Math.PI/2,0,0]}
+        >    
+            <boxGeometry args={[o.hw,o.hh-.15,o.hd]} />
+            <meshLambertMaterial color={o.colorMachine}/>
+        </mesh>
+
+        <mesh 
+            position={[o.x, o.y, o.z-1]}
+            rotation={[Math.PI/2,0,0]}
+        >    
+            <boxGeometry args={[o.hw,o.hh-.15,o.hd]} />
+            <meshLambertMaterial color={o.colorRack}/>
+        </mesh>
+        <mesh 
+            position={[o.x, o.y-.9175, o.z-1]}
+            rotation={[Math.PI/2,0,0]}
+        >    
+            <boxGeometry args={[o.hw,o.hh-.15,o.hd]} />
+            <meshLambertMaterial color={o.colorRack}/>
+        </mesh>
+
+        <mesh
+            position={[o.x+.75, o.y, o.z-1]}
+            rotation={[0,Math.PI/2,0]}
+        >
+            <boxGeometry args={[o.hw +.45, o.hh, o.hd]} />
+            <meshPhongMaterial color={o.colorGlass} transparent opacity={0.65} shininess={120} />
+        </mesh>
+        <mesh
+            position={[o.x-.75, o.y, o.z-1]}
+            rotation={[0,Math.PI/2,0]}
+        >
+            <boxGeometry args={[o.hw +.45, o.hh, o.hd]} />
+            <meshPhongMaterial color={o.colorGlass} transparent opacity={0.65} shininess={120} />
+        </mesh>
+
+    </group>
+    )
 }
 
 export function Atm({ atmObstacle }) {

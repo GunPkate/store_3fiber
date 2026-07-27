@@ -9,7 +9,13 @@ export function Walls() {
     <group>
     <mesh>
       <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={-16.5} y={3} z={0} cast={false} />
-      <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={-9} y={3} z={0} cast={false} />
+      
+      {/* <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={-9} y={3} z={0} cast={false} /> */}     
+      <Box w={0.2} h={3.9} d={FLOOR_D -5} color={0xf0ede5} x={-10.5} y={4} z={0} cast={false} />
+      <Box w={0.2} h={2.2} d={FLOOR_D -16} color={0xf0ede5} x={-10.5} y={1.0} z={5.5} cast={false} />
+      <Box w={0.2} h={2.2} d={FLOOR_D -16} color={0xf0ede5} x={-10.5} y={1.0} z={5.5} cast={false} />
+      <Box w={0.2} h={2.2} d={FLOOR_D -16} color={0xf0ede5} x={-10.5} y={1.0} z={-5.5} cast={false} />
+      
       <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={9} y={3} z={0} cast={false} />
     </mesh>
       

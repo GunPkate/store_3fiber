@@ -11,88 +11,8 @@ import { CeilingLights } from './building/store/CeilingLights.jsx';
 import StorageItems from './products/StorageItems.jsx';
 import ShelfItems from './products/ShelfItems.jsx';
 import { Box } from './building/sharedmesh/Box.jsx';
-
-  /** Neon sign above the entrance, with a gentle flicker animation. */
-  function NeonSign() {
-    const lightRefs = useRef([]);
-    const t = useRef(0);
-    useFrame((_, dt) => {
-      t.current += dt;
-      lightRefs.current.forEach((l, i) => {
-        if (l) l.intensity = 0.4 + Math.sin(t.current * 4 + i) * 0.25 + 0.35;
-      });
-    });
-    const pieces = [
-      [1.2, 0.08, -0.6, 5.4, '#ff2288'],
-      [1.2, 0.08, 0.6, 5.4, '#22ccff'],
-      [0.08, 0.4, -0.3, 5.15, '#ff2288'],
-      [0.08, 0.4, 0.3, 5.15, '#22ccff'],
-      [0.6, 0.08, 0, 5.0, '#ff2288'],
-    ];
-    return (
-      <group>
-        <Box w={3.5} h={0.8} d={0.1} color={0x111122} x={0} y={5.3} z={-5.9} />
-        {pieces.map(([w, h, x, y, color], i) => (
-          <group key={i}>
-            <mesh position={[x, y, -5.85]}>
-              <boxGeometry args={[w, h, 0.05]} />
-              <meshBasicMaterial color={color} />
-            </mesh>
-            <pointLight
-              ref={(r) => (lightRefs.current[i] = r)}
-              position={[x, y, -5.7]}
-              color={color}
-              intensity={0.5}
-              distance={1}
-              shadow-camera-near={0.05}
-              shadow-camera-far={1}
-              shadow-bias={-0.001}
-            />
-          </group>
-        ))}
-      </group>
-    );
-  }
-
-  function ShelfUnit({ o }) {
-    return (
-      <group>
-        <Box w={o.hw * 2} h={2.2} d={0.08} color={0x999999} x={o.x} y={1.1} z={o.z} />
-        {[0, 1, 2].map((i) => (
-          <Box key={i} w={o.hw * 2} h={0.06} d={0.45} color={0x8b6914} x={o.x} y={0.35 + i * 0.72} z={o.z + 0.15} />
-        ))}
-        {[-1, 1].map((s) => (
-          <Box key={s} w={0.06} h={2.2} d={0.45} color={0x8b6914} x={o.x + s * (o.hw - 0.03)} y={1.1} z={o.z + 0.15} />
-        ))}
-      </group>
-    );
-  }
-
-  function Fridge({ o }) {
-    return (
-      <group>
-        <Box w={o.hw * 2} h={3.2} d={o.hd * 2} color={0x444466} x={o.x} y={1.6} z={o.z}/>
-
-        <mesh position={[o.x, 1.6, o.z + o.hd + 0.05]}>
-          <boxGeometry args={[o.hw * 2, 3.0, 0.05]} />
-          <meshPhongMaterial color={0x88eeff} transparent opacity={0.35} shininess={120} />
-        </mesh>
-        <pointLight position={[o.x, 2.5, o.z]} color={0x88ddff} intensity={0.7} distance={2} />
-      </group>
-    );
-  }
-
-  function Atm({ atmObstacle }) {
-    return (
-      <group>
-        <Box w={atmObstacle.hw * 2} h={1.8} d={atmObstacle.hd * 2} color={0x222222} x={atmObstacle.x} y={0.9} z={atmObstacle.z} />
-        <mesh position={[atmObstacle.x, 1.2, atmObstacle.z - atmObstacle.hd - 0.02]}>
-          <boxGeometry args={[0.5, 0.3, 0.02]} />
-          <meshBasicMaterial color={0x2255ff} />
-        </mesh>
-      </group>
-    );
-  }
+import { RegisterScreen, ShelfUnit, Fridge, Atm } from './facilities/Facilities.jsx';
+import { NeonSign } from './building/store/NeonSign.jsx';
 
   function StockBars({ items }) {
     useUIStore((s) => s.hud);
@@ -134,27 +54,6 @@ import { Box } from './building/sharedmesh/Box.jsx';
         })}
       </>
     );
-  }
- 
-  function RegisterScreen({ posObstacle }) {
-      const matRef = useRef();
-      const t = useRef(0);
-      useFrame((_, dt) => {
-        t.current += dt;
-        if (matRef.current) matRef.current.color.setHSL(0.37, 1, 0.4 + Math.sin(t.current * 2) * 0.1);
-      });
-      return (
-        <group>
-          <Box w={posObstacle.hw * 2} h={1.0} d={posObstacle.hd * 2} color={0x5c3d1e} x={posObstacle.x} y={0.5} z={posObstacle.z} />
-          <Box w={posObstacle.hw * 2} h={0.06} d={posObstacle.hd * 2} color={0x222222} x={posObstacle.x} y={1.02} z={posObstacle.z} />
-          <Box w={0.5} h={0.4} d={0.35} color={0x111111} x={-1.2} y={1.24} z={posObstacle.z} />
-          <Box w={0.5} h={0.25} d={0.04} color={0x111111} x={-1.2} y={1.52} z={posObstacle.z - 0.36} />
-          <mesh position={[-1.2, 1.52, posObstacle.z - 0.34]}>
-            <boxGeometry args={[0.38, 0.22, 0.02]} />
-            <meshBasicMaterial ref={matRef} color={0x44ff88} />
-          </mesh>
-        </group>
-      );
   }
   
   export default function StoreModel({ onFloorClick }) {

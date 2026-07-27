@@ -6,46 +6,8 @@ import { Html } from '@react-three/drei';
 import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
 import StorageItems from '../products/StorageItems.jsx';
 import ShelfItems from '../products/ShelfItems.jsx';
-
-  /** Floor + faint checkerboard tile lines. */
-  function Floor({ onFloorClick }) {
-    const lines = useMemo(() => {
-      const position = [];
-      for (let i = -FLOOR_W / 2; i <= FLOOR_W / 2; i += 1.5) {
-        if(i < 8 && i> -8){
-          position.push({ axis: 'x', i });
-        }
-        if(i < 10){
-          position.push({ axis: 'z', i });
-        }
-      }
-      return position; 
-    }, []);
-    return (
-      <group>
-        <mesh
-          rotation={[-Math.PI / 2, 0, 0]}
-          receiveShadow
-          position={[-4.5,0,0]}
-          onClick={onFloorClick}
-        >
-          <planeGeometry args={[FLOOR_W-3, FLOOR_D]} />
-          <meshToonMaterial color={0xe0dbd0} />
-        </mesh>
-        
-        {lines.map(({ axis, i }, idx) => (
-          <mesh
-            key={idx}
-            rotation={[-Math.PI / 2, 0, 0]}
-            position={[axis === 'z' ? i : 0 -3.75, 0.001, axis === 'x' ? i : 0]}
-          >
-            <planeGeometry args={[axis === 'x' ? FLOOR_W -4.5 : 0.05, axis === 'z' ? FLOOR_D - 4.95 : 0.05]} />
-            <meshBasicMaterial color={0xccccbb} />
-          </mesh>
-        ))}
-      </group>
-    );
-  }
+import { Walls } from './building/store/Walls.jsx';
+import { Floor } from './building/store/Floor.jsx';
 
   function Box({ w, h, d, color, x, y, z, ry = 0, cast = true, recv = true, opacity = 1, emissive }) {
   return (
@@ -60,30 +22,6 @@ import ShelfItems from '../products/ShelfItems.jsx';
     </mesh>
   );
 }
-
-  function Walls() {
-    return (
-      <group>
-      <mesh>
-        <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={-16.5} y={3} z={0} cast={false} />
-        <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={-9} y={3} z={0} cast={false} />
-        <Box w={0.2} h={6} d={FLOOR_D -5} color={0xf0ede5} x={9} y={3} z={0} cast={false} />
-      </mesh>
-        
-      <mesh position={[-3.75,0,0]}>
-        <Box w={FLOOR_W-4.4} h={6} d={0.2} color={0xf5f2ea} x={0} y={3} z={-7.5} />
-      </mesh>
-      <mesh position={[-3.75,0,15]}>
-        {/* <Box w={FLOOR_W-4.4} h={6} d={0.2} color={0xf5f2ea} x={0} y={3} z={-7.5} /> */}
-      </mesh>
-
-      <mesh position={[-3.75,0,0]}>
-        <Box w={FLOOR_W} h={0.1} d={FLOOR_D} color={0xf0ede5} x={0} y={6} z={0} cast={true} recv={false} />
-      </mesh>
-        {/* <Box w={FLOOR_W} h={0.15} d={FLOOR_D} color={0xfafafa} x={0} y={6+.1} z={0} cast={true} /> */}
-      </group>
-    );
-  }
 
   function CeilingLights() {
     const positionsXZ = [

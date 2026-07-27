@@ -21,7 +21,7 @@ export default function StorageItems(){
     }
     return (<>
         {/* { true ? <> */}
-        {boxes.map(box =>{ return<>
+        {boxes.map((box,i) =>{ return<group key={i}>
             <mesh 
                 position={[box.x,y-1,box.z]}
                 rotation={[0,Math.PI/2,0]}
@@ -96,7 +96,7 @@ export default function StorageItems(){
                 </mesh>
             </group>
         {/* </>} */}
-        </>})}
+        </group>})}
     </>
     )
 }

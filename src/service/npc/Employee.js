@@ -151,11 +151,9 @@ export class Employee extends Npc {
     } else this._posWait = 0;
   }
   _updateCashier(dt) {
-    console.log("Start update")
     const eng = this.engine;
     if (!this.isAtTarget()) {
       this._followPath(dt);
-      console.log("Follow target")
       return;
     }
     if (eng.posQueue.length > 0) {

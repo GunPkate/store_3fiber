@@ -7,17 +7,17 @@ export const FLOOR_D = 20;
  */
 export const OBJECT_3D = [
   // shelves row 1 (left column)
-  { x: -5.5, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Cola/Water' },
-  { x: -5.5, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Snacks' },
-  { x: -5.5, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", label: 'Shelf Candy' },
+  { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Cola/Water' },
+  { x: -2.75, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Snacks' },
+  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", label: 'Shelf Candy' },
   // row 2 (centre column)
   { x: -1, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Juice' },
-  { x: -1, z: -2, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Chips' },
+  { x: -1, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Chips' },
   { x: -1, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Cookies' },
   // row 3 (right column)
-  { x: 3.5, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Soap' },
-  { x: 3.5, z: -2, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
-  { x: 3.5, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Misc' },
+  { x: .75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Soap' },
+  { x: .75, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
+  { x: .75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Misc' },
   // fridges
   { x: 6.8, z: -3.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side:"back", label: 'Fridge 1' },
   { x: 6.8, z: -1.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side: "front", label: 'Fridge 2' },

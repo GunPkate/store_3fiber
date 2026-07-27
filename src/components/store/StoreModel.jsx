@@ -4,10 +4,11 @@ import { FLOOR_W, FLOOR_D, OBJECT_3D, POS_OBSTACLE, ATM_OBSTACLE, STOCK_OBSTACLE
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
 import { SHELFLAYOUT } from '../../config/storeLayout/ShelfLayoutLv1.js';
-import StorageItems from '../products/StorageItems.jsx';
-import ShelfItems from '../products/ShelfItems.jsx';
 import { Walls } from './building/store/Walls.jsx';
 import { Floor } from './building/store/Floor.jsx';
+import { CeilingLights } from './building/store/CeilingLights.jsx';
+import StorageItems from './products/StorageItems.jsx';
+import ShelfItems from './products/ShelfItems.jsx';
 
   function Box({ w, h, d, color, x, y, z, ry = 0, cast = true, recv = true, opacity = 1, emissive }) {
   return (
@@ -22,53 +23,6 @@ import { Floor } from './building/store/Floor.jsx';
     </mesh>
   );
 }
-
-  function CeilingLights() {
-    const positionsXZ = [
-      [0, 1],
-      [4, 1],
-      [-4, 1],
-      [0, -3],
-      [4, -3],
-      [-4, -3],
-    ];
-    const positionY = 5.9
-    return (
-      <group>
-        {positionsXZ.map(([lx, lz], i) => (
-          <group key={i}>
-            <mesh position={[lx, positionY, lz]}>
-              <boxGeometry args={[0.3, 0.06, 1.6]} />
-              <meshBasicMaterial color={0xfffacc} />
-            </mesh>
-            <pointLight 
-              position={[lx, positionY, lz]}
-              color={0xfff5e0}
-              intensity={1.1}
-              distance={8}
-              castShadow
-              shadow-mapSize-width={1024}
-              shadow-mapSize-height={1024}
-              shadow-camera-near={0.1}
-              shadow-camera-far={2}
-            />
-            {i ?
-              <spotLight
-                color={0xffffff}
-                intensity={20}
-                position={[lx, positionY, lx]}
-                penumbra={0.5}
-                castShadow
-                shadow-mapSize-width={2048}                                 
-                shadow-mapSize-height={2048}
-              />
-              : <></>
-            }
-          </group>
-        ))}
-      </group>
-    );
-  }
 
   /** Neon sign above the entrance, with a gentle flicker animation. */
   function NeonSign() {

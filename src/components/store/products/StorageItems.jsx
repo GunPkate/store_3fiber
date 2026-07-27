@@ -1,6 +1,6 @@
 import { Text } from '@react-three/drei'
 import * as THREE from 'three'
-import { Box } from '../../config/storeLayout/BoxItemv1'
+import { Box } from '../../../config/storeLayout/BoxItemv1'
 
 export default function StorageItems(){
     const size = 1// Size of the box sides

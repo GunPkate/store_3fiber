@@ -1,4 +1,4 @@
-import { inObs } from "../../../config/storeLayout/storeLayoutLv1";
+import { FLOOR_D, FLOOR_W, inObs, OBSTACLE_POINTS } from "../../../config/storeLayout/storeLayoutLv1";
 import { uid } from "../uid";
 
 export class WpGraph {
@@ -8,16 +8,18 @@ export class WpGraph {
     }
 
     _build(specialPoints, shelfPoints) {
-        const step = 1.3;
-        for (let x = -7.5; x <= 7.5; x += step){   
-            for (let z = -5.5; z <= 6.5; z += step) {
-                if (!inObs(x, z, 0.2)) this._rawAdd(x, z, 'generic');
+        const step = 1;
+        for (let x = -15; x <= 7; x += step){   
+            for (let z = -6.5; z <= 6.5; z += step) {
+                    this._rawAdd(x, z, 'generic');
             }
         }
-        // special nodes
-        specialPoints.forEach(([t, p]) => this._rawAdd(p.x, p.z, t));
-        shelfPoints.forEach((s) => this._rawAdd(s.x, s.z, 'shelf'));
+
         this._autoConnect(2.2);
+        specialPoints.forEach(([t, p]) => this._rawAdd(p.x, p.z, t));
+        shelfPoints.forEach((s) => {
+            this._rawAdd(s.x, s.z, 'shelf');
+        });
     }
 
     _rawAdd(x, z, type) {
@@ -33,12 +35,34 @@ export class WpGraph {
             for (let j = i + 1; j < this.nodes.length; j++) {
                 const a = this.nodes[i],
                 b = this.nodes[j];
-                if (Math.hypot(a.x - b.x, a.z - b.z) < maxD && this._los(a, b)) {
-                    if (!a.edges.includes(b.id)) a.edges.push(b.id);
-                    if (!b.edges.includes(a.id)) b.edges.push(a.id);
+                if (Math.hypot(a.x - b.x, a.z - b.z) < maxD) {
+                    let blocked = false;
+                    for (let t = 0; t <= 1; t += 0.1) {
+                        const mx = a.x + (b.x - a.x) * t;
+                        const mz = a.z + (b.z - a.z) * t;
+                        if (this._checkObstacle(mx, mz)) { blocked = true; break; }
+                    }
+                    if (!blocked) {
+                        if (!a.edges.includes(b.id)) a.edges.push(b.id);
+                        if (!b.edges.includes(a.id)) b.edges.push(a.id);
+                    }
                 }
             }
         }
+    }
+
+    _checkObstacle(x, z) {
+        return OBSTACLE_POINTS.some(({ posStart, posEnd }) => {
+            const x1 = Math.min(posStart[0].x, posEnd[0].x);
+            const x2 = Math.max(posStart[0].x, posEnd[0].x);
+            const z1 = Math.min(posStart[0].z, posStart[1].z);
+            const z2 = Math.max(posEnd[0].z, posEnd[1].z);
+            return x > x1 && x < x2 && z > z1 && z < z2;
+        });
+    }
+
+    _conntectSpecialPoints(s){
+        console.log('shelf',s)
     }
 
     _los(a, b) {

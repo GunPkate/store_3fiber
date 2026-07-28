@@ -5,11 +5,34 @@ export const FLOOR_D = 20;
  * Obstacle rectangles used for collision + waypoint generation.
  * x,z = centre, hw = half-width (x axis), hd = half-depth (z axis).
  */
+export const OBSTACLE_POINTS =[
+  { row:1,
+    posStart: [ 
+      {x:-4 ,z: -3.5},
+      {x:-4 ,z: -1.5},
+    ],
+    posEnd:[
+      {x:2 ,z: -3.5},
+      {x:2 ,z: -1.5}
+    ] 
+  },
+  { row:2,
+    posStart: [ 
+      {x:-4 ,z: -0.5},
+      {x:-4 ,z: 0.5},
+    ],
+    posEnd:[
+      {x:2 ,z: -0.5},
+      {x:2 ,z: 0.5}
+    ] 
+  },
+]
+
 export const OBJECT_3D = [
   // shelves row 1 (left column)
   { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Cola/Water' },
   { x: -2.75, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Snacks' },
-  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", label: 'Shelf Candy' },
+  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Candy' },
   // row 2 (centre column)
   { x: -1, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Juice' },
   { x: -1, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Chips' },
@@ -65,6 +88,7 @@ const breakObstacle = OBJECT_3D.find((o) => o.label === 'Break Room');
 export const SHELF3D = OBJECT_3D.filter((o) => o.label.startsWith('Shelf')).map((o) => ({
   x: o.x,
   z: o.z + 0.5,
+  side: o.side
 }));
 export const ATM3D = { x: atmObstacle.x, z: atmObstacle.z - 1 };
 export const POS3D = { x: posObstacle.x, z: posObstacle.z - 1.2 };

@@ -19,11 +19,31 @@ export const OBSTACLE_POINTS =[
   { row:2,
     posStart: [ 
       {x:-4 ,z: -0.5},
-      {x:-4 ,z: 0.5},
+      {x:-4 ,z: 1.5},
     ],
     posEnd:[
       {x:2 ,z: -0.5},
-      {x:2 ,z: 0.5}
+      {x:2 ,z: 1.5}
+    ] 
+  },
+  { row:3,
+    posStart: [
+      {x:-4,z:3.5},
+      {x:-4,z:5.5}
+    ],
+    posEnd: [
+      {x:2,z:3.5},
+      {x:2,z:5.5}
+    ]
+  },
+  { row:4,
+    posStart: [ 
+      {x:-9 ,z: -2.5},
+      {x:-9 ,z: 6.5},
+    ],
+    posEnd:[
+      {x:-12 ,z: -2.5},
+      {x:-12 ,z: 6.5}
     ] 
   },
 ]

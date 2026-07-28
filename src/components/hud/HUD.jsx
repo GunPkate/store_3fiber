@@ -210,7 +210,7 @@ export default function HUD() {
         <div className="panel" id="wp-panel" style={{ display: 'block' }}>
           <div className="ph">Waypoint</div>
           <div id="wp-info" style={{ fontSize: 10, color: '#888', marginBottom: 6, whiteSpace: 'pre-line' }}>
-            {`Type: ${selectedWP.type}\nEdges: ${selectedWP.edges.length}\nPos: ${selectedWP.x.toFixed(1)},${selectedWP.z.toFixed(1)}`}
+            {`Type: ${selectedWP.type}\nEdges: ${selectedWP.edges.length}\nPos: ${selectedWP.x.toFixed(2)},${selectedWP.z.toFixed(2)}`}
           </div>
           <button
             onClick={() => {

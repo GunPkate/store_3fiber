@@ -29,17 +29,17 @@ export const OBSTACLE_POINTS =[
 ]
 
 export const OBJECT_3D = [
-  // shelves row 1 (left column)
+
   { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Cola/Water' },
-  { x: -2.75, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Snacks' },
+  { x: -2.75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Snacks' },
   { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Candy' },
-  // row 2 (centre column)
+
   { x: -1, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Juice' },
-  { x: -1, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Chips' },
+  { x: -1, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Chips' },
   { x: -1, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Cookies' },
-  // row 3 (right column)
+
   { x: .75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Soap' },
-  { x: .75, z: -2.85, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
+  { x: .75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
   { x: .75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Misc' },
   // fridges
   { x: 6.8, z: -3.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side:"back", label: 'Fridge 1' },
@@ -87,7 +87,7 @@ const breakObstacle = OBJECT_3D.find((o) => o.label === 'Break Room');
 // Shelf centre positions (3D) — the "browsing" point just in front of each shelf
 export const SHELF3D = OBJECT_3D.filter((o) => o.label.startsWith('Shelf')).map((o) => ({
   x: o.x,
-  z: o.z + 0.5,
+  z: o.side=="front"? o.z-.5: o.z+.5,
   side: o.side
 }));
 export const ATM3D = { x: atmObstacle.x, z: atmObstacle.z - 1 };

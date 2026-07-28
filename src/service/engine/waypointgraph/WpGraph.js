@@ -19,6 +19,7 @@ export class WpGraph {
         specialPoints.forEach(([t, p]) => this._rawAdd(p.x, p.z, t));
         shelfPoints.forEach((s) => {
             this._rawAdd(s.x, s.z, 'shelf');
+            this._connectSpecialPoints(s)
         });
     }
 
@@ -61,8 +62,34 @@ export class WpGraph {
         });
     }
 
-    _conntectSpecialPoints(s){
-        console.log('shelf',s)
+    _connectSpecialPoints(sp) {
+        const shelfNode = this.nodes.find(
+            (n) => Math.hypot(n.x - sp.x, n.z - sp.z) < 0.4
+        );
+        if (!shelfNode) return;
+
+        let bestRow = null, bestDist = Infinity;
+        OBSTACLE_POINTS.forEach((row) => {
+            const z1 = Math.min(row.posStart[0].z, row.posStart[1].z);
+            const z2 = Math.max(row.posEnd[0].z, row.posEnd[1].z);
+            const mid = (z1 + z2) / 2;
+            const d = Math.abs(sp.z - mid);
+            if (d < bestDist) {
+                bestDist = d;
+                bestRow = { z1, z2 };
+            }
+        });
+        if (!bestRow) return;
+
+        const borderZ = sp.side === 'back' ? bestRow.z1 : bestRow.z2;
+        const cx = Math.round(sp.x);
+
+        [cx - 1, cx, cx + 1].forEach((bx) => {
+            const borderNode = this.nodes.find(
+                (n) => Math.abs(n.x - bx) < 0.1 && Math.abs(n.z - borderZ) < 0.1
+            );
+            if (borderNode) this.linkNodes(shelfNode, borderNode);
+        });
     }
 
     _los(a, b) {

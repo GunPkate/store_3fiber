@@ -3,7 +3,7 @@ export const SHELFLAYOUT = [
     color:"#ded2ad",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: -4.95, y:.5, z: -3.3}, //dif x .65 dif y .1
+        start: { x: -2.05, y:.45, z: -2.8},
         size: { hw: .10, hh:.28, hd: .1},
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -16,7 +16,7 @@ export const SHELFLAYOUT = [
     color:"#e07878",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: -4.95, y:.5, z: -1.9},
+      start: { x: -2.05, y:.45, z: -2.325},
         size: { hw: .10, hh:.28, hd: .1},
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -29,7 +29,7 @@ export const SHELFLAYOUT = [
     color:"#ded2ad",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: -.35, y:.5, z: -3.3}, //dif x .65 dif y .1
+        start: { x: -.35, y:.45, z: -2.8},
         size: { hw: .10, hh:.28, hd: .1},
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -42,7 +42,7 @@ export const SHELFLAYOUT = [
     color:"#e07878",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: -4.95, y:.5, z: -.4}, //dif x .65 dif y .1
+       start: { x: -2.05, y:.45, z: 0.15},
         size: { hw: .10, hh:.28, hd: .1},
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -55,7 +55,7 @@ export const SHELFLAYOUT = [
     color:"#e07878",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: -.35, y:.5, z: -.4}, //dif x .65 dif y .1
+        start: { x: -.35, y:.45, z: 0.15},
         size: { hw: .18, hh:.28, hd: .1},
         distanceInRow: { x: -.25, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -68,7 +68,7 @@ export const SHELFLAYOUT = [
     color:"#78e082",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: 4.2, y:.5, z: -.4}, //dif x .65 dif y .1
+        start: { x: 1.45, y:.45, z: 0.15},
         size: { hw: .10, hh:.28, hd: .1},
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -81,7 +81,7 @@ export const SHELFLAYOUT = [
     color:"#f9e247",
     details: // x =row size, z = stack (Chips x: -1, z: -2)
       {
-        start: { x: -.35, y:.5, z: -1.9}, //dif x .65 dif y .1
+        start: { x: -.35, y:.45, z: -2.325},
         size: { hw: .18, hh:.28, hd: .1},
         distanceInRow: { x: -.25, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -94,7 +94,7 @@ export const SHELFLAYOUT = [
     color:"#9588e9",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: 4.2, y:.5, z: -1.9}, //dif x .65 dif y .1
+        start: { x: 1.45, y:.45, z: -2.325},
         size: { hw: .10, hh:.28, hd: .1},
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: .75} 
@@ -107,7 +107,7 @@ export const SHELFLAYOUT = [
     color:"#f947db",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
-        start: { x: 4.2, y:.5, z: -3.3}, //dif x .65 dif y .1
+        start: { x: 1.45, y:.45, z: -2.8},
         size: { hw: .10, hh:.28, hd: .1},
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: .75} 

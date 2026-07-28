@@ -4,14 +4,43 @@ import { useFrame } from '@react-three/fiber';
 
 export function ShelfUnit({ o }) {
     return (
-        <group>
-        <Box w={o.hw * 2} h={2.2} d={0.08} color={0x999999} x={o.x} y={1.1} z={o.z} />
-        {[0, 1, 2].map((i) => (
-            <Box key={i} w={o.hw * 2} h={0.06} d={0.45} color={0x8b6914} x={o.x} y={0.35 + i * 0.72} z={o.z + 0.15} />
+        <group position={[0,0,.2]}>
+        <mesh
+            position={[o.x, 1.1, o.side == "front" ?( o.z-1.125  ) :( o.z  + 0.75 ) ]}
+            castShadow={true} 
+            receiveShadow={true}
+        >
+            <boxGeometry args={[o.hw * 1.875, 2.2, 0.08]} />
+            <meshPhongMaterial color={0x999999} transparent opacity={0.95} shininess={120} />
+        </mesh>
+
+        {[0, 1, 2].map((s) => (
+            <mesh
+                position={[o.x, 0.35 + s * 0.72, o.side == "front" ?( o.z-.95  ) :o.z + o.hd + 0.325]}
+                rotation={[0,0,0]}
+                castShadow={true} 
+                receiveShadow={true}
+                key={s}
+            >
+                <boxGeometry args={[o.hw * 1.875, 0.06, 0.45]} />
+                <meshPhongMaterial color={0x8b6914} transparent opacity={0.95} shininess={120} />
+            </mesh>
         ))}
+
         {[-1, 1].map((s) => (
-            <Box key={s} w={0.06} h={2.2} d={0.45} color={0x8b6914} x={o.x + s * (o.hw - 0.03)} y={1.1} z={o.z + 0.15} />
+            <mesh
+                position={[o.x + s * (o.hw - 0.03), 1.1, o.side == "front" ?( o.z-.95  ) :o.z + o.hd + 0.325]}
+                rotation={[0,0,0]}
+                castShadow={true} 
+                receiveShadow={true}
+                key={s}
+            >
+                <boxGeometry args={[0.06, 2.2, 0.45]} />
+                <meshPhongMaterial color={0x8b6914} transparent opacity={0.95} shininess={120} />
+            </mesh>
         ))}
+
+
         </group>
     );
 }
@@ -28,6 +57,60 @@ export function Fridge({ o }) {
         <pointLight position={[o.x, 2.5, o.z]} color={0x88ddff} intensity={0.7} distance={2} />
         </group>
     );
+}
+
+export function DrinkFridge({o,key}){
+    return (
+    <group>
+
+        <mesh position={[o.x, o.y, o.z]}>
+            <boxGeometry args={[o.hw,o.hh,o.hd]} />
+            <meshLambertMaterial color={o.colorMachine}/>
+        </mesh>
+        <mesh position={[o.x, o.y, o.z-2]}>
+            <boxGeometry args={[o.hw,o.hh,o.hd]} />
+            <meshLambertMaterial color={o.colorMachine}/>
+        </mesh>
+        <mesh 
+            position={[o.x, o.y+.9175, o.z-1]}
+            rotation={[Math.PI/2,0,0]}
+        >    
+            <boxGeometry args={[o.hw,o.hh-.15,o.hd]} />
+            <meshLambertMaterial color={o.colorMachine}/>
+        </mesh>
+
+        <mesh 
+            position={[o.x, o.y, o.z-1]}
+            rotation={[Math.PI/2,0,0]}
+        >    
+            <boxGeometry args={[o.hw,o.hh-.15,o.hd]} />
+            <meshLambertMaterial color={o.colorRack}/>
+        </mesh>
+        <mesh 
+            position={[o.x, o.y-.9175, o.z-1]}
+            rotation={[Math.PI/2,0,0]}
+        >    
+            <boxGeometry args={[o.hw,o.hh-.15,o.hd]} />
+            <meshLambertMaterial color={o.colorRack}/>
+        </mesh>
+
+        <mesh
+            position={[o.x+.75, o.y, o.z-1]}
+            rotation={[0,Math.PI/2,0]}
+        >
+            <boxGeometry args={[o.hw +.45, o.hh, o.hd]} />
+            <meshPhongMaterial color={o.colorGlass} transparent opacity={0.65} shininess={120} />
+        </mesh>
+        <mesh
+            position={[o.x-.75, o.y, o.z-1]}
+            rotation={[0,Math.PI/2,0]}
+        >
+            <boxGeometry args={[o.hw +.45, o.hh, o.hd]} />
+            <meshPhongMaterial color={o.colorGlass} transparent opacity={0.65} shininess={120} />
+        </mesh>
+
+    </group>
+    )
 }
 
 export function Atm({ atmObstacle }) {

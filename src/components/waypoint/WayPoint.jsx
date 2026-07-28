@@ -70,7 +70,6 @@ export default function Waypoints() {
 
 function EdgeLine({ points }) {
   const geom = useMemo(() => {
-    console.log("points", points)
     const g = new THREE.BufferGeometry();
     g.setFromPoints(points.map((p) => new THREE.Vector3(...p)));
     return g;

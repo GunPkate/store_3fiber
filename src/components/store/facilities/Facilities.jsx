@@ -4,14 +4,43 @@ import { useFrame } from '@react-three/fiber';
 
 export function ShelfUnit({ o }) {
     return (
-        <group>
-        <Box w={o.hw * 1.875} h={2.2} d={0.08} color={0x999999} x={o.x} y={1.1} z={o.z} />
-        {[0, 1, 2].map((i) => (
-            <Box key={i} w={o.hw * 1.875} h={0.06} d={0.45} color={0x8b6914} x={o.x} y={0.35 + i * 0.72} z={o.z + 0.15} />
+        <group position={[0,0,.2]}>
+        <mesh
+            position={[o.x, 1.1, o.side == "front" ?( o.z-1.125  ) :( o.z  + 0.75 ) ]}
+            castShadow={true} 
+            receiveShadow={true}
+        >
+            <boxGeometry args={[o.hw * 1.875, 2.2, 0.08]} />
+            <meshPhongMaterial color={0x999999} transparent opacity={0.95} shininess={120} />
+        </mesh>
+
+        {[0, 1, 2].map((s) => (
+            <mesh
+                position={[o.x, 0.35 + s * 0.72, o.side == "front" ?( o.z-.95  ) :o.z + o.hd + 0.325]}
+                rotation={[0,0,0]}
+                castShadow={true} 
+                receiveShadow={true}
+                key={s}
+            >
+                <boxGeometry args={[o.hw * 1.875, 0.06, 0.45]} />
+                <meshPhongMaterial color={0x8b6914} transparent opacity={0.95} shininess={120} />
+            </mesh>
         ))}
+
         {[-1, 1].map((s) => (
-            <Box key={s} w={0.06} h={2.2} d={0.45} color={0x8b6914} x={o.x + s * (o.hw - 0.03)} y={1.1} z={o.z + 0.15} />
+            <mesh
+                position={[o.x + s * (o.hw - 0.03), 1.1, o.side == "front" ?( o.z-.95  ) :o.z + o.hd + 0.325]}
+                rotation={[0,0,0]}
+                castShadow={true} 
+                receiveShadow={true}
+                key={s}
+            >
+                <boxGeometry args={[0.06, 2.2, 0.45]} />
+                <meshPhongMaterial color={0x8b6914} transparent opacity={0.95} shininess={120} />
+            </mesh>
         ))}
+
+
         </group>
     );
 }
@@ -31,7 +60,6 @@ export function Fridge({ o }) {
 }
 
 export function DrinkFridge({o,key}){
-    console.log("pos",o)
     return (
     <group>
 

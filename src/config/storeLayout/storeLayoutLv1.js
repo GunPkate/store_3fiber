@@ -5,27 +5,50 @@ export const FLOOR_D = 20;
  * Obstacle rectangles used for collision + waypoint generation.
  * x,z = centre, hw = half-width (x axis), hd = half-depth (z axis).
  */
+export const OBSTACLE_POINTS =[
+  { row:1,
+    posStart: [ 
+      {x:-4 ,z: -3.5},
+      {x:-4 ,z: -1.5},
+    ],
+    posEnd:[
+      {x:2 ,z: -3.5},
+      {x:2 ,z: -1.5}
+    ] 
+  },
+  { row:2,
+    posStart: [ 
+      {x:-4 ,z: -0.5},
+      {x:-4 ,z: 0.5},
+    ],
+    posEnd:[
+      {x:2 ,z: -0.5},
+      {x:2 ,z: 0.5}
+    ] 
+  },
+]
+
 export const OBJECT_3D = [
-  // shelves row 1 (left column)
-  { x: -5.5, z: -3.5, hw: 0.9, hd: 0.25, label: 'Shelf Cola/Water' },
-  { x: -5.5, z: -2, hw: 0.9, hd: 0.25, label: 'Shelf Snacks' },
-  { x: -5.5, z: -0.5, hw: 0.9, hd: 0.25, label: 'Shelf Candy' },
-  // row 2 (centre column)
-  { x: -1, z: -3.5, hw: 0.9, hd: 0.25, label: 'Shelf Juice' },
-  { x: -1, z: -2, hw: 0.9, hd: 0.25, label: 'Shelf Chips' },
-  { x: -1, z: -0.5, hw: 0.9, hd: 0.25, label: 'Shelf Cookies' },
-  // row 3 (right column)
-  { x: 3.5, z: -3.5, hw: 0.9, hd: 0.25, label: 'Shelf Soap' },
-  { x: 3.5, z: -2, hw: 0.9, hd: 0.25, label: 'Shelf Shampoo' },
-  { x: 3.5, z: -0.5, hw: 0.9, hd: 0.25, label: 'Shelf Misc' },
+
+  { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Cola/Water' },
+  { x: -2.75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Snacks' },
+  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Candy' },
+
+  { x: -1, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Juice' },
+  { x: -1, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Chips' },
+  { x: -1, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Cookies' },
+
+  { x: .75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Soap' },
+  { x: .75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
+  { x: .75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Misc' },
   // fridges
-  { x: 6.8, z: -3.5, hw: 0.35, hd: 0.7, label: 'Fridge 1' },
-  { x: 6.8, z: -1.5, hw: 0.35, hd: 0.7, label: 'Fridge 2' },
+  { x: 6.8, z: -3.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side:"back", label: 'Fridge 1' },
+  { x: 6.8, z: -1.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side: "front", label: 'Fridge 2' },
   // Drink Fridge
 
-  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorMachine: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 1' },
-  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorMachine: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 2' },
-  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorMachine: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 3' },
+  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 1' },
+  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 2' },
+  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 3' },
 
   // POS counter
   { x: 0, z: 3.5, hw: 2, hd: 0.4, label: 'POS Counter' },
@@ -64,7 +87,8 @@ const breakObstacle = OBJECT_3D.find((o) => o.label === 'Break Room');
 // Shelf centre positions (3D) — the "browsing" point just in front of each shelf
 export const SHELF3D = OBJECT_3D.filter((o) => o.label.startsWith('Shelf')).map((o) => ({
   x: o.x,
-  z: o.z + 0.5,
+  z: o.side=="front"? o.z-.5: o.z+.5,
+  side: o.side
 }));
 export const ATM3D = { x: atmObstacle.x, z: atmObstacle.z - 1 };
 export const POS3D = { x: posObstacle.x, z: posObstacle.z - 1.2 };

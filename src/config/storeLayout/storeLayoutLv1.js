@@ -46,6 +46,16 @@ export const OBSTACLE_POINTS =[
       {x:-12 ,z: 6.5}
     ] 
   },
+  { row:5,
+    posStart: [ 
+      {x:-11 ,z: -6.5},
+      {x:-11 ,z: 6.5},
+    ],
+    posEnd:[
+      {x:-15 ,z: -6.5},
+      {x:-15 ,z: 6.5}
+    ] 
+  },
 ]
 
 export const OBJECT_3D = [

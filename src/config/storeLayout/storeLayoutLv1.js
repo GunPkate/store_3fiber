@@ -83,17 +83,17 @@ export const FORBIDDEN_AREA = [
 
 export const OBJECT_3D = [
 
-  { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
-  { x: -2.75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
-  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
+  { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, row:"A", id:1, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
+  { x: -2.75, z: -1.5, hw: 0.9, hd: 0.25, row:"A", id:2, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
+  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, row:"A", id:3, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
 
-  { x: -1, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", objType: 'Shelf' },
-  { x: -1, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
-  { x: -1, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", objType: 'Shelf' },
+  { x: -1, z: -3.5, hw: 0.9, hd: 0.25, row:"B", id:1, colorOuterFrame: "#201b1b",  side:"back", objType: 'Shelf' },
+  { x: -1, z: -1.5, hw: 0.9, hd: 0.25, row:"B", id:2, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
+  { x: -1, z: -0.5, hw: 0.9, hd: 0.25, row:"B", id:3, colorOuterFrame: "#201b1b",  side:"back", objType: 'Shelf' },
 
-  { x: .75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
-  { x: .75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
-  { x: .75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
+  { x: .75, z: -3.5, hw: 0.9, hd: 0.25, row:"C", id:1, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
+  { x: .75, z: -1.5, hw: 0.9, hd: 0.25, row:"C", id:2, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
+  { x: .75, z: -0.5, hw: 0.9, hd: 0.25, row:"C", id:3, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
   // fridges
 
   { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", objType: 'Fridge' },

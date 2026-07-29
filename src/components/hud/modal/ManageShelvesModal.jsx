@@ -1,3 +1,5 @@
+import { OBJECT_3D } from "../../../config/storeLayout/storeLayoutLv1";
+
 export function ManageShelvesModal({
     cfgLimit,
     setCfgLimit,
@@ -10,10 +12,30 @@ export function ManageShelvesModal({
     applySettings,
     setOpenManageShelves
 }){
+    const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
+    
     return(<>
         <div id="manage-shelves-modal" className="open">
           <div id="manage-shelves-box">
             <h2>⚙️ Manage Shelves</h2>
+
+            {shelfObs ? shelfObs.map( (shelfOb,i) => {
+              return <>
+                <div key={i} className="sf">
+                  <label>
+                    { shelfOb.label }
+                  </label> 
+                  {/* <input
+                    type="number"
+                    min={1}
+                    max={200}
+                    value={cfgLimit}
+                    onChange={(e) => setCfgLimit(parseInt(e.target.value) || 50)}
+                    /> */}
+                </div>
+              </>
+            })
+            :<></>}
             <div className="sf">
               <label>Customer Limit</label>
               <input

@@ -85,13 +85,10 @@ export const OBJECT_3D = [
   { x: .75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
   { x: .75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Misc' },
   // fridges
-  { x: 6.8, z: -3.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side:"back", label: 'Fridge 1' },
-  { x: 6.8, z: -1.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side: "front", label: 'Fridge 2' },
-  // Drink Fridge
 
-  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 1' },
-  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 2' },
-  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 3' },
+  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 1' },
+  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 2' },
+  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 3' },
 
   // POS counter
   { x: 0, z: 3.5, hw: 2, hd: 0.4, label: 'POS Counter' },

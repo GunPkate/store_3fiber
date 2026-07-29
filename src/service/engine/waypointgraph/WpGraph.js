@@ -11,7 +11,9 @@ export class WpGraph {
         const step = 1;
         for (let x = -15; x <= 7; x += step){   
             for (let z = -6.5; z <= 6.5; z += step) {
+                if (!this._checkObstacle(x, z)){
                     this._rawAdd(x, z, 'generic');
+                } 
             }
         }
 
@@ -25,7 +27,7 @@ export class WpGraph {
             this._connectSpecialPoints(s)
         });
     }
-
+    
     _rawAdd(x, z, type) {
         // dedup
         for (const n of this.nodes) if (Math.hypot(n.x - x, n.z - z) < 0.4) return n;

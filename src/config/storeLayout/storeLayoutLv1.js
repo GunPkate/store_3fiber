@@ -39,11 +39,44 @@ export const OBSTACLE_POINTS =[
   { row:4,
     posStart: [ 
       {x:-9 ,z: -2.5},
-      {x:-9 ,z: 6.5},
+      {x:-9 ,z: 7.5},
     ],
     posEnd:[
       {x:-12 ,z: -2.5},
-      {x:-12 ,z: 6.5}
+      {x:-12 ,z: 7.5}
+    ] 
+  },
+  { row:5,
+    posStart: [ 
+      {x:-9 ,z: -2.5},
+      {x:-9 ,z: 7.5},
+    ],
+    posEnd:[
+      {x:-12 ,z: -2.5},
+      {x:-12 ,z: 7.5}
+    ] 
+  },
+  { row:6,
+    posStart: [ 
+      {x:6 ,z: 4.5},
+      {x:6 ,z: 7.5},
+    ],
+    posEnd:[
+      {x:7 ,z: 4.5},
+      {x:7 ,z: 7.5}
+    ] 
+  },
+]
+
+export const FORBIDDEN_AREA = [
+  { row:1,
+    posStart: [ 
+      {x:-11 ,z: -6.5},
+      {x:-11 ,z: 6.5},
+    ],
+    posEnd:[
+      {x:-15 ,z: -6.5},
+      {x:-15 ,z: 6.5}
     ] 
   },
 ]
@@ -62,20 +95,17 @@ export const OBJECT_3D = [
   { x: .75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
   { x: .75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Misc' },
   // fridges
-  { x: 6.8, z: -3.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side:"back", label: 'Fridge 1' },
-  { x: 6.8, z: -1.5, hw: 0.35, hd: 0.7, colorOuterFrame: "#201b1b", side: "front", label: 'Fridge 2' },
-  // Drink Fridge
 
-  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 1' },
-  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 2' },
-  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Drink 3' },
+  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 1' },
+  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 2' },
+  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 3' },
 
   // POS counter
   { x: 0, z: 3.5, hw: 2, hd: 0.4, label: 'POS Counter' },
   // ATM
-  { x: 5.5, z: 3.5, hw: 0.3, hd: 0.4, label: 'ATM' },
-  // stock room back-left
-  { x: -14, z: 4.5, hw: 0.8, hd: 1, label: 'Stock Room' },
+  { x: 6.5, z: 6, hw: 0.3, hd: 0.4, label: 'ATM' },
+  // stock room
+  { x: -16, z: 4.5, hw: 0.8, hd: 1, label: 'Stock Room' },
   // break room back-right
   { x: 6.5, z: 1.5, hw: 0.8, hd: 0.7, label: 'Break Room' },
   // outer walls

@@ -45,21 +45,7 @@ export function ShelfUnit({ o }) {
     );
 }
 
-export function Fridge({ o }) {
-    return (
-        <group>
-        <Box w={o.hw * 2} h={3.2} d={o.hd * 2} color={0x444466} x={o.x} y={1.6} z={o.z}/>
-
-        <mesh position={[o.x, 1.6, o.z + o.hd + 0.05]}>
-            <boxGeometry args={[o.hw * 2, 3.0, 0.05]} />
-            <meshPhongMaterial color={0x88eeff} transparent opacity={0.35} shininess={120} />
-        </mesh>
-        <pointLight position={[o.x, 2.5, o.z]} color={0x88ddff} intensity={0.7} distance={2} />
-        </group>
-    );
-}
-
-export function DrinkFridge({o,key}){
+export function Fridge({o,key}){
     return (
     <group>
 
@@ -116,10 +102,15 @@ export function DrinkFridge({o,key}){
 export function Atm({ atmObstacle }) {
     return (
         <group>
-        <Box w={atmObstacle.hw * 2} h={1.8} d={atmObstacle.hd * 2} color={0x222222} x={atmObstacle.x} y={0.9} z={atmObstacle.z} />
-        <mesh position={[atmObstacle.x, 1.2, atmObstacle.z - atmObstacle.hd - 0.02]}>
-            <boxGeometry args={[0.5, 0.3, 0.02]} />
-            <meshBasicMaterial color={0x2255ff} />
+         <mesh position={[atmObstacle.x+.75, 1, atmObstacle.z - atmObstacle.hd - 0.02]}>
+            <boxGeometry args={[1, 1.75, 1]}/>
+            <meshBasicMaterial color={"Black"}/>
+        </mesh>
+        <mesh 
+            position={[atmObstacle.x+.25, 1.2, atmObstacle.z - atmObstacle.hd - 0.02]}
+        >
+            <boxGeometry args={[0.02, 0.3, 0.5]}/>
+            <meshBasicMaterial color={0x2255ff}/>
         </mesh>
         </group>
     );

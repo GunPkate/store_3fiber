@@ -102,10 +102,15 @@ export function Fridge({o,key}){
 export function Atm({ atmObstacle }) {
     return (
         <group>
-        <Box w={atmObstacle.hw * 2} h={1.8} d={atmObstacle.hd * 2} color={0x222222} x={atmObstacle.x} y={0.9} z={atmObstacle.z} />
-        <mesh position={[atmObstacle.x, 1.2, atmObstacle.z - atmObstacle.hd - 0.02]}>
-            <boxGeometry args={[0.5, 0.3, 0.02]} />
-            <meshBasicMaterial color={0x2255ff} />
+         <mesh position={[atmObstacle.x+.75, 1, atmObstacle.z - atmObstacle.hd - 0.02]}>
+            <boxGeometry args={[1, 1.75, 1]}/>
+            <meshBasicMaterial color={"Black"}/>
+        </mesh>
+        <mesh 
+            position={[atmObstacle.x+.25, 1.2, atmObstacle.z - atmObstacle.hd - 0.02]}
+        >
+            <boxGeometry args={[0.02, 0.3, 0.5]}/>
+            <meshBasicMaterial color={0x2255ff}/>
         </mesh>
         </group>
     );

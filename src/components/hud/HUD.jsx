@@ -2,8 +2,7 @@ import { useState } from 'react';
 import { simulationEngine, useUIStore } from '../../service/state/uiState';
 import './HUD.css'
 import { row_menu, glass_bg, glass_text } from '../../config/uimenu/uimenu';
-
-const SPEEDS = [ 0, 1, 2, 3, 5, 8];
+import { ClockBar } from './sections/ClockBar';
 
 const TOOLS = [
   // { tool: 'none', label: '🎥 View' },
@@ -29,13 +28,11 @@ const SPAWN_TOOLS = [
 const WP_TYPES = ['generic', 'shelf', 'pos', 'atm', 'exit', 'spawn', 'break', 'stock', 'waiting'];
 
 export default function HUD() {
-  const hud = useUIStore((s) => s.hud);
   const currentTool = useUIStore((s) => s.currentTool);
   const setTool = useUIStore((s) => s.setTool);
   const showWP = useUIStore((s) => s.showWP);
   const toggleShowWP = useUIStore((s) => s.toggleShowWP);
-  const timeSpeed = useUIStore((s) => s.timeSpeed);
-  const setTimeSpeed = useUIStore((s) => s.setTimeSpeed);
+
   const settingsOpen = useUIStore((s) => s.settingsOpen);
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen);
   const applySettings = useUIStore((s) => s.applySettings);
@@ -83,18 +80,7 @@ export default function HUD() {
 
   return (
     <>
-      {/* Clock bar */}
-      <div id="clockbar">
-        <span id="clk-day">Day {hud.day}</span>
-        <span id="clk">{hud.clock}</span>
-        <span id="shift-lbl">{hud.shift}</span>
-        <span style={{ color: 'rgba(255,255,255,.2)' }}>|</span>
-        {SPEEDS.map((s) => (
-          <button key={s} className={`spd${timeSpeed === s ? ' on' : ''}`} onClick={() => setTimeSpeed(s)}>
-            {s}×
-          </button>
-        ))}
-      </div>
+      <ClockBar/>
 
       {/* HUD top-left */}
       <div className="panel" id="hud-tl">

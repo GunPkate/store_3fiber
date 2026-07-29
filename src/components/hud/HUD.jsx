@@ -5,6 +5,7 @@ import { row_menu, glass_bg, glass_text } from '../../config/uimenu/uimenu';
 import { ClockBar } from './sections/ClockBar';
 import { LiveStats } from './sections/LiveStats';
 import { SettingModal } from './modal/SettingModal';
+import { ManageShelvesModal } from './modal/ManageShelvesModal';
 
 const TOOLS = [
   // { tool: 'none', label: '🎥 View' },
@@ -54,6 +55,8 @@ export default function HUD() {
   const [cfgShowPaths, setCfgShowPaths] = useState(simulationEngine.CFG.showPaths);
   const [cfgFov, setCfgFov] = useState(fov);
 
+  const [openManageShelves,setOpenManageShelves] = useState(false)
+
   function toggleStat(getBtn){
     if(getBtn == 'overview'){
       setStatOverview(!statOverview)
@@ -98,7 +101,7 @@ export default function HUD() {
 
       {/* Toolbar */}
       <div id="toolbar" className={`${glass_bg}`}>
-        {TOOLS.map((t) => (
+        {/* {TOOLS.map((t) => (
           <button key={t.tool} className={`tb${ currentTool === t.tool ? ' on' : '' }`} onClick={() => toggleStat(t.tool)}>
             {t.label}
           </button>
@@ -113,9 +116,12 @@ export default function HUD() {
           <button key={t.tool} className={`tb${currentTool === t.tool ? ' on' : ''}`} onClick={() => setTool(t.tool)}>
             {t.label}
           </button>
-        ))}
+        ))} */}
         <button className="tb" onClick={() => setSettingsOpen(true)}>
           ⚙️ Settings
+        </button>
+        <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
+          ⚙️ Manage Shelves
         </button>
       </div>
 
@@ -167,8 +173,24 @@ export default function HUD() {
           setCfgShowPaths ={setCfgShowPaths}
           cfgFov ={cfgFov}
           setCfgFov ={setCfgFov}
-          applySettings ={applySettings}        />
+          applySettings ={applySettings}
+        />
       )}
+
+      {openManageShelves  ?
+        <ManageShelvesModal
+          cfgLimit ={cfgLimit}
+          setCfgLimit ={setCfgLimit}
+          cfgSpawn ={cfgSpawn}
+          setCfgSpawn ={setCfgSpawn}
+          cfgShowPaths ={cfgShowPaths}
+          setCfgShowPaths ={setCfgShowPaths}
+          cfgFov ={cfgFov}
+          setCfgFov ={setCfgFov}
+          applySettings ={applySettings}
+          setOpenManageShelves ={setOpenManageShelves}
+        />:<></>
+      }
 
       {/* Tooltip */}
       {hoveredNpc && (

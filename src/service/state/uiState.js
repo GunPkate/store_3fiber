@@ -1,5 +1,5 @@
 import { create } from "zustand";
-import { SimulationEngine } from "../engine/simulationEngine";
+import { SimulationEngine } from "../engine/simulationEngine.js";
 
 export const simulationEngine = new SimulationEngine()
 

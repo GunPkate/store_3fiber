@@ -39,11 +39,34 @@ export const OBSTACLE_POINTS =[
   { row:4,
     posStart: [ 
       {x:-9 ,z: -2.5},
-      {x:-9 ,z: 6.5},
+      {x:-9 ,z: 7.5},
     ],
     posEnd:[
       {x:-12 ,z: -2.5},
-      {x:-12 ,z: 6.5}
+      {x:-12 ,z: 7.5}
+    ] 
+  },
+  { row:5,
+    posStart: [ 
+      {x:-9 ,z: -2.5},
+      {x:-9 ,z: 7.5},
+    ],
+    posEnd:[
+      {x:-12 ,z: -2.5},
+      {x:-12 ,z: 7.5}
+    ] 
+  },
+]
+
+export const FORBIDDEN_AREA = [
+  { row:1,
+    posStart: [ 
+      {x:-11 ,z: -6.5},
+      {x:-11 ,z: 6.5},
+    ],
+    posEnd:[
+      {x:-15 ,z: -6.5},
+      {x:-15 ,z: 6.5}
     ] 
   },
 ]
@@ -74,8 +97,8 @@ export const OBJECT_3D = [
   { x: 0, z: 3.5, hw: 2, hd: 0.4, label: 'POS Counter' },
   // ATM
   { x: 5.5, z: 3.5, hw: 0.3, hd: 0.4, label: 'ATM' },
-  // stock room back-left
-  { x: -14, z: 4.5, hw: 0.8, hd: 1, label: 'Stock Room' },
+  // stock room
+  { x: -15, z: 4.5, hw: 0.8, hd: 1, label: 'Stock Room' },
   // break room back-right
   { x: 6.5, z: 1.5, hw: 0.8, hd: 0.7, label: 'Break Room' },
   // outer walls

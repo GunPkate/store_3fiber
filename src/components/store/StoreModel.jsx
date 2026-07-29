@@ -88,15 +88,7 @@ import { NeonSign } from './building/store/NeonSign.jsx';
         <StockBars items={simulationEngine.items} />
         <CeilingLights />
         <NeonSign />
-        <Box
-          w={STOCK_OBSTACLE.hw * 2}
-          h={3}
-          d={STOCK_OBSTACLE.hd * 2}
-          color={0x554433}
-          x={STOCK_OBSTACLE.x}
-          y={1.5}
-          z={STOCK_OBSTACLE.z}
-        />
+
         <Box
           w={BREAK_OBSTACLE.hw * 2}
           h={2}

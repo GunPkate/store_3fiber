@@ -2,7 +2,7 @@ import { useRef } from 'react';
 import { useFrame } from '@react-three/fiber';
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
-import { Vector3 } from 'three';
+import { Vector3, BufferGeometry } from 'three';
 
 export default function Character({ npc }){
     const groupRef = useRef();
@@ -28,7 +28,19 @@ export default function Character({ npc }){
             const pts = npc.remainingPath();
             if (pts && pts.length > 1 && lineRef.current) {
                 lineRef.current.visible = true;
-                lineRef.current.geometry.setFromPoints(pts.map((p) => new Vector3(p.x, 0.1, p.z)));
+                const points = pts.map((p) => new Vector3(p.x, 0.1, p.z));
+                const geom = lineRef.current.geometry;
+                const posAttr = geom.getAttribute('position');
+
+                // reallocate if the buffer can't hold the new point count
+                if (!posAttr || points.length * 3 > posAttr.array.length) {
+                    geom.dispose();
+                    lineRef.current.geometry = new BufferGeometry().setFromPoints(points);
+                } else {
+                    geom.setFromPoints(points);
+                    geom.setDrawRange(0, points.length);
+                    posAttr.needsUpdate = true;
+                }
             } else if (lineRef.current) {
                 lineRef.current.visible = false;
             }

@@ -84,8 +84,8 @@ import { NeonSign } from './building/store/NeonSign.jsx';
         <Entrance />
         <StockBars items={simulationEngine.items} />
         <CeilingLights />
-        {/* <NeonSign />
-
+        <NeonSign />
+        {/* 
         <Box
           w={BREAK_OBSTACLE.hw * 2}
           h={2}

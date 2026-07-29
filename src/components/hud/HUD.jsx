@@ -101,7 +101,7 @@ export default function HUD() {
 
       {/* Toolbar */}
       <div id="toolbar" className={`${glass_bg}`}>
-        {/* {TOOLS.map((t) => (
+        {TOOLS.map((t) => (
           <button key={t.tool} className={`tb${ currentTool === t.tool ? ' on' : '' }`} onClick={() => toggleStat(t.tool)}>
             {t.label}
           </button>
@@ -116,7 +116,7 @@ export default function HUD() {
           <button key={t.tool} className={`tb${currentTool === t.tool ? ' on' : ''}`} onClick={() => setTool(t.tool)}>
             {t.label}
           </button>
-        ))} */}
+        ))}
         <button className="tb" onClick={() => setSettingsOpen(true)}>
           ⚙️ Settings
         </button>

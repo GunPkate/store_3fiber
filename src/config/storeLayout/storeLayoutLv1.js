@@ -129,10 +129,10 @@ export function inObs(px, pz, margin = 0.25) {
 
 /** Fresh copy of shelf-item stock data (call once per engine instance). */
 
-const posObstacle = OBJECT_3D.find((o) => o.objType === 'POS Counter');
+const posObstacle = OBJECT_3D.find((o) => o.objType === 'POS');
 const atmObstacle = OBJECT_3D.find((o) => o.objType === 'ATM');
-const stkObstacle = OBJECT_3D.find((o) => o.objType === 'Stock Room');
-const breakObstacle = OBJECT_3D.find((o) => o.objType === 'Break Room');
+const stkObstacle = OBJECT_3D.find((o) => o.objType === 'Stock');
+const breakObstacle = OBJECT_3D.find((o) => o.objType === 'Break');
 
 // Shelf centre positions (3D) — the "browsing" point just in front of each shelf
 export const SHELF3D = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf')).map((o) => ({

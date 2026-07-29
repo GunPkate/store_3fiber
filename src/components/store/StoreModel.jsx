@@ -16,7 +16,7 @@ import { NeonSign } from './building/store/NeonSign.jsx';
 
   function StockBars({ items }) {
     useUIStore((s) => s.hud);
-    const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
+    const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
     return (
       <>
         {items.map((shelfItem, i) => {
@@ -57,8 +57,8 @@ import { NeonSign } from './building/store/NeonSign.jsx';
   }
   
   export default function StoreModel({ onFloorClick }) {
-    const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
-    const fridgeObs = OBJECT_3D.filter((o) => o.label.startsWith('Fridge'));
+    const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
+    const fridgeObs = OBJECT_3D.filter((o) => o.objType.startsWith('Fridge'));
     const items = SHELFLAYOUT
     const handleFloorClick = (e) => {
       e.stopPropagation();

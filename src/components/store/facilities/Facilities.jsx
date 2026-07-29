@@ -45,21 +45,7 @@ export function ShelfUnit({ o }) {
     );
 }
 
-export function Fridge({ o }) {
-    return (
-        <group>
-        <Box w={o.hw * 2} h={3.2} d={o.hd * 2} color={0x444466} x={o.x} y={1.6} z={o.z}/>
-
-        <mesh position={[o.x, 1.6, o.z + o.hd + 0.05]}>
-            <boxGeometry args={[o.hw * 2, 3.0, 0.05]} />
-            <meshPhongMaterial color={0x88eeff} transparent opacity={0.35} shininess={120} />
-        </mesh>
-        <pointLight position={[o.x, 2.5, o.z]} color={0x88ddff} intensity={0.7} distance={2} />
-        </group>
-    );
-}
-
-export function DrinkFridge({o,key}){
+export function Fridge({o,key}){
     return (
     <group>
 

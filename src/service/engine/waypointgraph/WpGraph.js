@@ -16,7 +16,10 @@ export class WpGraph {
         }
 
         this._autoConnect(2.2);
-        specialPoints.forEach(([t, p]) => this._rawAdd(p.x, p.z, t));
+        specialPoints.forEach(([t, p]) =>{
+            this._rawAdd(p.x, p.z, t)
+            this._connectSpecialPoints(p)
+        })
         shelfPoints.forEach((s) => {
             this._rawAdd(s.x, s.z, 'shelf');
             this._connectSpecialPoints(s)
@@ -63,10 +66,10 @@ export class WpGraph {
     }
 
     _connectSpecialPoints(sp) {
-        const shelfNode = this.nodes.find(
+        const specialNode = this.nodes.find(
             (n) => Math.hypot(n.x - sp.x, n.z - sp.z) < 0.4
         );
-        if (!shelfNode) return;
+        if (!specialNode) return;
 
         let bestRow = null, bestDist = Infinity;
         OBSTACLE_POINTS.forEach((row) => {
@@ -88,7 +91,7 @@ export class WpGraph {
             const borderNode = this.nodes.find(
                 (n) => Math.abs(n.x - bx) < 0.1 && Math.abs(n.z - borderZ) < 0.1
             );
-            if (borderNode) this.linkNodes(shelfNode, borderNode);
+            if (borderNode) this.linkNodes(specialNode, borderNode);
         });
     }
 

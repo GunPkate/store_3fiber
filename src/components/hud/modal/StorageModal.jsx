@@ -1,6 +1,6 @@
 import { OBJECT_3D } from "../../../config/storeLayout/storeLayoutLv1";
 
-export function ManageShelvesModal({
+export function StorageModal({
     cfgLimit,
     setCfgLimit,
     cfgSpawn,
@@ -15,9 +15,9 @@ export function ManageShelvesModal({
     const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
     
     return(<>
-        <div id="manage-shelves-modal" className="open">
-          <div id="manage-shelves-box">
-            <h2>⚙️ Manage Shelves</h2>
+        <div id="storage-modal" className="open">
+          <div id="storage-box">
+            <h2>⚙️ Manage storage</h2>
 
             {shelfObs ? shelfObs.map( (shelfOb,i) => {
               return <>
@@ -71,7 +71,7 @@ export function ManageShelvesModal({
               />
             </div>
             <button
-              id="manage-shelves-close"
+              id="storage-close"
               onClick={() =>
                 {
                   applySettings({

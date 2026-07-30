@@ -213,7 +213,7 @@
     font-family: 'Segoe UI', sans-serif
 }
 
-#settings-modal, #manage-shelves-modal {
+#settings-modal, #storage-modal, #manage-shelves-modal {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, .7);
@@ -223,11 +223,11 @@
     justify-content: center
 }
 
-#settings-modal.open, #manage-shelves-modal.open {
+#settings-modal, #storage-modal.open, #manage-shelves-modal.open {
     display: flex
 }
 
-#settings-box, #manage-shelves-box {
+#settings-box, #storage-box, #manage-shelves-box {
     background: #0d1025;
     border: 1px solid rgba(255, 255, 255, .15);
     border-radius: 12px;
@@ -237,14 +237,14 @@
     font-family: 'Segoe UI', sans-serif
 }
 
-#settings-box h2, #manage-shelves-box h2{
+#settings-box h2, #storage-box h2, #manage-shelves-box h2{
     font-size: 14px;
     color: #88aaff;
     margin-bottom: 16px;
     letter-spacing: 1px
 }
 
-#settings-close, #manage-shelves-close {
+#settings-close, #storage-close, #manage-shelves-close {
     margin-top: 16px;
     width: 100%;
     padding: 8px;

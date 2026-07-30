@@ -56,6 +56,7 @@ export default function HUD() {
   const [cfgFov, setCfgFov] = useState(fov);
 
   const [openManageShelves,setOpenManageShelves] = useState(false)
+  const [openStorage,setOpenStorage] = useState(false)
 
   function toggleStat(getBtn){
     if(getBtn == 'overview'){
@@ -119,6 +120,9 @@ export default function HUD() {
         ))}
         <button className="tb" onClick={() => setSettingsOpen(true)}>
           ⚙️ Settings
+        </button>
+        <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
+          ⚙️ Storage
         </button>
         <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
           ⚙️ Manage Shelves

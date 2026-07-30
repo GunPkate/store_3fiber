@@ -74,9 +74,9 @@ export class SimulationEngine {
         this._npcListeners = new Set();
         this._graphListeners = new Set();
 
-        this.createNPC('employee', -1, 3.2);
-        this.createNPC('employee', 1, 3.2);
-        this.createNPC('employee', -3, 0.5);
+        this.createNPC('employee', -1, 3.2, 'Watson');
+        this.createNPC('employee', 1, 3.2, 'Emma');
+        this.createNPC('employee', -3, 0.5, 'Emily');
         this.addEvt('🏪 Store initialized');
     }
 
@@ -222,8 +222,8 @@ export class SimulationEngine {
         return this.npcs.filter((n) => n.type === 'customer' && n.state !== 'done').length;
     }
 
-    createNPC(type, x, z) {
-        const npc = type === 'customer' ? new Customer(this, x, z) : new Employee(this, x, z);
+    createNPC(type, x, z, name) {
+        const npc = type === 'customer' ? new Customer(this, x, z) : new Employee(this, x, z, name);
         this.npcs.push(npc);
         if (type === 'employee') this.initEmpTask(npc);
         this.notifyNpcs();
@@ -271,7 +271,8 @@ export class SimulationEngine {
             const n = this.createNPC(
                 'customer',
                 this.SPAWN3D.x + (Math.random() * 0.6 - 0.3),
-                this.SPAWN3D.z
+                this.SPAWN3D.z,
+                ''
             );
             const item = n.curItem();
             if (item) {

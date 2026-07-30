@@ -5,7 +5,7 @@ export const TASK_PRI = { cashier: 100, assistCustomer: 80, restock: 60, cleanin
 export const ROLE_TASK = { cashier: 'patrol', floorStaff: 'cleaningFloor', stocker: 'restock' };
 
 export class Employee extends Npc {
-  constructor(engine, x, z) {
+  constructor(engine, x, z, name) {
     super(engine, 'employee', x, z);
     this.bodyColor = '#2255cc';
     this.headColor = '#ffd699';
@@ -20,6 +20,7 @@ export class Employee extends Npc {
     this._restockIdx = 0;
     this._restockPhase = '';
     this._custHelp = null;
+    this.name = name
   }
   get state() {
     return this.decision.state;
@@ -91,6 +92,7 @@ export class Employee extends Npc {
     });
     this._restockIdx = target;
     this._restockPhase = 'toStock';
+    eng.addEvt(`📦 ${this.name} start restock`);
     this.moveTo(eng.STOCK3D.x, eng.STOCK3D.z);
   }
   checkStockByCustomer(cust, itemName) {
@@ -161,7 +163,7 @@ export class Employee extends Npc {
       console.log("Pos Q target state"+cust.state)
       console.log("Pos Q target Target"+cust.isAtTarget())
       if (cust.state === 'checkingout' ) {
-        eng.addEvt(`👤 Customer ${cust.statee}`);
+        // eng.addEvt(`👤 Customer ${cust.statee}`);
         this._tTimer += dt;
         if (this._tTimer > 2) {
           eng.posQueue.shift();
@@ -202,6 +204,7 @@ export class Employee extends Npc {
         eng.restockQue.push(this._restockIdx)
         this._restockPhase = 'toShelf';
         this.moveTo(selectedShelf.x, selectedShelf.z);
+        eng.restockQue = eng.restockQue.filter( x => x!= this._restockIdx)
       } else if(!validateStock){
         this.restoreTask();
       }
@@ -211,9 +214,8 @@ export class Employee extends Npc {
         const qtyAmount = toRestockItem.maxQty
         storageItems.qty = storageItems.qty - qtyAmount
         toRestockItem.qty = qtyAmount;
-
-        eng.addEvt(`📦 ${this.role.role} withdraw ${storageItems.name} remains ${storageItems.qty}`);
-        eng.addEvt(`📦 ${this.role.role} restocked ${toRestockItem.name} ${toRestockItem.qty}`);
+        eng.addEvt(`📦 ${this.name} withdraw ${storageItems.name} remains ${storageItems.qty}`);
+        eng.addEvt(`📦 ${this.name} restocked ${toRestockItem.name} ${toRestockItem.qty}`);
       }
       if (this.state === 'occupied') {
         this.state = 'working';

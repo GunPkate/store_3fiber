@@ -17,7 +17,8 @@ export function StorageModal({
     const hud = useUIStore((s) => s.hud);
     const storeItems = simulationEngine.storageItems;
     const shelfItems = simulationEngine.items;
-    console.log("storeItems",storeItems)
+    const withdrawItems = simulationEngine.stockWithdraw;
+
     return(<>
         <div id="storage-modal" className="open">
           <div id="storage-box">
@@ -28,10 +29,12 @@ export function StorageModal({
                 <th>Product</th>
                 <th>Storage</th>
                 <th>Shelves</th>
+                <th>Withdraw</th>
               </tr>
               <tbody>
               {storeItems && storeItems.length > 0 ? ( storeItems.map((storeItem, i) => {
                   const shelfItem = shelfItems?.[i];
+                  const withdrawItem = withdrawItems?.[i];
                   return (
                         <tr key={storeItem.id || i}>
                           <td>
@@ -45,6 +48,11 @@ export function StorageModal({
                           <td>
                             <span className="item-qty">
                               {shelfItem ? `${shelfItem.qty} / ${shelfItem.maxQty}` : "N/A"}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="item-qty">
+                              {withdrawItem ? `${withdrawItem.qty} ` : "N/A"}
                             </span>
                           </td>
                         </tr>

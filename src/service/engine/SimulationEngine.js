@@ -37,6 +37,7 @@ export class SimulationEngine {
 
         this.items = createShelfProductList();
         this.storageItems = createStoreProductList();
+        this.restockQue = []
         this.SHELF3D = SHELF3D;
         this.ATM3D = ATM3D;
         this.POS3D = POS3D;

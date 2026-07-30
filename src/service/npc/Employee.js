@@ -198,8 +198,8 @@ export class Employee extends Npc {
     
     if (this._restockPhase === 'toStock') {
       const selectedShelf = eng.SHELF3D[this._restockIdx];
-  
-      if (selectedShelf && validateStock){
+      if (selectedShelf && validateStock && !eng.restockQue.includes(this._restockIdx) ){
+        eng.restockQue.push(this._restockIdx)
         this._restockPhase = 'toShelf';
         this.moveTo(selectedShelf.x, selectedShelf.z);
       } else if(!validateStock){

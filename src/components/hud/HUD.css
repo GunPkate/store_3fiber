@@ -64,7 +64,7 @@
     color: #88ffcc
 }
 
-#clockbar {
+#clockbar, #clockbar-btn {
     position: fixed;
     top: 10px;
     left: 50%;
@@ -81,6 +81,11 @@
     font-size: 12px;
     white-space: nowrap;
     font-family: 'Segoe UI', sans-serif
+}
+
+#clockbar-btn {
+    top: 50px;
+    left: 50%;
 }
 
 #clk {

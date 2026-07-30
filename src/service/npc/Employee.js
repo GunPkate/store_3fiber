@@ -161,7 +161,7 @@ export class Employee extends Npc {
       console.log("Pos Q target state"+cust.state)
       console.log("Pos Q target Target"+cust.isAtTarget())
       if (cust.state === 'checkingout' ) {
-        console.log("checkingout")
+        eng.addEvt(`👤 Customer ${cust.statee}`);
         this._tTimer += dt;
         if (this._tTimer > 2) {
           eng.posQueue.shift();
@@ -192,15 +192,28 @@ export class Employee extends Npc {
       this._followPath(dt);
       return;
     }
+    const toRestockItem = eng.items[this._restockIdx];
+    const storageItems = eng.storageItems[this._restockIdx];
+    const validateStock = this._validateStockItem(storageItems,toRestockItem)
+    
     if (this._restockPhase === 'toStock') {
-      this._restockPhase = 'toShelf';
-      const sc = eng.SHELF3D[this._restockIdx];
-      if (sc) this.moveTo(sc.x, sc.z);
+      const selectedShelf = eng.SHELF3D[this._restockIdx];
+  
+      if (selectedShelf && validateStock){
+        this._restockPhase = 'toShelf';
+        this.moveTo(selectedShelf.x, selectedShelf.z);
+      } else if(!validateStock){
+        this.restoreTask();
+      }
     } else if (this._restockPhase === 'toShelf') {
-      const si = eng.items[this._restockIdx];
-      if (si) {
-        si.qty = si.maxQty;
-        eng.addEvt(`📦 ${this.role.role} restocked ${si.name}`);
+
+      if (toRestockItem && validateStock) {
+        const qtyAmount = toRestockItem.maxQty
+        storageItems.qty = storageItems.qty - qtyAmount
+        toRestockItem.qty = qtyAmount;
+
+        eng.addEvt(`📦 ${this.role.role} withdraw ${storageItems.name} remains ${storageItems.qty}`);
+        eng.addEvt(`📦 ${this.role.role} restocked ${toRestockItem.name} ${toRestockItem.qty}`);
       }
       if (this.state === 'occupied') {
         this.state = 'working';
@@ -209,4 +222,9 @@ export class Employee extends Npc {
       this.restoreTask();
     }
   }
+
+  _validateStockItem(storageItems, toRestockItem){
+    return storageItems.qty - toRestockItem.qty > 0
+  }
+
 }

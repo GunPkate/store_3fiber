@@ -14,6 +14,7 @@ import {
   WAIT3D,
 } from '../../config/storeLayout/storeLayoutLv1.js';
 import { createShelfProductList } from "../../config/storeProductList/lv1/ShelfProductList.js";
+import { createStoreProductList } from "../../config/storeProductList/lv1/StorageProductList.js";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
 const DAY_GAME = 1440; // game-minutes per day
@@ -35,6 +36,7 @@ export class SimulationEngine {
         };
 
         this.items = createShelfProductList();
+        this.storageItems = createStoreProductList();
         this.SHELF3D = SHELF3D;
         this.ATM3D = ATM3D;
         this.POS3D = POS3D;

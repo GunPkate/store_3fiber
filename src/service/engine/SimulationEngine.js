@@ -188,6 +188,9 @@ export class SimulationEngine {
                 .filter((n) => n.type === 'employee')
                 .map((e) => ({ id: e.id, role: e.role.role, task: e.curTask, state: e.state })),
             events: this.evts.slice(0, 6),
+            storageItems: this.storageItems.map((i) => ({ ...i })),
+            shelfItems: this.items.map((i) => ({ ...i })),
+            
         };
     }
 

@@ -1,5 +1,5 @@
 import { OBJECT_3D } from "../../../config/storeLayout/storeLayoutLv1";
-import { simulationEngine } from "../../../service/state/uiState";
+import { simulationEngine, useUIStore } from "../../../service/state/uiState";
 
 
 export function StorageModal({
@@ -14,6 +14,7 @@ export function StorageModal({
     applySettings,
     setOpenStorage
 }){
+    const hud = useUIStore((s) => s.hud);
     const storeItems = simulationEngine.storageItems;
     const shelfItems = simulationEngine.items;
     console.log("storeItems",storeItems)

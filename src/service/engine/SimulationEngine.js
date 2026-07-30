@@ -190,7 +190,6 @@ export class SimulationEngine {
             events: this.evts.slice(0, 6),
             storageItems: this.storageItems.map((i) => ({ ...i })),
             shelfItems: this.items.map((i) => ({ ...i })),
-            
         };
     }
 

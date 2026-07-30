@@ -1,5 +1,5 @@
 import { OBJECT_3D } from "../../../config/storeLayout/storeLayoutLv1";
-import { simulationEngine } from "../../../service/state/uiState";
+import { simulationEngine, useUIStore } from "../../../service/state/uiState";
 
 
 export function StockWithdrawModal({
@@ -14,6 +14,7 @@ export function StockWithdrawModal({
     applySettings,
     setOpenWithdraw
 }){
+    const hud = useUIStore((s) => s.hud);
     const withdrawItems = simulationEngine.stockWithdraw;
     console.log("storeItems",withdrawItems)
     return(<>

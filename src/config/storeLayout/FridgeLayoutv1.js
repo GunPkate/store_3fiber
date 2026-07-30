@@ -8,8 +8,8 @@ export const FRIDGELAYOUT = [
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: +.925} 
       },
-    rowSize: 10,
-    rowStack: 1,
+    rowSize: 8,
+    rowStack: 8,
     shelfRow: 2
   },
   { label: 'Juice', 
@@ -21,8 +21,8 @@ export const FRIDGELAYOUT = [
         distanceInRow: { x: -.15, z: .2},
         distanceBetweenShelf: { y: +.925} 
       },
-    rowSize: 10,
-    rowStack: 1,
+    rowSize: 8,
+    rowStack: 8,
     shelfRow: 2
   },
   // { label: 'Water', 

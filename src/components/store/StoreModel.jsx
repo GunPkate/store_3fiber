@@ -13,6 +13,8 @@ import ShelfItems from './products/ShelfItems.jsx';
 import { Box } from './building/sharedmesh/Box.jsx';
 import { RegisterScreen, ShelfUnit, Fridge, Atm } from './facilities/Facilities.jsx';
 import { NeonSign } from './building/store/NeonSign.jsx';
+import FridgeItems from './products/FridgeItems.jsx';
+import { FRIDGELAYOUT } from '../../config/storeLayout/FridgeLayoutv1.js';
 
   function StockBars({ items }) {
     useUIStore((s) => s.hud);
@@ -60,6 +62,8 @@ import { NeonSign } from './building/store/NeonSign.jsx';
     const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
     const fridgeObs = OBJECT_3D.filter((o) => o.objType.startsWith('Fridge'));
     const items = SHELFLAYOUT
+    const fridgeItems = FRIDGELAYOUT
+
     const handleFloorClick = (e) => {
       e.stopPropagation();
       onFloorClick({ x: e.point.x, z: e.point.z });
@@ -78,6 +82,10 @@ import { NeonSign } from './building/store/NeonSign.jsx';
 
         {fridgeObs.map((o,i)=>(
           <Fridge key={i} o={o}/>
+        ))}
+
+        {fridgeItems.map( (o,i) => (
+          <FridgeItems key={i} o={o} itemOnShelfAmount={simulationEngine.items.filter( item => item.name == o.label) } />
         ))}
         <RegisterScreen posObstacle={POS_OBSTACLE} />
         <Atm atmObstacle={ATM_OBSTACLE} />

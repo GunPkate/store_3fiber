@@ -14,6 +14,7 @@ import {
   WAIT3D,
 } from '../../config/storeLayout/storeLayoutLv1.js';
 import { createShelfProductList } from "../../config/storeProductList/lv1/ShelfProductList.js";
+import { createFridgeProductList } from "../../config/storeProductList/lv1/FridgeProductList.js";
 import { createStoreProductList } from "../../config/storeProductList/lv1/StorageProductList.js";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
@@ -36,6 +37,7 @@ export class SimulationEngine {
         };
 
         this.items = createShelfProductList();
+        this.fridgeItems = createFridgeProductList();
         this.storageItems = createStoreProductList();
         this.stockWithdraw = []
         this.restockQue = []

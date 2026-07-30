@@ -34,7 +34,11 @@ export function StorageModal({
               <tbody>
               {storeItems && storeItems.length > 0 ? ( storeItems.map((storeItem, i) => {
                   const shelfItem = shelfItems?.[i];
-                  const withdrawItem = withdrawItems?.[i];
+                  const withdrawItem = 
+                    withdrawItems?.filter(x => x.id == i)
+                      .reduce((accumulator, currentItem) => {
+                          return accumulator + currentItem.qty;
+                        }, 0);
                   return (
                         <tr key={storeItem.id || i}>
                           <td>
@@ -52,7 +56,7 @@ export function StorageModal({
                           </td>
                           <td>
                             <span className="item-qty">
-                              {withdrawItem ? `${withdrawItem.qty} ` : "N/A"}
+                              {withdrawItem ? `${withdrawItem} ` : 0}
                             </span>
                           </td>
                         </tr>

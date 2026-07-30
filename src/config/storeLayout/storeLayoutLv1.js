@@ -83,35 +83,35 @@ export const FORBIDDEN_AREA = [
 
 export const OBJECT_3D = [
 
-  { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Cola/Water' },
-  { x: -2.75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Snacks' },
-  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Candy' },
+  { x: -2.75, z: -3.5, hw: 0.9, hd: 0.25, row:"A", id:1, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
+  { x: -2.75, z: -1.5, hw: 0.9, hd: 0.25, row:"A", id:2, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
+  { x: -2.75, z: -0.5, hw: 0.9, hd: 0.25, row:"A", id:3, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
 
-  { x: -1, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Juice' },
-  { x: -1, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Chips' },
-  { x: -1, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b",  side:"back", label: 'Shelf Cookies' },
+  { x: -1, z: -3.5, hw: 0.9, hd: 0.25, row:"B", id:1, colorOuterFrame: "#201b1b",  side:"back", objType: 'Shelf' },
+  { x: -1, z: -1.5, hw: 0.9, hd: 0.25, row:"B", id:2, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
+  { x: -1, z: -0.5, hw: 0.9, hd: 0.25, row:"B", id:3, colorOuterFrame: "#201b1b",  side:"back", objType: 'Shelf' },
 
-  { x: .75, z: -3.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Soap' },
-  { x: .75, z: -1.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side: "front", label: 'Shelf Shampoo' },
-  { x: .75, z: -0.5, hw: 0.9, hd: 0.25, colorOuterFrame: "#201b1b", side:"back", label: 'Shelf Misc' },
+  { x: .75, z: -3.5, hw: 0.9, hd: 0.25, row:"C", id:1, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
+  { x: .75, z: -1.5, hw: 0.9, hd: 0.25, row:"C", id:2, colorOuterFrame: "#201b1b", side: "front", objType: 'Shelf' },
+  { x: .75, z: -0.5, hw: 0.9, hd: 0.25, row:"C", id:3, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
   // fridges
 
-  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 1' },
-  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 2' },
-  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", label: 'Fridge 3' },
+  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", objType: 'Fridge' },
+  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", objType: 'Fridge' },
+  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", objType: 'Fridge' },
 
   // POS counter
-  { x: 0, z: 3.5, hw: 2, hd: 0.4, label: 'POS Counter' },
+  { x: 0, z: 3.5, hw: 2, hd: 0.4, objType: 'POS' },
   // ATM
-  { x: 6.5, z: 6, hw: 0.3, hd: 0.4, label: 'ATM' },
+  { x: 6.5, z: 6, hw: 0.3, hd: 0.4, objType: 'ATM' },
   // stock room
-  { x: -16, z: 4.5, hw: 0.8, hd: 1, label: 'Stock Room' },
+  { x: -16, z: 4.5, hw: 0.8, hd: 1, objType: 'Stock' },
   // break room back-right
-  { x: 6.5, z: 1.5, hw: 0.8, hd: 0.7, label: 'Break Room' },
+  { x: 6.5, z: 1.5, hw: 0.8, hd: 0.7, objType: 'Break' },
   // outer walls
-  { x: 0, z: -6.1, hw: 8.5, hd: 0.15, label: 'Back Wall' },
-  { x: -8.1, z: 0, hw: 0.15, hd: 6.5, label: 'Left Wall' },
-  { x: 8.1, z: 0, hw: 0.15, hd: 6.5, label: 'Right Wall' },
+  { x: 0, z: -6.1, hw: 8.5, hd: 0.15, objType: 'Back Wall' },
+  { x: -8.1, z: 0, hw: 0.15, hd: 6.5, objType: 'Left Wall' },
+  { x: 8.1, z: 0, hw: 0.15, hd: 6.5, objType: 'Right Wall' },
 ];
 
 export function inObs(px, pz, margin = 0.25) {
@@ -129,13 +129,13 @@ export function inObs(px, pz, margin = 0.25) {
 
 /** Fresh copy of shelf-item stock data (call once per engine instance). */
 
-const posObstacle = OBJECT_3D.find((o) => o.label === 'POS Counter');
-const atmObstacle = OBJECT_3D.find((o) => o.label === 'ATM');
-const stkObstacle = OBJECT_3D.find((o) => o.label === 'Stock Room');
-const breakObstacle = OBJECT_3D.find((o) => o.label === 'Break Room');
+const posObstacle = OBJECT_3D.find((o) => o.objType === 'POS');
+const atmObstacle = OBJECT_3D.find((o) => o.objType === 'ATM');
+const stkObstacle = OBJECT_3D.find((o) => o.objType === 'Stock');
+const breakObstacle = OBJECT_3D.find((o) => o.objType === 'Break');
 
 // Shelf centre positions (3D) — the "browsing" point just in front of each shelf
-export const SHELF3D = OBJECT_3D.filter((o) => o.label.startsWith('Shelf')).map((o) => ({
+export const SHELF3D = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf')).map((o) => ({
   x: o.x,
   z: o.side=="front"? o.z-.5: o.z+.5,
   side: o.side

@@ -4,6 +4,8 @@ import './HUD.css'
 import { row_menu, glass_bg, glass_text } from '../../config/uimenu/uimenu';
 import { ClockBar } from './sections/ClockBar';
 import { LiveStats } from './sections/LiveStats';
+import { SettingModal } from './modal/SettingModal';
+import { ManageShelvesModal } from './modal/ManageShelvesModal';
 
 const TOOLS = [
   // { tool: 'none', label: '🎥 View' },
@@ -52,6 +54,8 @@ export default function HUD() {
   const [cfgSpawn, setCfgSpawn] = useState(simulationEngine.CFG.spawnInterval);
   const [cfgShowPaths, setCfgShowPaths] = useState(simulationEngine.CFG.showPaths);
   const [cfgFov, setCfgFov] = useState(fov);
+
+  const [openManageShelves,setOpenManageShelves] = useState(false)
 
   function toggleStat(getBtn){
     if(getBtn == 'overview'){
@@ -116,6 +120,9 @@ export default function HUD() {
         <button className="tb" onClick={() => setSettingsOpen(true)}>
           ⚙️ Settings
         </button>
+        <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
+          ⚙️ Manage Shelves
+        </button>
       </div>
 
       {/* WP side panel */}
@@ -157,59 +164,33 @@ export default function HUD() {
 
       {/* Settings modal */}
       {settingsOpen && (
-        <div id="settings-modal" className="open">
-          <div id="settings-box">
-            <h2>⚙️ Settings</h2>
-            <div className="sf">
-              <label>Customer Limit</label>
-              <input
-                type="number"
-                min={1}
-                max={200}
-                value={cfgLimit}
-                onChange={(e) => setCfgLimit(parseInt(e.target.value) || 50)}
-              />
-            </div>
-            <div className="sf">
-              <label>Spawn Interval (game-sec)</label>
-              <input
-                type="number"
-                min={5}
-                max={120}
-                value={cfgSpawn}
-                onChange={(e) => setCfgSpawn(parseInt(e.target.value) || 15)}
-              />
-            </div>
-            <div className="sf">
-              <label>Show NPC Paths</label>
-              <input type="checkbox" checked={cfgShowPaths} onChange={(e) => setCfgShowPaths(e.target.checked)} />
-            </div>
-            <div className="sf">
-              <label>Camera FOV</label>
-              <input
-                type="range"
-                min={30}
-                max={90}
-                value={cfgFov}
-                onChange={(e) => setCfgFov(parseInt(e.target.value))}
-              />
-            </div>
-            <button
-              id="settings-close"
-              onClick={() =>
-                applySettings({
-                  customerLimit: cfgLimit,
-                  spawnInterval: cfgSpawn,
-                  showPaths: cfgShowPaths,
-                  fov: cfgFov,
-                })
-              }
-            >
-              Close
-            </button>
-          </div>
-        </div>
+        <SettingModal
+          cfgLimit ={cfgLimit}
+          setCfgLimit ={setCfgLimit}
+          cfgSpawn ={cfgSpawn}
+          setCfgSpawn ={setCfgSpawn}
+          cfgShowPaths ={cfgShowPaths}
+          setCfgShowPaths ={setCfgShowPaths}
+          cfgFov ={cfgFov}
+          setCfgFov ={setCfgFov}
+          applySettings ={applySettings}
+        />
       )}
+
+      {openManageShelves  ?
+        <ManageShelvesModal
+          cfgLimit ={cfgLimit}
+          setCfgLimit ={setCfgLimit}
+          cfgSpawn ={cfgSpawn}
+          setCfgSpawn ={setCfgSpawn}
+          cfgShowPaths ={cfgShowPaths}
+          setCfgShowPaths ={setCfgShowPaths}
+          cfgFov ={cfgFov}
+          setCfgFov ={setCfgFov}
+          applySettings ={applySettings}
+          setOpenManageShelves ={setOpenManageShelves}
+        />:<></>
+      }
 
       {/* Tooltip */}
       {hoveredNpc && (

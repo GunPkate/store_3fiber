@@ -145,37 +145,6 @@
     border-color: #4466dd
 }
 
-#settings-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, .7);
-    z-index: 50;
-    display: none;
-    align-items: center;
-    justify-content: center
-}
-
-#settings-modal.open {
-    display: flex
-}
-
-#settings-box {
-    background: #0d1025;
-    border: 1px solid rgba(255, 255, 255, .15);
-    border-radius: 12px;
-    padding: 22px 26px;
-    min-width: 300px;
-    color: #dde;
-    font-family: 'Segoe UI', sans-serif
-}
-
-#settings-box h2 {
-    font-size: 14px;
-    color: #88aaff;
-    margin-bottom: 16px;
-    letter-spacing: 1px
-}
-
 .sf {
     display: flex;
     justify-content: space-between;
@@ -201,18 +170,6 @@
 
 .sf input[type=range] {
     width: 100px
-}
-
-#settings-close {
-    margin-top: 16px;
-    width: 100%;
-    padding: 8px;
-    background: #334;
-    border: 1px solid #556;
-    color: #fff;
-    border-radius: 8px;
-    cursor: pointer;
-    font-size: 12px
 }
 
 #wp-panel {
@@ -254,4 +211,47 @@
     max-width: 200px;
     line-height: 1.5;
     font-family: 'Segoe UI', sans-serif
+}
+
+#settings-modal, #manage-shelves-modal {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .7);
+    z-index: 50;
+    display: none;
+    align-items: center;
+    justify-content: center
+}
+
+#settings-modal.open, #manage-shelves-modal.open {
+    display: flex
+}
+
+#settings-box, #manage-shelves-box {
+    background: #0d1025;
+    border: 1px solid rgba(255, 255, 255, .15);
+    border-radius: 12px;
+    padding: 22px 26px;
+    min-width: 600px;
+    color: #dde;
+    font-family: 'Segoe UI', sans-serif
+}
+
+#settings-box h2, #manage-shelves-box h2{
+    font-size: 14px;
+    color: #88aaff;
+    margin-bottom: 16px;
+    letter-spacing: 1px
+}
+
+#settings-close, #manage-shelves-close {
+    margin-top: 16px;
+    width: 100%;
+    padding: 8px;
+    background: #334;
+    border: 1px solid #556;
+    color: #fff;
+    border-radius: 8px;
+    cursor: pointer;
+    font-size: 12px
 }

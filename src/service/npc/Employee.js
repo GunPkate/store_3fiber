@@ -214,6 +214,14 @@ export class Employee extends Npc {
         const qtyAmount = toRestockItem.maxQty
         storageItems.qty = storageItems.qty - qtyAmount
         toRestockItem.qty = qtyAmount;
+        let withdraw = {
+          id: toRestockItem.shelfIdx,
+          itemName: toRestockItem.name,
+          qty: toRestockItem.qty,
+          date: eng.formatTime(),
+          empName: this.name,
+        }
+        eng.stockWithdraw.push(withdraw)
         eng.addEvt(`📦 ${this.name} withdraw ${storageItems.name} remains ${storageItems.qty}`);
         eng.addEvt(`📦 ${this.name} restocked ${toRestockItem.name} ${toRestockItem.qty}`);
       }

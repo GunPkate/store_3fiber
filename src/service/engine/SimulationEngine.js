@@ -5,6 +5,7 @@ import { WpGraph } from "./waypointgraph/WpGraph";
 import {
   inObs,
   SHELF3D,
+  FRIDGE3D,
   ATM3D,
   POS3D,
   EXIT3D,
@@ -42,6 +43,7 @@ export class SimulationEngine {
         this.stockWithdraw = []
         this.restockQue = []
         this.SHELF3D = SHELF3D;
+        this.FRIDGE3D = FRIDGE3D;
         this.ATM3D = ATM3D;
         this.POS3D = POS3D;
         this.EXIT3D = EXIT3D;
@@ -60,7 +62,8 @@ export class SimulationEngine {
                 ['stock', STOCK3D],
                 ['waiting', WAIT3D],
             ],
-            SHELF3D
+            SHELF3D,
+            FRIDGE3D
         );
 
         this.npcs = [];

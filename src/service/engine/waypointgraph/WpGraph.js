@@ -2,12 +2,14 @@ import { FLOOR_D, FLOOR_W, inObs, OBSTACLE_POINTS } from "../../../config/storeL
 import { uid } from "../uid";
 
 export class WpGraph {
-    constructor(specialPoints, shelfPoints) {
+    constructor(specialPoints, shelfPoints, fridgePoints) {
         this.nodes = [];
-        this._build(specialPoints, shelfPoints);
+        this._build(specialPoints, shelfPoints, fridgePoints);
     }
 
-    _build(specialPoints, shelfPoints) {
+    _build(specialPoints, shelfPoints, fridgePoints) {
+        console.log("specialPoints",specialPoints)
+            console.log("specialPoints",fridgePoints)
         const step = 1;
         for (let x = -15; x <= 7; x += step){   
             for (let z = -6.5; z <= 6.5; z += step) {
@@ -20,11 +22,16 @@ export class WpGraph {
         this._autoConnect(2.2);
         specialPoints.forEach(([t, p]) =>{
             this._rawAdd(p.x, p.z, t)
-            this._connectSpecialPoints(p)
+            this._connectSpecialPointsFrontBack(p)
         })
         shelfPoints.forEach((s) => {
             this._rawAdd(s.x, s.z, 'shelf');
-            this._connectSpecialPoints(s)
+            this._connectSpecialPointsFrontBack(s)
+        });
+        console.log("bestRow fridgePoints",fridgePoints)
+        fridgePoints.forEach((s) => {
+            this._rawAdd(s.x, s.z, 'fridge');
+            this._connectSpecialPointsRightLeft(s)
         });
     }
     
@@ -67,7 +74,37 @@ export class WpGraph {
         });
     }
 
-    _connectSpecialPoints(sp) {
+_connectSpecialPointsRightLeft(sp) {
+    const specialNode = this.nodes.find(
+        (n) => Math.hypot(n.x - sp.x, n.z - sp.z) < .4
+    );
+    if (!specialNode) return;
+
+    let bestRow = null, bestDist = Infinity;
+    OBSTACLE_POINTS.forEach((row) => {
+        const x1 = Math.min(row.posStart[0].x, row.posEnd[0].x);
+        const x2 = Math.max(row.posStart[0].x, row.posEnd[0].x);
+        const mid = (x1 + x2) / 2;
+        const d = Math.abs(sp.x - mid);
+        if (d < bestDist) {
+            bestDist = d;
+            bestRow = { x1, x2 };
+        }
+    });
+    if (!bestRow) return;
+    
+    const borderX = sp.side === 'left' ? bestRow.x1 : bestRow.x2;
+    const cz = sp.z;
+    
+    [cz - 1, cz, cz + 1].forEach((bz) => {
+        const borderNode = this.nodes.find(
+            (n) => Math.abs(n.z - bz) < 0.1 && Math.abs(n.x - borderX) < 0.1
+        );
+        if (borderNode) this.linkNodes(specialNode, borderNode);
+    });
+}
+
+    _connectSpecialPointsFrontBack(sp) {
         const specialNode = this.nodes.find(
             (n) => Math.hypot(n.x - sp.x, n.z - sp.z) < 0.4
         );

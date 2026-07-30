@@ -6,6 +6,7 @@ import { ClockBar } from './sections/ClockBar';
 import { LiveStats } from './sections/LiveStats';
 import { SettingModal } from './modal/SettingModal';
 import { ManageShelvesModal } from './modal/ManageShelvesModal';
+import { StorageModal } from './modal/StorageModal';
 
 const TOOLS = [
   // { tool: 'none', label: '🎥 View' },
@@ -121,7 +122,7 @@ export default function HUD() {
         <button className="tb" onClick={() => setSettingsOpen(true)}>
           ⚙️ Settings
         </button>
-        <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
+        <button className="tb" onClick={() => setOpenStorage(!openStorage)}>
           ⚙️ Storage
         </button>
         <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
@@ -193,6 +194,21 @@ export default function HUD() {
           setCfgFov ={setCfgFov}
           applySettings ={applySettings}
           setOpenManageShelves ={setOpenManageShelves}
+        />:<></>
+      }
+
+      {openStorage  ?
+        <StorageModal
+          cfgLimit ={cfgLimit}
+          setCfgLimit ={setCfgLimit}
+          cfgSpawn ={cfgSpawn}
+          setCfgSpawn ={setCfgSpawn}
+          cfgShowPaths ={cfgShowPaths}
+          setCfgShowPaths ={setCfgShowPaths}
+          cfgFov ={cfgFov}
+          setCfgFov ={setCfgFov}
+          applySettings ={applySettings}
+          setOpenStorage ={setOpenStorage}
         />:<></>
       }
 

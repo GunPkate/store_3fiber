@@ -255,3 +255,49 @@
     cursor: pointer;
     font-size: 12px
 }
+
+/* Scrollable container for long tables */
+.table-container {
+    overflow-y: auto;
+    max-height: 400px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Table Styling */
+#storage-box table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13px;
+}
+
+#storage-box th {
+    background: rgba(255, 255, 255, 0.05);
+    color: #88aaff;
+    padding: 10px 12px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#storage-box td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#storage-box tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.item-name {
+    font-weight: 500;
+    color: #fff;
+}
+
+.item-qty {
+    font-family: monospace;
+    opacity: 0.9;
+}
+

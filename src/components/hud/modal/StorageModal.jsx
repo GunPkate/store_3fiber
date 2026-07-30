@@ -1,4 +1,6 @@
 import { OBJECT_3D } from "../../../config/storeLayout/storeLayoutLv1";
+import { simulationEngine } from "../../../service/state/uiState";
+
 
 export function StorageModal({
     cfgLimit,
@@ -10,77 +12,58 @@ export function StorageModal({
     cfgFov,
     setCfgFov,
     applySettings,
-    setOpenManageShelves
+    setOpenStorage
 }){
-    const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
-    
+    const storeItems = simulationEngine.storageItems;
+    const shelfItems = simulationEngine.items;
+    console.log("storeItems",storeItems)
     return(<>
         <div id="storage-modal" className="open">
           <div id="storage-box">
             <h2>⚙️ Manage storage</h2>
 
-            {shelfObs ? shelfObs.map( (shelfOb,i) => {
-              return <>
-                <div key={i} className="sf">
-                  <label>
-                    { shelfOb.objType }
-                  </label> 
-                  {/* <input
-                    type="number"
-                    min={1}
-                    max={200}
-                    value={cfgLimit}
-                    onChange={(e) => setCfgLimit(parseInt(e.target.value) || 50)}
-                    /> */}
-                </div>
-              </>
-            })
-            :<></>}
-            <div className="sf">
-              <label>Customer Limit</label>
-              <input
-                type="number"
-                min={1}
-                max={200}
-                value={cfgLimit}
-                onChange={(e) => setCfgLimit(parseInt(e.target.value) || 50)}
-              />
-            </div>
-            <div className="sf">
-              <label>Spawn Interval (game-sec)</label>
-              <input
-                type="number"
-                min={5}
-                max={120}
-                value={cfgSpawn}
-                onChange={(e) => setCfgSpawn(parseInt(e.target.value) || 15)}
-              />
-            </div>
-            <div className="sf">
-              <label>Show NPC Paths</label>
-              <input type="checkbox" checked={cfgShowPaths} onChange={(e) => setCfgShowPaths(e.target.checked)} />
-            </div>
-            <div className="sf">
-              <label>Camera FOV</label>
-              <input
-                type="range"
-                min={30}
-                max={90}
-                value={cfgFov}
-                onChange={(e) => setCfgFov(parseInt(e.target.value))}
-              />
-            </div>
+            <table>
+              <tr>
+                <th>Product</th>
+                <th>Storage</th>
+                <th>Shelves</th>
+              </tr>
+              <tbody>
+              {storeItems && storeItems.length > 0 ? ( storeItems.map((storeItem, i) => {
+                  const shelfItem = shelfItems?.[i];
+                  return (
+                        <tr key={storeItem.id || i}>
+                          <td>
+                            <span className="item-name">{storeItem.name}</span>
+                          </td>
+                          <td>
+                            <span className="item-qty">
+                              {storeItem.qty} / {storeItem.maxQty}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="item-qty">
+                              {shelfItem ? `${shelfItem.qty} / ${shelfItem.maxQty}` : "N/A"}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan="3" style={{ textAlign: "center", opacity: 0.6 }}>
+                        No items found
+                      </td>
+                    </tr>
+                  )
+              }
+              </tbody>
+            </table>
             <button
               id="storage-close"
               onClick={() =>
                 {
-                  applySettings({
-                    customerLimit: cfgLimit,
-                    spawnInterval: cfgSpawn,
-                    showPaths: cfgShowPaths,
-                    fov: cfgFov,
-                  })
-                  setOpenManageShelves(false)
+                  setOpenStorage(false)
                 }
               }
             >

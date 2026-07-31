@@ -8,8 +8,7 @@ export class WpGraph {
     }
 
     _build(specialPoints, shelfPoints, fridgePoints) {
-        console.log("specialPoints",specialPoints)
-            console.log("specialPoints",fridgePoints)
+
         const step = 1;
         for (let x = -15; x <= 7; x += step){   
             for (let z = -6.5; z <= 6.5; z += step) {
@@ -28,7 +27,7 @@ export class WpGraph {
             this._rawAdd(s.x, s.z, 'shelf');
             this._connectSpecialPointsFrontBack(s)
         });
-        console.log("bestRow fridgePoints",fridgePoints)
+
         fridgePoints.forEach((s) => {
             this._rawAdd(s.x, s.z, 'fridge');
             this._connectSpecialPointsRightLeft(s)

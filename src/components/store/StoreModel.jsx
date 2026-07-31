@@ -75,7 +75,7 @@ import { FRIDGELAYOUT } from '../../config/storeLayout/FridgeLayoutv1.js';
           <ShelfUnit key={i} o={o} />
         ))}
         {items.map( (o,i) => (
-          <ShelfItems key={i} o={o} itemOnShelfAmount={simulationEngine.items.filter( item => item.name == o.label) } />
+          <ShelfItems key={i} o={o} itemOnShelf={simulationEngine.items.filter( item => item.shelfIdx === o.shelfIdx )} />
         ))}
         <StorageItems/>
 
@@ -84,7 +84,7 @@ import { FRIDGELAYOUT } from '../../config/storeLayout/FridgeLayoutv1.js';
         ))}
 
         {fridgeItems.map( (o,i) => (
-          <FridgeItems key={i} o={o} itemOnShelfAmount={simulationEngine.items.filter( item => item.name == o.label) } />
+          <FridgeItems key={i} o={o}itemOnShelfAmount={simulationEngine.fridgeItems.filter( item => item.fridgeIdx == i ) } />
         ))}
         <RegisterScreen posObstacle={POS_OBSTACLE} />
         <Atm atmObstacle={ATM_OBSTACLE} />

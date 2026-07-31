@@ -13,20 +13,21 @@ import ShelfItems from './products/ShelfItems.jsx';
 import { Box } from './building/sharedmesh/Box.jsx';
 import { RegisterScreen, ShelfUnit, Fridge, Atm } from './facilities/Facilities.jsx';
 import { NeonSign } from './building/store/NeonSign.jsx';
+import FridgeItems from './products/FridgeItems.jsx';
+import { FRIDGELAYOUT } from '../../config/storeLayout/FridgeLayoutv1.js';
 
-  function StockBars({ items }) {
+  function StockBars({ items, obj }) {
     useUIStore((s) => s.hud);
-    const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
     return (
       <>
-        {items.map((shelfItem, i) => {
-          const o = shelfObs[i];
+        {items.map((item, i) => {
+          const o = obj[i];
           if (!o) return null;
-          const pct = Math.max(0, Math.min(1, shelfItem.qty / shelfItem.maxQty));
+          const pct = Math.max(0, Math.min(1, item.qty / item.maxQty));
           const barColor = pct > 0.5 ? '#44ff88' : pct > 0.2 ? '#ffaa44' : '#ff4444';
           return (
             <Html
-              key={shelfItem.name}
+              key={item.name}
               position={[o.x, 2.8, o.z - 0.1]}
               center
               distanceFactor={9}
@@ -43,7 +44,7 @@ import { NeonSign } from './building/store/NeonSign.jsx';
                 }}
               >
                 <div style={{ color: '#fff', fontSize: 11, fontWeight: 'bold', textAlign: 'center', marginBottom: 3 }}>
-                  {shelfItem.name} {shelfItem.qty}/{shelfItem.maxQty}
+                  {item.name} {item.qty}/{item.maxQty}
                 </div>
                 <div style={{ height: 6, background: 'rgba(255,255,255,.15)', borderRadius: 3 }}>
                   <div style={{ width: `${pct * 100}%`, height: '100%', background: barColor, borderRadius: 3 }} />
@@ -60,6 +61,8 @@ import { NeonSign } from './building/store/NeonSign.jsx';
     const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
     const fridgeObs = OBJECT_3D.filter((o) => o.objType.startsWith('Fridge'));
     const items = SHELFLAYOUT
+    const fridgeItems = FRIDGELAYOUT
+
     const handleFloorClick = (e) => {
       e.stopPropagation();
       onFloorClick({ x: e.point.x, z: e.point.z });
@@ -79,10 +82,15 @@ import { NeonSign } from './building/store/NeonSign.jsx';
         {fridgeObs.map((o,i)=>(
           <Fridge key={i} o={o}/>
         ))}
+
+        {fridgeItems.map( (o,i) => (
+          <FridgeItems key={i} o={o} itemOnShelfAmount={simulationEngine.items.filter( item => item.name == o.label) } />
+        ))}
         <RegisterScreen posObstacle={POS_OBSTACLE} />
         <Atm atmObstacle={ATM_OBSTACLE} />
         <Entrance />
-        <StockBars items={simulationEngine.items} />
+        <StockBars items={simulationEngine.items} obj={shelfObs}/>
+        <StockBars items={simulationEngine.fridgeItems} obj={fridgeObs}/>
         <CeilingLights />
         <NeonSign />
         {/* 

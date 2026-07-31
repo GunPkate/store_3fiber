@@ -5,6 +5,7 @@ import { WpGraph } from "./waypointgraph/WpGraph";
 import {
   inObs,
   SHELF3D,
+  FRIDGE3D,
   ATM3D,
   POS3D,
   EXIT3D,
@@ -14,6 +15,7 @@ import {
   WAIT3D,
 } from '../../config/storeLayout/storeLayoutLv1.js';
 import { createShelfProductList } from "../../config/storeProductList/lv1/ShelfProductList.js";
+import { createFridgeProductList } from "../../config/storeProductList/lv1/FridgeProductList.js";
 import { createStoreProductList } from "../../config/storeProductList/lv1/StorageProductList.js";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
@@ -36,10 +38,12 @@ export class SimulationEngine {
         };
 
         this.items = createShelfProductList();
+        this.fridgeItems = createFridgeProductList();
         this.storageItems = createStoreProductList();
         this.stockWithdraw = []
         this.restockQue = []
         this.SHELF3D = SHELF3D;
+        this.FRIDGE3D = FRIDGE3D;
         this.ATM3D = ATM3D;
         this.POS3D = POS3D;
         this.EXIT3D = EXIT3D;
@@ -58,7 +62,8 @@ export class SimulationEngine {
                 ['stock', STOCK3D],
                 ['waiting', WAIT3D],
             ],
-            SHELF3D
+            SHELF3D,
+            FRIDGE3D
         );
 
         this.npcs = [];

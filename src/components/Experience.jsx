@@ -5,7 +5,7 @@ import { findNearNode } from '../service/engine/waypointUtils.js';
 import CharacterManager from './npc/CharacterManager.jsx';
 import SimulationLoop from './simulation/SimulationLoop.jsx';
 import { simulationEngine, useUIStore } from '../service/state/uiState.js';
-import Waypoints from './waypoint/Waypoint.jsx';
+import Waypoints from './waypoint/PathWayPoint.jsx';
 import { useRef } from 'react';
 import CameraRig from './carmera/CameraRig.jsx';
 

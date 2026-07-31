@@ -1,6 +1,6 @@
-import { Customer } from "../npc/Customer";
-import { Employee } from "../npc/Employee";
-import { WpGraph } from "./waypointgraph/WpGraph";
+import { Customer } from "../npc/Customer.js";
+import { Employee } from "../npc/Employee.js";
+import { WpGraph } from "./waypointgraph/WpGraph.js";
 
 import {
   inObs,

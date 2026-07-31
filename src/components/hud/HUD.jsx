@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { simulationEngine, useUIStore } from '../../service/state/uiState';
 import './HUD.css'
-import { row_menu, glass_bg, glass_text } from '../../config/uimenu/uimenu';
+import { row_menu, glass_bg, glass_text, toolbar_wrap, toolbar_row, icon_btn, icon_btn_active, center_btn } from '../../config/uimenu/uimenu';
 import { ClockBar } from './sections/ClockBar';
 import { LiveStats } from './sections/LiveStats';
 import { SettingModal } from './modal/SettingModal';
@@ -16,18 +16,26 @@ const TOOLS = [
   // { tool: 'link-wp', label: '🔗 Link WP' },
 
   { tool: 'overview', icon:'🎥', label: 'Overview' },
-  { tool: 'live', icon:'➕', label: 'Live' },
-  { tool: 'emp', icon:'➕', label: 'Employees' },
-  { tool: 'event', icon:'➕', label: 'Events' },
+  { tool: 'live', icon:'📈', label: 'Live' },
+  { tool: 'emp', icon:'👥', label: 'Employees' },
+  { tool: 'event', icon:'📰', label: 'Events' },
   // { tool: 'add-wp', icon:'➕', label: 'Order' },
   // { tool: 'del-wp', icon:'📦', label: 'Stock' },
   // { tool: 'link-wp', icon:'👥', label: 'Staffs' },
 ];
 
-const SPAWN_TOOLS = [
-  { tool: 'spawn-c', label: '👤 Spawn Customer' },
-  { tool: 'spawn-e', label: '👷 Spawn Employee' },
-  { tool: 'rm-npc', label: '🗑 Remove NPC' },
+// const SPAWN_TOOLS = [
+//   { tool: 'spawn-c', icon: '👤', label: 'Spawn Customer' },
+//   { tool: 'spawn-e', icon: '👷', label: 'Spawn Employee' },
+//   { tool: 'rm-npc', icon: '🗑', label: 'Remove NPC' },
+// ];
+
+// Row 2 — anything that opens a modal.
+const MODAL_TOOLS = [
+  { key: 'settings', icon: '⚙️', label: 'Settings' },
+  { key: 'storage', icon: '📦', label: 'Storage' },
+  { key: 'withdraw', icon: '📤', label: 'Withdraw' },
+  { key: 'manage-shelves', icon: '🗂', label: 'Manage Shelves' },
 ];
 
 const WP_TYPES = ['generic', 'shelf', 'pos', 'atm', 'exit', 'spawn', 'break', 'stock', 'waiting'];
@@ -103,36 +111,97 @@ export default function HUD() {
         toggleAllStat = {toggleAllStat}
       />
 
-      {/* Toolbar */}
-      <div id="toolbar" className={`${glass_bg}`}>
-        {TOOLS.map((t) => (
-          <button key={t.tool} className={`tb${ currentTool === t.tool ? ' on' : '' }`} onClick={() => toggleStat(t.tool)}>
-            {t.label}
-          </button>
-          // <button key={t.tool} className={`tb${currentTool === t.tool ? ' on' : ''}`} onClick={() => setTool(t.tool)}>
-          //   {t.label}
-          // </button>
-        ))}
-        <button className="tb" onClick={toggleShowWP}>
-          {showWP ? '👁 Hide WP' : '👁 Show WP'}
-        </button>
-        {SPAWN_TOOLS.map((t) => (
-          <button key={t.tool} className={`tb${currentTool === t.tool ? ' on' : ''}`} onClick={() => setTool(t.tool)}>
-            {t.label}
-          </button>
-        ))}
-        <button className="tb" onClick={() => setSettingsOpen(true)}>
-          ⚙️ Settings
-        </button>
-        <button className="tb" onClick={() => setOpenStorage(!openStorage)}>
-          ⚙️ Storage
-        </button>
-        <button className="tb" onClick={() => setOpenWithdraw(!openWithdraw)}>
-          ⚙️ Withdraw
-        </button>
-        <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
-          ⚙️ Manage Shelves
-        </button>
+      {/* Toolbar: row 1 = toggles, row 2 = modals */}
+      <div id="toolbar" className={toolbar_wrap+glass_bg}>
+        {/* Row 1 — toggle UI (stat panels, waypoint overlay, spawn/remove tools) */}
+        <div className={toolbar_row}>
+          {TOOLS.map((t) => {
+            const statKey = { overview: statOverview, live: statLive, emp: statEmp, event: statEvent }[t.tool];
+            return (<div className={center_btn}>
+              <button
+                key={t.tool}
+                title={t.label}
+                aria-label={t.label}
+                className={`${icon_btn}${statKey ? ` ${icon_btn_active}` : ''}`}
+                onClick={() => toggleStat(t.tool)}
+                >
+                {t.icon}
+              </button>
+              <label className='d-flex flex justify-center'>
+                {t.label}
+              </label>
+            </div>);
+          })}
+          {/* <button
+            title={showWP ? 'Hide Waypoints' : 'Show Waypoints'}
+            aria-label={showWP ? 'Hide Waypoints' : 'Show Waypoints'}
+            className={`${icon_btn}${showWP ? ` ${icon_btn_active}` : ''}`}
+            onClick={toggleShowWP}
+          >
+            👁
+          </button> */}
+          {/* {SPAWN_TOOLS.map((t) => (
+            <button
+              key={t.tool}
+              title={t.label}
+              aria-label={t.label}
+              className={`${icon_btn}${currentTool === t.tool ? ` ${icon_btn_active}` : ''}`}
+              onClick={() => setTool(t.tool)}
+            >
+              {t.icon}
+            </button>
+          ))} */}
+        </div>
+
+        {/* Row 2 — modal launchers */}
+        <div className={toolbar_row}>
+          {/* <div className='d-flex'>
+            <button
+              title="Settings"
+              aria-label="Settings"
+              className={`${icon_btn}${settingsOpen ? ` ${icon_btn_active}` : ''}`}
+              onClick={() => setSettingsOpen(true)}
+              >
+              ⚙️
+            </button>
+ 
+          </div> */}
+
+          <div className={center_btn}>
+            <button
+              title="Storage"
+              aria-label="Storage"
+              className={`${icon_btn}${openStorage ? ` ${icon_btn_active}` : ''}`}
+              onClick={() => setOpenStorage(!openStorage)}
+              >
+              📦
+            </button>
+            <label>Storage</label>
+          </div>
+
+          <div className={center_btn}>
+            <button
+              title="Withdraw"
+              aria-label="Withdraw"
+              className={`${icon_btn}${openWithdraw ? ` ${icon_btn_active}` : ''}`}
+              onClick={() => setOpenWithdraw(!openWithdraw)}
+              >
+              📤
+            </button>
+            <label>Withdraw</label>
+          </div>
+
+          {/* <div className='d-flex'>
+            <button
+              title="Manage Shelves"
+              aria-label="Manage Shelves"
+              className={`${icon_btn}${openManageShelves ? ` ${icon_btn_active}` : ''}`}
+              onClick={() => setOpenManageShelves(!openManageShelves)}
+              >
+              🗂
+            </button>
+          </div> */}
+        </div>
       </div>
 
       {/* WP side panel */}
@@ -245,4 +314,3 @@ export default function HUD() {
     </>
   );
 }
-

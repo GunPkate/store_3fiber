@@ -160,8 +160,7 @@ export class Employee extends Npc {
     }
     if (eng.posQueue.length > 0) {
       const cust = eng.posQueue[0];
-      console.log("Pos Q target state"+cust.state)
-      console.log("Pos Q target Target"+cust.isAtTarget())
+
       if (cust.state === 'checkingout' ) {
         // eng.addEvt(`👤 Customer ${cust.statee}`);
         this._tTimer += dt;

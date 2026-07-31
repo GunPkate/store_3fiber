@@ -44,7 +44,7 @@ export default function FridgeItems({ o, itemOnShelfAmount }){
         const delta = prevQty.current - itemOnShelfAmount[0].qty;
         prevQty.current = itemOnShelfAmount[0].qty;
         if (delta === 0) return;
-        console.log("shelf",removedIndices)
+
         setRemovedIndices((prev) => {
         if (delta > 0) {
             const available = slots.map((_, i) => i).filter((i) => !prev.includes(i));

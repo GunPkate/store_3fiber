@@ -17,6 +17,7 @@ import {
 import { createShelfProductList } from "../../config/storeProductList/lv1/ShelfProductList.js";
 import { createFridgeProductList } from "../../config/storeProductList/lv1/FridgeProductList.js";
 import { createStoreProductList } from "../../config/storeProductList/lv1/StorageProductList.js";
+import { createFridgeStorageProductList } from "../../config/storeProductList/lv1/FridgeStorageProductList.js";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
 const DAY_GAME = 1440; // game-minutes per day
@@ -37,12 +38,13 @@ export class SimulationEngine {
             timeSpeed: 1,
         };
 
-        this.items = createShelfProductList();
         this.fridgeItems = createFridgeProductList();
-        this.storageItems = createStoreProductList();
+        this.items = [...createShelfProductList(), ...this.fridgeItems];   // merged pool
+        this.storageItems = [...createStoreProductList(), ...createFridgeStorageProductList()]; // merged storage, same order
+
         this.stockWithdraw = []
         this.restockQue = []
-        this.SHELF3D = SHELF3D;
+        this.SHELF3D = [...SHELF3D, ...FRIDGE3D];
         this.FRIDGE3D = FRIDGE3D;
         this.ATM3D = ATM3D;
         this.POS3D = POS3D;

@@ -5,7 +5,7 @@ export const TASK_PRI = { cashier: 100, assistCustomer: 80, restock: 60, cleanin
 export const ROLE_TASK = { cashier: 'patrol', floorStaff: 'cleaningFloor', stocker: 'restock' };
 
 export class Employee extends Npc {
-  constructor(engine, x, z) {
+  constructor(engine, x, z, name) {
     super(engine, 'employee', x, z);
     this.bodyColor = '#2255cc';
     this.headColor = '#ffd699';
@@ -20,6 +20,7 @@ export class Employee extends Npc {
     this._restockIdx = 0;
     this._restockPhase = '';
     this._custHelp = null;
+    this.name = name
   }
   get state() {
     return this.decision.state;
@@ -91,6 +92,7 @@ export class Employee extends Npc {
     });
     this._restockIdx = target;
     this._restockPhase = 'toStock';
+    eng.addEvt(`📦 ${this.name} start restock`);
     this.moveTo(eng.STOCK3D.x, eng.STOCK3D.z);
   }
   checkStockByCustomer(cust, itemName) {
@@ -161,7 +163,7 @@ export class Employee extends Npc {
       console.log("Pos Q target state"+cust.state)
       console.log("Pos Q target Target"+cust.isAtTarget())
       if (cust.state === 'checkingout' ) {
-        console.log("checkingout")
+        // eng.addEvt(`👤 Customer ${cust.statee}`);
         this._tTimer += dt;
         if (this._tTimer > 2) {
           eng.posQueue.shift();
@@ -192,15 +194,36 @@ export class Employee extends Npc {
       this._followPath(dt);
       return;
     }
+    const toRestockItem = eng.items[this._restockIdx];
+    const storageItems = eng.storageItems[this._restockIdx];
+    const validateStock = this._validateStockItem(storageItems,toRestockItem)
+    
     if (this._restockPhase === 'toStock') {
-      this._restockPhase = 'toShelf';
-      const sc = eng.SHELF3D[this._restockIdx];
-      if (sc) this.moveTo(sc.x, sc.z);
+      const selectedShelf = eng.SHELF3D[this._restockIdx];
+      if (selectedShelf && validateStock && !eng.restockQue.includes(this._restockIdx) ){
+        eng.restockQue.push(this._restockIdx)
+        this._restockPhase = 'toShelf';
+        this.moveTo(selectedShelf.x, selectedShelf.z);
+        eng.restockQue = eng.restockQue.filter( x => x!= this._restockIdx)
+      } else if(!validateStock){
+        this.restoreTask();
+      }
     } else if (this._restockPhase === 'toShelf') {
-      const si = eng.items[this._restockIdx];
-      if (si) {
-        si.qty = si.maxQty;
-        eng.addEvt(`📦 ${this.role.role} restocked ${si.name}`);
+
+      if (toRestockItem && validateStock) {
+        const qtyAmount = toRestockItem.maxQty
+        storageItems.qty = storageItems.qty - qtyAmount
+        toRestockItem.qty = qtyAmount;
+        let withdraw = {
+          id: toRestockItem.shelfIdx,
+          itemName: toRestockItem.name,
+          qty: toRestockItem.qty,
+          date: eng.formatTime(),
+          empName: this.name,
+        }
+        eng.stockWithdraw.push(withdraw)
+        eng.addEvt(`📦 ${this.name} withdraw ${storageItems.name} remains ${storageItems.qty}`);
+        eng.addEvt(`📦 ${this.name} restocked ${toRestockItem.name} ${toRestockItem.qty}`);
       }
       if (this.state === 'occupied') {
         this.state = 'working';
@@ -209,4 +232,9 @@ export class Employee extends Npc {
       this.restoreTask();
     }
   }
+
+  _validateStockItem(storageItems, toRestockItem){
+    return storageItems.qty - toRestockItem.qty > 0
+  }
+
 }

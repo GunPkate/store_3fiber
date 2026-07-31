@@ -5,6 +5,7 @@ import { WpGraph } from "./waypointgraph/WpGraph";
 import {
   inObs,
   SHELF3D,
+  FRIDGE3D,
   ATM3D,
   POS3D,
   EXIT3D,
@@ -14,6 +15,8 @@ import {
   WAIT3D,
 } from '../../config/storeLayout/storeLayoutLv1.js';
 import { createShelfProductList } from "../../config/storeProductList/lv1/ShelfProductList.js";
+import { createFridgeProductList } from "../../config/storeProductList/lv1/FridgeProductList.js";
+import { createStoreProductList } from "../../config/storeProductList/lv1/StorageProductList.js";
 
 const DAY_REAL = 720; // seconds per game day (real time, before timeSpeed)
 const DAY_GAME = 1440; // game-minutes per day
@@ -35,7 +38,12 @@ export class SimulationEngine {
         };
 
         this.items = createShelfProductList();
+        this.fridgeItems = createFridgeProductList();
+        this.storageItems = createStoreProductList();
+        this.stockWithdraw = []
+        this.restockQue = []
         this.SHELF3D = SHELF3D;
+        this.FRIDGE3D = FRIDGE3D;
         this.ATM3D = ATM3D;
         this.POS3D = POS3D;
         this.EXIT3D = EXIT3D;
@@ -54,7 +62,8 @@ export class SimulationEngine {
                 ['stock', STOCK3D],
                 ['waiting', WAIT3D],
             ],
-            SHELF3D
+            SHELF3D,
+            FRIDGE3D
         );
 
         this.npcs = [];
@@ -71,9 +80,9 @@ export class SimulationEngine {
         this._npcListeners = new Set();
         this._graphListeners = new Set();
 
-        this.createNPC('employee', -1, 3.2);
-        this.createNPC('employee', 1, 3.2);
-        this.createNPC('employee', -3, 0.5);
+        this.createNPC('employee', -1, 3.2, 'Watson');
+        this.createNPC('employee', 1, 3.2, 'Emma');
+        this.createNPC('employee', -3, 0.5, 'Emily');
         this.addEvt('🏪 Store initialized');
     }
 
@@ -184,6 +193,8 @@ export class SimulationEngine {
                 .filter((n) => n.type === 'employee')
                 .map((e) => ({ id: e.id, role: e.role.role, task: e.curTask, state: e.state })),
             events: this.evts.slice(0, 6),
+            storageItems: this.storageItems.map((i) => ({ ...i })),
+            shelfItems: this.items.map((i) => ({ ...i })),
         };
     }
 
@@ -219,8 +230,8 @@ export class SimulationEngine {
         return this.npcs.filter((n) => n.type === 'customer' && n.state !== 'done').length;
     }
 
-    createNPC(type, x, z) {
-        const npc = type === 'customer' ? new Customer(this, x, z) : new Employee(this, x, z);
+    createNPC(type, x, z, name) {
+        const npc = type === 'customer' ? new Customer(this, x, z) : new Employee(this, x, z, name);
         this.npcs.push(npc);
         if (type === 'employee') this.initEmpTask(npc);
         this.notifyNpcs();
@@ -268,7 +279,8 @@ export class SimulationEngine {
             const n = this.createNPC(
                 'customer',
                 this.SPAWN3D.x + (Math.random() * 0.6 - 0.3),
-                this.SPAWN3D.z
+                this.SPAWN3D.z,
+                ''
             );
             const item = n.curItem();
             if (item) {

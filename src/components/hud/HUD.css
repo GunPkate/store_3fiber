@@ -64,7 +64,7 @@
     color: #88ffcc
 }
 
-#clockbar {
+#clockbar, #clockbar-btn {
     position: fixed;
     top: 10px;
     left: 50%;
@@ -81,6 +81,11 @@
     font-size: 12px;
     white-space: nowrap;
     font-family: 'Segoe UI', sans-serif
+}
+
+#clockbar-btn {
+    top: 50px;
+    left: 50%;
 }
 
 #clk {
@@ -213,7 +218,7 @@
     font-family: 'Segoe UI', sans-serif
 }
 
-#settings-modal, #manage-shelves-modal {
+#settings-modal, #storage-modal, #manage-shelves-modal {
     position: fixed;
     inset: 0;
     background: rgba(0, 0, 0, .7);
@@ -223,11 +228,11 @@
     justify-content: center
 }
 
-#settings-modal.open, #manage-shelves-modal.open {
+#settings-modal, #storage-modal.open, #manage-shelves-modal.open {
     display: flex
 }
 
-#settings-box, #manage-shelves-box {
+#settings-box, #storage-box, #manage-shelves-box {
     background: #0d1025;
     border: 1px solid rgba(255, 255, 255, .15);
     border-radius: 12px;
@@ -237,14 +242,14 @@
     font-family: 'Segoe UI', sans-serif
 }
 
-#settings-box h2, #manage-shelves-box h2{
+#settings-box h2, #storage-box h2, #manage-shelves-box h2{
     font-size: 14px;
     color: #88aaff;
     margin-bottom: 16px;
     letter-spacing: 1px
 }
 
-#settings-close, #manage-shelves-close {
+#settings-close, #storage-close, #manage-shelves-close {
     margin-top: 16px;
     width: 100%;
     padding: 8px;
@@ -255,3 +260,49 @@
     cursor: pointer;
     font-size: 12px
 }
+
+/* Scrollable container for long tables */
+.table-container {
+    overflow-y: auto;
+    max-height: 400px;
+    border-radius: 6px;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Table Styling */
+#storage-box table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    font-size: 13px;
+}
+
+#storage-box th {
+    background: rgba(255, 255, 255, 0.05);
+    color: #88aaff;
+    padding: 10px 12px;
+    font-weight: 600;
+    position: sticky;
+    top: 0;
+    z-index: 1;
+}
+
+#storage-box td {
+    padding: 10px 12px;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+#storage-box tr:hover td {
+    background: rgba(255, 255, 255, 0.03);
+}
+
+.item-name {
+    font-weight: 500;
+    color: #fff;
+}
+
+.item-qty {
+    font-family: monospace;
+    opacity: 0.9;
+}
+

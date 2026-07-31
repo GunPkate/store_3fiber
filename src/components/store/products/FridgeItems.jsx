@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from "react";
 import { simulationEngine, useUIStore } from "../../../service/state/uiState";
 
-export default function ShelfItems({ o, itemOnShelf }){
+export default function FridgeItems({ o, itemOnShelfAmount }){
     useUIStore((s) => s.hud);
     const { label, color, details, rowSize, rowStack, shelfRow} = o  
     const slots = useMemo(() => {
@@ -34,15 +34,15 @@ export default function ShelfItems({ o, itemOnShelf }){
 
     //summary of to remove items
     const [removedIndices, setRemovedIndices] = useState(()=>{
-        const missingCount = itemOnShelf[0].maxQty - itemOnShelf[0].qty;
+        const missingCount = itemOnShelfAmount[0].maxQty - itemOnShelfAmount[0].qty;
         return pickRandom([...Array(slots.length).keys()], missingCount);
     });
 
-    const prevQty = useRef(itemOnShelf[0].qty);
+    const prevQty = useRef(itemOnShelfAmount[0].qty);
 
     useEffect(() => {
-        const delta = prevQty.current - itemOnShelf[0].qty;
-        prevQty.current = itemOnShelf[0].qty;
+        const delta = prevQty.current - itemOnShelfAmount[0].qty;
+        prevQty.current = itemOnShelfAmount[0].qty;
         if (delta === 0) return;
         console.log("shelf",removedIndices)
         setRemovedIndices((prev) => {
@@ -54,7 +54,7 @@ export default function ShelfItems({ o, itemOnShelf }){
             return prev.filter((i) => !picked.includes(i));
         }
         });
-    }, [itemOnShelf[0].qty, slots]);
+    }, [itemOnShelfAmount[0].qty, slots]);
 
     return (<>
         {slots.map((slot, i) => {

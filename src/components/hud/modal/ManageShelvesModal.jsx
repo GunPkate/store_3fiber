@@ -12,7 +12,7 @@ export function ManageShelvesModal({
     applySettings,
     setOpenManageShelves
 }){
-    const shelfObs = OBJECT_3D.filter((o) => o.label.startsWith('Shelf'));
+    const shelfObs = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf'));
     
     return(<>
         <div id="manage-shelves-modal" className="open">
@@ -23,7 +23,7 @@ export function ManageShelvesModal({
               return <>
                 <div key={i} className="sf">
                   <label>
-                    { shelfOb.label }
+                    { shelfOb.objType }
                   </label> 
                   {/* <input
                     type="number"

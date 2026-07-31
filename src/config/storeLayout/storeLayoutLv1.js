@@ -96,9 +96,9 @@ export const OBJECT_3D = [
   { x: .75, z: -0.5, hw: 0.9, hd: 0.25, row:"C", id:3, colorOuterFrame: "#201b1b", side:"back", objType: 'Shelf' },
   // fridges
 
-  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", objType: 'Fridge' },
-  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", objType: 'Fridge' },
-  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", objType: 'Fridge' },
+  { x:-10.5, y:1, z:3.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", side:"right", objType: 'Fridge' },
+  { x:-10.5, y:1, z:1.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", side:"right", objType: 'Fridge' },
+  { x:-10.5, y:1, z:-0.5, hw:1.35, hh:2, hd:.15, colorOuterFrame: "#201b1b", colorRack: "#adadad", colorGlass: "#a9e7f4", side:"right", objType: 'Fridge' },
 
   // POS counter
   { x: 0, z: 3.5, hw: 2, hd: 0.4, objType: 'POS' },
@@ -133,6 +133,7 @@ const posObstacle = OBJECT_3D.find((o) => o.objType === 'POS');
 const atmObstacle = OBJECT_3D.find((o) => o.objType === 'ATM');
 const stkObstacle = OBJECT_3D.find((o) => o.objType === 'Stock');
 const breakObstacle = OBJECT_3D.find((o) => o.objType === 'Break');
+const fridgeObstacle = OBJECT_3D.find((o) => o.objType === 'Fridge');
 
 // Shelf centre positions (3D) — the "browsing" point just in front of each shelf
 export const SHELF3D = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf')).map((o) => ({
@@ -140,6 +141,12 @@ export const SHELF3D = OBJECT_3D.filter((o) => o.objType.startsWith('Shelf')).ma
   z: o.side=="front"? o.z-.5: o.z+.5,
   side: o.side
 }));
+export const FRIDGE3D = OBJECT_3D.filter((o) => o.objType.startsWith('Fridge')).map((o) => ({
+  x: o.side == "right" ? o.x +1.05 : o.x -1.05,
+  z: o.z,
+  side: o.side
+}));
+
 export const ATM3D = { x: atmObstacle.x, z: atmObstacle.z - 1 };
 export const POS3D = { x: posObstacle.x, z: posObstacle.z - 1.2 };
 export const EXIT3D = { x: 0, z: 7.5 };

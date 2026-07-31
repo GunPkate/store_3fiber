@@ -1,5 +1,7 @@
 export const SHELFLAYOUT = [
-  { label: 'Cola', 
+  { 
+    shelfIdx: 0,
+    label: 'Salt', 
     color:"#ded2ad",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
@@ -12,7 +14,9 @@ export const SHELFLAYOUT = [
     rowStack: 1,
     shelfRow: 2
   },
-  { label: 'Snacks', 
+  { 
+    shelfIdx: 1,
+    label: 'Snacks', 
     color:"#e07878",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
@@ -25,7 +29,9 @@ export const SHELFLAYOUT = [
     rowStack: 1,
     shelfRow: 2
   },
-  { label: 'Juice', 
+  { 
+    shelfIdx: 3,
+    label: 'Sugar', 
     color:"#ded2ad",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
@@ -38,7 +44,9 @@ export const SHELFLAYOUT = [
     rowStack: 1,
     shelfRow: 2
   },
-  { label: 'Candy', 
+  { 
+    shelfIdx: 2,
+    label: 'Candy', 
     color:"#e07878",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
@@ -51,7 +59,9 @@ export const SHELFLAYOUT = [
     rowStack: 1,
     shelfRow: 2
   },
-  { label: 'Cookies', 
+  { 
+    shelfIdx: 5,
+    label: 'Cookies', 
     color:"#e07878",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
@@ -64,7 +74,9 @@ export const SHELFLAYOUT = [
     rowStack: 2,
     shelfRow: 3
   },
-  { label: 'Misc', 
+  { 
+    shelfIdx: 8,
+    label: 'Misc', 
     color:"#78e082",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
@@ -77,7 +89,9 @@ export const SHELFLAYOUT = [
     rowStack: 1,
     shelfRow: 2
   },
-  { label: 'Chips', 
+  { 
+    shelfIdx: 4,
+    label: 'Chips', 
     color:"#f9e247",
     details: // x =row size, z = stack (Chips x: -1, z: -2)
       {
@@ -90,7 +104,9 @@ export const SHELFLAYOUT = [
     rowStack: 2,
     shelfRow: 3
   }, 
-  { label: 'Shampoo', 
+  { 
+    shelfIdx: 7,
+    label: 'Shampoo', 
     color:"#9588e9",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {
@@ -103,7 +119,9 @@ export const SHELFLAYOUT = [
     rowStack: 1,
     shelfRow: 2
   }, 
-  { label: 'Soap', 
+  { 
+    shelfIdx: 6,
+    label: 'Soap', 
     color:"#f947db",
     details: // x =row size, z = stack (cookies x: -1, z: -0.5)
       {

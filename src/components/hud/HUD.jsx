@@ -6,6 +6,8 @@ import { ClockBar } from './sections/ClockBar';
 import { LiveStats } from './sections/LiveStats';
 import { SettingModal } from './modal/SettingModal';
 import { ManageShelvesModal } from './modal/ManageShelvesModal';
+import { StorageModal } from './modal/StorageModal';
+import { StockWithdrawModal } from './modal/StockWithdrawModal';
 
 const TOOLS = [
   // { tool: 'none', label: '🎥 View' },
@@ -56,6 +58,8 @@ export default function HUD() {
   const [cfgFov, setCfgFov] = useState(fov);
 
   const [openManageShelves,setOpenManageShelves] = useState(false)
+  const [openStorage,setOpenStorage] = useState(false)
+  const [openWithdraw,setOpenWithdraw] = useState(false)
 
   function toggleStat(getBtn){
     if(getBtn == 'overview'){
@@ -119,6 +123,12 @@ export default function HUD() {
         ))}
         <button className="tb" onClick={() => setSettingsOpen(true)}>
           ⚙️ Settings
+        </button>
+        <button className="tb" onClick={() => setOpenStorage(!openStorage)}>
+          ⚙️ Storage
+        </button>
+        <button className="tb" onClick={() => setOpenWithdraw(!openWithdraw)}>
+          ⚙️ Withdraw
         </button>
         <button className="tb" onClick={() => setOpenManageShelves(!openManageShelves)}>
           ⚙️ Manage Shelves
@@ -189,6 +199,36 @@ export default function HUD() {
           setCfgFov ={setCfgFov}
           applySettings ={applySettings}
           setOpenManageShelves ={setOpenManageShelves}
+        />:<></>
+      }
+
+      {openWithdraw  ?
+        <StockWithdrawModal
+          cfgLimit ={cfgLimit}
+          setCfgLimit ={setCfgLimit}
+          cfgSpawn ={cfgSpawn}
+          setCfgSpawn ={setCfgSpawn}
+          cfgShowPaths ={cfgShowPaths}
+          setCfgShowPaths ={setCfgShowPaths}
+          cfgFov ={cfgFov}
+          setCfgFov ={setCfgFov}
+          applySettings ={applySettings}
+          setOpenWithdraw ={setOpenWithdraw}
+        />:<></>
+      }
+
+      {openStorage  ?
+        <StorageModal
+          cfgLimit ={cfgLimit}
+          setCfgLimit ={setCfgLimit}
+          cfgSpawn ={cfgSpawn}
+          setCfgSpawn ={setCfgSpawn}
+          cfgShowPaths ={cfgShowPaths}
+          setCfgShowPaths ={setCfgShowPaths}
+          cfgFov ={cfgFov}
+          setCfgFov ={setCfgFov}
+          applySettings ={applySettings}
+          setOpenStorage ={setOpenStorage}
         />:<></>
       }
 

@@ -6,6 +6,8 @@ import CharacterManager from './npc/CharacterManager.jsx';
 import SimulationLoop from './simulation/SimulationLoop.jsx';
 import { simulationEngine, useUIStore } from '../service/state/uiState.js';
 import Waypoints from './waypoint/Waypoint.jsx';
+import { useRef } from 'react';
+import CameraRig from './carmera/CameraRig.jsx';
 
 export default function Experience() {
   const currentTool = useUIStore((s) => s.currentTool);
@@ -50,6 +52,7 @@ export default function Experience() {
         break;
     }
   };
+  const controlsRef = useRef();
 
   return (
     <>
@@ -65,6 +68,7 @@ export default function Experience() {
         shadow-mapSize-height={2048}
       />
       <OrbitControls
+        ref={controlsRef}
         makeDefault
         target={[0, 0, 0]}
         mouseButtons={{ LEFT: THREE.MOUSE.ROTATE, MIDDLE: THREE.MOUSE.DOLLY, RIGHT: THREE.MOUSE.PAN }}
@@ -75,6 +79,7 @@ export default function Experience() {
         enableDamping
         dampingFactor={0.12}
       />
+      <CameraRig controlsRef={controlsRef} />
       <StoreModel onFloorClick={handleFloorClick} />
       <Waypoints />
       <CharacterManager />

@@ -16,7 +16,7 @@ export function StockWithdrawModal({
 }){
     const hud = useUIStore((s) => s.hud);
     const withdrawItems = simulationEngine.stockWithdraw;
-    console.log("storeItems",withdrawItems)
+
     return(<>
         <div id="storage-modal" className="open">
           <div id="storage-box">

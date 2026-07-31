@@ -19,6 +19,12 @@ export function StorageModal({
     const shelfItems = simulationEngine.items;
     const withdrawItems = simulationEngine.stockWithdraw;
 
+    const fridgeWithdraws = storeItems.filter( item => item.type == "fridge")
+    const shelfWithdraws = storeItems.filter( item => item.type == "shelf")
+
+
+    console.log("modal shelfItems",shelfItems)
+    console.log("modal withdrawItems",withdrawItems)
     return(<>
         <div id="storage-modal" className="open">
           <div id="storage-box">
@@ -32,13 +38,13 @@ export function StorageModal({
                 <th>Withdraw</th>
               </tr>
               <tbody>
-              {storeItems && storeItems.length > 0 ? ( storeItems.map((storeItem, i) => {
+              {shelfWithdraws && shelfWithdraws.length > 0 ? ( shelfWithdraws.map((storeItem, i) => {
                   const shelfItem = shelfItems?.[i];
                   const withdrawItem = 
                     withdrawItems?.filter(x => x.id == i)
                       .reduce((accumulator, currentItem) => {
                           return accumulator + currentItem.qty;
-                        }, 0);
+                        }, 0)
                   return (
                         <tr key={storeItem.id || i}>
                           <td>
@@ -70,6 +76,46 @@ export function StorageModal({
                     </tr>
                   )
               }
+
+              {fridgeWithdraws && fridgeWithdraws.length > 0 ? ( fridgeWithdraws.map((storeItem, i) => {
+                  const shelfItem = shelfItems?.[i];
+                  const withdrawItem = 
+                    withdrawItems?.filter(x => x.fridgeId == i)
+                      .reduce((accumulator, currentItem) => {
+                          return accumulator + currentItem.qty;
+                        }, 0)
+                  return (
+                        <tr key={storeItem.id || i}>
+                          <td>
+                            <span className="item-name">{storeItem.name}</span>
+                          </td>
+                          <td>
+                            <span className="item-qty">
+                              {storeItem.qty} / {storeItem.maxQty}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="item-qty">
+                              {shelfItem ? `${shelfItem.qty} / ${shelfItem.maxQty}` : "N/A"}
+                            </span>
+                          </td>
+                          <td>
+                            <span className="item-qty">
+                              {withdrawItem ? `${withdrawItem} ` : 0}
+                            </span>
+                          </td>
+                        </tr>
+                      );
+                    })
+                  ) : (
+                    <tr>
+                      <td colSpan="3" style={{ textAlign: "center", opacity: 0.6 }}>
+                        No items found
+                      </td>
+                    </tr>
+                  )
+              }
+
               </tbody>
             </table>
             <button

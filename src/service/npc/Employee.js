@@ -215,6 +215,7 @@ export class Employee extends Npc {
         toRestockItem.qty = qtyAmount;
         let withdraw = {
           id: toRestockItem.shelfIdx,
+          fridgeId: toRestockItem.fridgeIdx,
           itemName: toRestockItem.name,
           qty: toRestockItem.qty,
           date: eng.formatTime(),

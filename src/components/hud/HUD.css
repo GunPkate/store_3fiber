@@ -118,38 +118,6 @@
     color: #fff
 }
 
-#toolbar {
-    position: fixed;
-    bottom: 12px;
-    left: 50%;
-    transform: translateX(-50%);
-    display: flex;
-    gap: 7px;
-    z-index: 10;
-    flex-wrap: wrap;
-    justify-content: center;
-    max-width: 96vw
-}
-
-.tb {
-    background: rgba(8, 12, 35, .92);
-    border: 1px solid rgba(255, 255, 255, .18);
-    color: #dde;
-    padding: 6px 13px;
-    border-radius: 18px;
-    cursor: pointer;
-    font-size: 11.5px;
-    transition: .15s;
-    white-space: nowrap;
-    font-family: 'Segoe UI', sans-serif
-}
-
-.tb:hover,
-.tb.on {
-    background: #2a40aa;
-    border-color: #4466dd
-}
-
 .sf {
     display: flex;
     justify-content: space-between;
@@ -305,4 +273,3 @@
     font-family: monospace;
     opacity: 0.9;
 }
-

@@ -3,7 +3,7 @@ export const glass_bg = "backdrop-blur-md bg-gray-600/20 border border-white/10 
 export const glass_text = "text-1xl font-bold"
 
 export const toolbar_wrap =
-  "fixed bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 sm:gap-2 max-w-[95vw] px-2";
+  "flex flex-row fixed bottom-2 sm:bottom-3 left-1/2 -translate-x-1/2 z-10 flex flex-col items-center gap-1.5 sm:gap-2"
 
 export const toolbar_row = "flex flex-wrap md:flex-nowrap items-center justify-center gap-1.5 sm:gap-2 min-h-[70px] w-full";
 

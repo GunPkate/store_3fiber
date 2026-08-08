@@ -2,10 +2,12 @@ import { useState } from "react";
 import { useUIStore } from "../../../service/state/uiState";
 
 export function LiveStats({
+    display,
     statOverview,
     statLive,
     statEmp,
     statEvent,
+    setDisplay,
     setStatOverview,
     setStatLive,
     setStatEmp,
@@ -13,13 +15,45 @@ export function LiveStats({
     toggleStat,
     toggleAllStat
 }){
-    const hud = useUIStore((s) => s.hud);   
+    const hud = useUIStore((s) => s.hud);
+    
+    const [selectedView, setSelectedView] = useState("KeyC"); 
+    const handleCameraChange = (e) => {
+        const keyCode = e.target.value;
+        setSelectedView(keyCode);
+
+        // Dispatches keydown event so CameraRig.jsx picks it up automatically
+        window.dispatchEvent(new KeyboardEvent('keydown', { code: keyCode }));
+    };
+
+
     return (<>
         {/* HUD top-left */}
         <div className="panel" id="hud-tl">
-        {!statOverview && !statLive && !statEmp && !statEvent?
+        {!statOverview && !statLive && !statEmp && !statEvent && !display?
             <button onClick={()=>{toggleAllStat()}}>View All Stat</button>
         :   <button style={{marginBottom: "4px"}} onClick={()=>{toggleAllStat()}}>Hide All Stat</button>}
+
+        {display ? <>
+            <div className="ph">Display</div>
+
+            <div className="er">
+                <span> Camera </span>
+                <select 
+                    value={selectedView} 
+                    onChange={handleCameraChange}
+                    style={{ backgroundColor: "#1e1e1e"}}
+                >
+                    <option value="KeyC">Default Cam (C)</option>
+                    {/* <option value="Digit1">1st Floor Store (1)</option> */}
+                    <option className="er" value="Digit3">Drink (3)</option>
+                    <option className="er" value="Digit4">Store (4)</option>
+                    <option className="er" value="Digit5">Shelves (5)</option>
+                    <option className="er" value="Digit2">2nd Floor Top-Down (2)</option>
+                </select>
+            </div>
+        </> : <></>}
+
         {statOverview ?<>
             <div className="ph">Store Overview</div>
             <div className="er">

@@ -15,6 +15,7 @@ const TOOLS = [
   // { tool: 'del-wp', label: '❌ Del WP' },
   // { tool: 'link-wp', label: '🔗 Link WP' },
 
+  { tool: 'display', icon:'🎥', label: 'Display' },
   { tool: 'overview', icon:'🎥', label: 'Overview' },
   { tool: 'live', icon:'📈', label: 'Live' },
   { tool: 'emp', icon:'👥', label: 'Employees' },
@@ -56,6 +57,7 @@ export default function HUD() {
   const pointerPos = useUIStore((s) => s.pointerPos);
   const fov = useUIStore((s) => s.fov);
 
+  const [display, setDisplay] = useState(false);
   const [statOverview, setStatOverview] = useState(false);
   const [statLive, setStatLive] = useState(false);
   const [statEmp, setStatEmp] = useState(false);
@@ -70,7 +72,9 @@ export default function HUD() {
   const [openWithdraw,setOpenWithdraw] = useState(false)
 
   function toggleStat(getBtn){
-    if(getBtn == 'overview'){
+    if(getBtn == 'display'){
+      setDisplay(!display)
+    }else if(getBtn == 'overview'){
       setStatOverview(!statOverview)
     }else if(getBtn == 'live'){
       setStatLive(!statLive)
@@ -82,12 +86,14 @@ export default function HUD() {
   }
 
   function toggleAllStat(){
-    if(!statOverview && !statLive && !statEmp && !statEvent){
+    if(!display && !statOverview && !statLive && !statEmp && !statEvent){
+      setDisplay(true)
       setStatOverview(true)
       setStatLive(true)
       setStatEmp(true)
       setStatEvent(true)
     }else{
+      setDisplay(false)
       setStatOverview(false)
       setStatLive(false)
       setStatEmp(false)
@@ -99,10 +105,12 @@ export default function HUD() {
     <>
       <ClockBar/>
       <LiveStats 
+        display = {display}
         statOverview = {statOverview}
         statLive = {statLive}
         statEmp = {statEmp}
         statEvent = {statEvent}
+        setDisplay = {setDisplay}
         setStatOverview = {setStatOverview}
         setStatLive = {setStatLive}
         setStatEmp = {setStatEmp}

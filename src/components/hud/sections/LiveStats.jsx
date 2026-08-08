@@ -17,13 +17,16 @@ export function LiveStats({
 }){
     const hud = useUIStore((s) => s.hud);
     
-    const [selectedView, setSelectedView] = useState("KeyC"); 
     const handleCameraChange = (e) => {
         const keyCode = e.target.value;
-        setSelectedView(keyCode);
 
-        // Dispatches keydown event so CameraRig.jsx picks it up automatically
         window.dispatchEvent(new KeyboardEvent('keydown', { code: keyCode }));
+
+        setTimeout(()=>{
+            window.dispatchEvent(new KeyboardEvent('keydown', { code: "KeyW" }));
+            window.dispatchEvent(new KeyboardEvent('keyup', { code: "KeyW" }));
+        },1000)
+
     };
 
 
@@ -40,7 +43,6 @@ export function LiveStats({
             <div className="er">
                 <span> Camera </span>
                 <select 
-                    value={selectedView} 
                     onChange={handleCameraChange}
                     style={{ backgroundColor: "#1e1e1e"}}
                 >

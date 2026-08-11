@@ -8,8 +8,10 @@ import { simulationEngine, useUIStore } from '../service/state/uiState.js';
 import Waypoints from './waypoint/PathWayPoint.jsx';
 import { useRef } from 'react';
 import CameraRig from './carmera/CameraRig.jsx';
+import DocsScene from './docs/DocsScene.jsx';
 
 export default function Experience() {
+  const activeScene = useUIStore((s) => s.activeScene);
   const currentTool = useUIStore((s) => s.currentTool);
   const linkingWP = useUIStore((s) => s.linkingWP);
   const setLinkingWP = useUIStore((s) => s.setLinkingWP);
@@ -53,6 +55,10 @@ export default function Experience() {
     }
   };
   const controlsRef = useRef();
+
+  if (activeScene === 'docs') {
+    return <DocsScene />;
+  }
 
   return (
     <>

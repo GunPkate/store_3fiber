@@ -4,6 +4,10 @@ import { SimulationEngine } from "../engine/simulationEngine.js";
 export const simulationEngine = new SimulationEngine()
 
 export const useUIStore = create( (set) => ({
+  // ── swapped doc or simulation
+    activeScene: 'simulation', // 'sim' | 'docs'
+    setActiveScene: (v) => set({ activeScene: v }),
+
   // ── tool / selection state ──────────────────────────────
     currentTool: 'none', // none | add-wp | del-wp | link-wp | spawn-c | spawn-e | rm-npc
     setTool: (tool) => {

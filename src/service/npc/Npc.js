@@ -12,8 +12,8 @@ export class Npc {
     this.path = [];
     this.pathIdx = 0;
     this.speed = 2.8 + (Math.random() * 0.6 - 0.3);
-    this._wTimer = 0;
-    this._wTarget = null;
+    this._wanderTimer = 0;
+    this._wanderTarget = null;
     // label text shown above head, kept up to date by subclasses
     this.label = '';
     this.labelColor = '#88ff88';
@@ -23,8 +23,8 @@ export class Npc {
     return this.engine.graph;
   }
 
-  moveTo(tx, tz) {
-    this.path = this.graph.pathXZ(this.x, this.z, tx, tz);
+  moveTo(targetX, targetZ) {
+    this.path = this.graph.pathXZ(this.x, this.z, targetX, targetZ);
     this.pathIdx = 0;
   }
 
@@ -34,10 +34,10 @@ export class Npc {
 
   _followPath(dt) {
     if (this.isAtTarget()) return;
-    const tgt = this.path[this.pathIdx];
-    const dx = tgt.x - this.x,
-      dz = tgt.z - this.z;
-    const dist = Math.hypot(dx, dz);
+    const target = this.path[this.pathIdx];
+    const deltaX = target.x - this.x,
+      deltaZ = target.z - this.z;
+    const dist = Math.hypot(deltaX, deltaZ);
     const step = this.speed * dt;
 
     // Stuck detection: if this NPC hasn't gotten measurably closer to its
@@ -54,48 +54,48 @@ export class Npc {
         const activity = this.curTask ?? this.state ?? 'unknown';
         console.warn(
           `[stuck] ${this.name} (${this.type}) stuck during "${activity}" at ` +
-          `(${this.x.toFixed(1)}, ${this.z.toFixed(1)}) heading to (${tgt.x}, ${tgt.z})`
+          `(${this.x.toFixed(1)}, ${this.z.toFixed(1)}) heading to (${target.x}, ${target.z})`
         );
         this._loggedStuck = true;
       }
     }
 
     if (dist < step + 0.05) {
-      this.x = tgt.x;
-      this.z = tgt.z;
+      this.x = target.x;
+      this.z = target.z;
       this.pathIdx++;
       this._stuckTimer = 0;
       this._loggedStuck = false;
       this._lastStuckDist = undefined;
     } else {
-      this.x += (dx / dist) * step;
-      this.z += (dz / dist) * step;
+      this.x += (deltaX / dist) * step;
+      this.z += (deltaZ / dist) * step;
     }
     if (dist > 0.05) {
-      this.rotationY = Math.atan2(dx, dz);
+      this.rotationY = Math.atan2(deltaX, deltaZ);
     }
   }
 
   /** Path points still ahead, for the optional path-trail visual. */
   remainingPath() {
     if (!this.path || this.pathIdx >= this.path.length) return null;
-    const pts = [{ x: this.x, z: this.z }];
-    for (let i = this.pathIdx; i < this.path.length; i++) pts.push(this.path[i]);
-    return pts;
+    const points = [{ x: this.x, z: this.z }];
+    for (let i = this.pathIdx; i < this.path.length; i++) points.push(this.path[i]);
+    return points;
   }
 
-  wander(dt, cx, cz, range) {
-    this._wTimer -= dt;
-    if (this._wTimer <= 0 || !this._wTarget) {
-      const ang = Math.random() * Math.PI * 2,
-        r = 0.5 + Math.random() * range;
-      const tx = cx + Math.cos(ang) * r,
-        tz = cz + Math.sin(ang) * r;
-      if (!inObs(tx, tz, 0.2)) {
-        this._wTarget = { x: tx, z: tz };
-        this.moveTo(tx, tz);
+  wander(dt, centerX, centerZ, range) {
+    this._wanderTimer -= dt;
+    if (this._wanderTimer <= 0 || !this._wanderTarget) {
+      const angle = Math.random() * Math.PI * 2,
+        radius = 0.5 + Math.random() * range;
+      const targetX = centerX + Math.cos(angle) * radius,
+        targetZ = centerZ + Math.sin(angle) * radius;
+      if (!inObs(targetX, targetZ, 0.2)) {
+        this._wanderTarget = { x: targetX, z: targetZ };
+        this.moveTo(targetX, targetZ);
       }
-      this._wTimer = 1.5 + Math.random() * 2.5;
+      this._wanderTimer = 1.5 + Math.random() * 2.5;
     }
     this._followPath(dt);
   }

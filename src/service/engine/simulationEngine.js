@@ -89,27 +89,27 @@ export class SimulationEngine {
     }
 
     getTimeHelper() {
-        const m = this.gameTime % DAY_GAME;
-        return { h: Math.floor(m / 60), m: Math.floor(m % 60) };
+        const minutesOfDay = this.gameTime % DAY_GAME;
+        return { hours: Math.floor(minutesOfDay / 60), minutes: Math.floor(minutesOfDay % 60) };
     }
 
     formatTime() {
-        const { h, m } = this.getTimeHelper();
-        return `${String(h).padStart(2, '0')}:${String(m).padStart(2, '0')}`;
+        const { hours, minutes } = this.getTimeHelper();
+        return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}`;
     }
 
     shiftLabel() {
-        const { h } = this.getTimeHelper();
-        if (h >= 6 && h < 14) return 'SHIFT DAY';
-        if (h >= 14 && h < 22) return 'SHIFT NIGHT';
-        if (h === 5) return 'PRE-OPEN';
-        if (h >= 22) return 'CLOSING';
+        const { hours } = this.getTimeHelper();
+        if (hours >= 6 && hours < 14) return 'SHIFT DAY';
+        if (hours >= 14 && hours < 22) return 'SHIFT NIGHT';
+        if (hours === 5) return 'PRE-OPEN';
+        if (hours >= 22) return 'CLOSING';
         return 'CLOSED';
     }
 
     isOpen() {
-        const { h } = this.getTimeHelper();
-        return h >= 6 && h < 22;
+        const { hours } = this.getTimeHelper();
+        return hours >= 6 && hours < 22;
     }
 
     addEvt(msg) {
@@ -119,35 +119,35 @@ export class SimulationEngine {
 
   // ── NPC management ──────────────────────────────────────
   findAvailEmp() {
-    return this.npcs.find((n) => n.type === 'employee' && n.state !== 'occupied' && n.state !== 'break');
+    return this.npcs.find((npc) => npc.type === 'employee' && npc.state !== 'occupied' && npc.state !== 'break');
   }
   
   // ── waypoint tool actions ───────────────────────────────
   addWaypoint(x, z, type = 'generic') {
     if (inObs(x, z, 0.15)) return null;
-    const n = this.graph.addNode(x, z, type);
-    if (n) {
+    const node = this.graph.addNode(x, z, type);
+    if (node) {
       this.addEvt('📍 Waypoint added');
       this.notifyGraphChange();
     } else {
       this.addEvt('⚠️ Blocked by obstacle');
     }
-    return n;
+    return node;
   }
   removeWaypoint(id) {
     this.graph.removeNode(id);
     this.addEvt('🗑 WP removed');
     this.notifyGraphChange();
   }
-  linkWaypoints(a, b) {
-    this.graph.linkNodes(a, b);
+  linkWaypoints(nodeA, nodeB) {
+    this.graph.linkNodes(nodeA, nodeB);
     this.addEvt('🔗 Linked');
     this.notifyGraphChange();
   }
   setWaypointType(id, type) {
-    const n = this.graph.getNode(id);
-    if (n) {
-      n.type = type;
+    const node = this.graph.getNode(id);
+    if (node) {
+      node.type = type;
       this.notifyGraphChange();
     }
   }
@@ -159,27 +159,27 @@ export class SimulationEngine {
       this.addEvt('⚠️ Customer limit reached');
       return null;
     }
-    const nc = this.createNPC('customer', x, z);
-    const item = nc.curItem();
+    const customer = this.createNPC('customer', x, z);
+    const item = customer.curItem();
     if (item) {
-      const shelf = nc.shelfFor(item.name);
-      if (shelf) nc.moveTo(shelf.x, shelf.z);
+      const shelf = customer.shelfFor(item.name);
+      if (shelf) customer.moveTo(shelf.x, shelf.z);
     }
     this.addEvt('👤 Customer spawned');
-    return nc;
+    return customer;
   }
   spawnEmployeeAt(x, z) {
     if (inObs(x, z, 0.2)) return null;
-    const e = this.createNPC('employee', x, z);
+    const employee = this.createNPC('employee', x, z);
     this.addEvt('👷 Employee spawned');
-    return e;
+    return employee;
   }
 
     getSnapshot() {
         const custs = this.custInStore();
-        const stockQty = this.items.reduce((s, i) => s + i.qty, 0);
-        const maxQty = this.items.reduce((s, i) => s + i.maxQty, 0);
-        const aw = this.served > 0 ? ((this.totalWait / this.served) * (DAY_REAL / DAY_GAME) * 60).toFixed(0) : 0;
+        const stockQty = this.items.reduce((sum, item) => sum + item.qty, 0);
+        const maxQty = this.items.reduce((sum, item) => sum + item.maxQty, 0);
+        const avgWaitSeconds = this.served > 0 ? ((this.totalWait / this.served) * (DAY_REAL / DAY_GAME) * 60).toFixed(0) : 0;
         return {
             clock: this.formatTime(),
             day: this.day,
@@ -189,14 +189,14 @@ export class SimulationEngine {
             posCount: this.posQueue.length,
             served: this.served,
             stockPct: maxQty > 0 ? Math.floor((stockQty / maxQty) * 100) : 0,
-            avgWait: aw,
+            avgWait: avgWaitSeconds,
             customerLimit: this.CFG.customerLimit,
             employees: this.npcs
-                .filter((n) => n.type === 'employee')
-                .map((e) => ({ id: e.id, role: e.role.role, task: e.curTask, state: e.state })),
+                .filter((npc) => npc.type === 'employee')
+                .map((employee) => ({ id: employee.id, role: employee.role.role, task: employee.curTask, state: employee.state })),
             events: this.evts.slice(0, 6),
-            storageItems: this.storageItems.map((i) => ({ ...i })),
-            shelfItems: this.items.map((i) => ({ ...i })),
+            storageItems: this.storageItems.map((item) => ({ ...item })),
+            shelfItems: this.items.map((item) => ({ ...item })),
         };
     }
 
@@ -210,7 +210,7 @@ export class SimulationEngine {
         }
         
         this.updateSpawn(rawDt); // raw dt avoids speed-multiplied spawn bursts
-        this.npcs.forEach((n) => n.update(dt));
+        this.npcs.forEach((npc) => npc.update(dt));
         this.updatePOS();
         
         if (this.npcsToRemove.length) {
@@ -221,15 +221,15 @@ export class SimulationEngine {
         // auto restock check every 2 game hours
         if (Math.floor(this.gameTime) % 120 === 1) {
             this.npcs
-            .filter((n) => n.type === 'employee' && n.role.role === 'stocker' && n.curTask !== 'restock')
-            .forEach((e) => {
-                if (this.items.some((s) => s.qty < s.maxQty * 0.4)) e.assignTask('restock');
+            .filter((npc) => npc.type === 'employee' && npc.role.role === 'stocker' && npc.curTask !== 'restock')
+            .forEach((employee) => {
+                if (this.items.some((item) => item.qty < item.maxQty * 0.4)) employee.assignTask('restock');
             });
         }
     }
 
     custInStore() {
-        return this.npcs.filter((n) => n.type === 'customer' && n.state !== 'done').length;
+        return this.npcs.filter((npc) => npc.type === 'customer' && npc.state !== 'done').length;
     }
 
     createNPC(type, x, z, name) {
@@ -241,7 +241,7 @@ export class SimulationEngine {
     }
 
     initEmpTask(emp) {
-        const cashiers = this.npcs.filter((n) => n.type === 'employee' && n.curTask === 'cashier').length;
+        const cashiers = this.npcs.filter((npc) => npc.type === 'employee' && npc.curTask === 'cashier').length;
         if (cashiers < 1 && emp.role.role === 'cashier') {
             emp.setTask('cashier');
             return;
@@ -251,24 +251,24 @@ export class SimulationEngine {
     }
 
     removeNPC(id) {
-        const npc = this.npcs.find((n) => n.id === id);
+        const npc = this.npcs.find((existingNpc) => existingNpc.id === id);
         if (!npc) return;
-        this.posQueue = this.posQueue.filter((c) => c.id !== id);
+        this.posQueue = this.posQueue.filter((customer) => customer.id !== id);
         // npc.dispose();
-        this.npcs = this.npcs.filter((n) => n.id !== id);
+        this.npcs = this.npcs.filter((existingNpc) => existingNpc.id !== id);
         this.notifyNpcs();
     }
     
     updatePOS() {
-         this.npcs.forEach((n) => {
-             if (n.type === 'customer' && n.state === 'checkingout' && n.isAtTarget() && !this.posQueue.includes(n)) {
-                 this.posQueue.push(n);
+         this.npcs.forEach((npc) => {
+             if (npc.type === 'customer' && npc.state === 'checkingout' && npc.isAtTarget() && !this.posQueue.includes(npc)) {
+                 this.posQueue.push(npc);
                 }
             });
-            this.posQueue.forEach((c, i) => {
-                const tx = this.POS3D.x - 2 + i * 1.1,
-                tz = this.POS3D.z + 0.8;
-                if (Math.hypot(c.x - tx, c.z - tz) > 0.3) c.moveTo(tx, tz);
+            this.posQueue.forEach((customer, idx) => {
+                const targetX = this.POS3D.x - 2 + idx * 1.1,
+                targetZ = this.POS3D.z + 0.8;
+                if (Math.hypot(customer.x - targetX, customer.z - targetZ) > 0.3) customer.moveTo(targetX, targetZ);
             });
     }
             
@@ -278,16 +278,16 @@ export class SimulationEngine {
         this.custSpawnTimer += dt * (DAY_GAME / DAY_REAL); // advance in game-seconds
         if (this.custSpawnTimer >= this.CFG.spawnInterval) {
             this.custSpawnTimer = 0;
-            const n = this.createNPC(
+            const customer = this.createNPC(
                 'customer',
                 this.SPAWN3D.x + (Math.random() * 0.6 - 0.3),
                 this.SPAWN3D.z,
                 ''
             );
-            const item = n.curItem();
+            const item = customer.curItem();
             if (item) {
-                const shelf = n.shelfFor(item.name);
-                if (shelf) n.moveTo(shelf.x, shelf.z);
+                const shelf = customer.shelfFor(item.name);
+                if (shelf) customer.moveTo(shelf.x, shelf.z);
             }
             this.addEvt('👤 Customer entered');
         }
@@ -295,21 +295,21 @@ export class SimulationEngine {
 
   // ── HUD snapshot (call at a throttled rate, not every frame) ──
     notifyGraphChange() {
-      this._graphListeners.forEach((cb) => cb());
+      this._graphListeners.forEach((callback) => callback());
     }
 
-    onNpcsChange(cb) {
-        this._npcListeners.add(cb);
-        return () => this._npcListeners.delete(cb);
+    onNpcsChange(callback) {
+        this._npcListeners.add(callback);
+        return () => this._npcListeners.delete(callback);
     }
 
-    onGraphChange(cb) {
-        this._graphListeners.add(cb);
-        return () => this._graphListeners.delete(cb);
+    onGraphChange(callback) {
+        this._graphListeners.add(callback);
+        return () => this._graphListeners.delete(callback);
     }
 
     notifyNpcs() {
-        this._npcListeners.forEach((cb) => cb());
+        this._npcListeners.forEach((callback) => callback());
     }
 }
 

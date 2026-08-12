@@ -47,6 +47,9 @@ export default function HUD() {
   const showWP = useUIStore((s) => s.showWP);
   const toggleShowWP = useUIStore((s) => s.toggleShowWP);
 
+  const activeScene = useUIStore((s) => s.activeScene);
+  const setActiveScene = useUIStore((s) => s.setActiveScene);
+
   const settingsOpen = useUIStore((s) => s.settingsOpen);
   const setSettingsOpen = useUIStore((s) => s.setSettingsOpen);
   const applySettings = useUIStore((s) => s.applySettings);
@@ -209,6 +212,18 @@ export default function HUD() {
               🗂
             </button>
           </div> */}
+          <div className={center_btn}>
+
+            <button
+              title={activeScene === 'docs' ? 'Back to Store' : 'Docs'}
+              aria-label={activeScene === 'docs' ? 'Back to Store' : 'Docs'}
+              className={`${icon_btn}${activeScene === 'docs' ? ` ${icon_btn_active}` : ''}`}
+              onClick={() => setActiveScene(activeScene === 'docs' ? 'sim' : 'docs')}
+              >
+              📘
+            </button>
+            <label>Docs</label>
+          </div>
         </div>
       </div>
 

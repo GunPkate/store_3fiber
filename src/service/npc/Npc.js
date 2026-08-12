@@ -39,10 +39,34 @@ export class Npc {
       dz = tgt.z - this.z;
     const dist = Math.hypot(dx, dz);
     const step = this.speed * dt;
+
+    // Stuck detection: if this NPC hasn't gotten measurably closer to its
+    // current waypoint for a while, it's likely wedged against an obstacle
+    // (e.g. a bad graph edge or an offset that lands inside a collision box).
+    // Logs which NPC and what it was doing, since neither is visible from
+    // the generic path array alone.
+    if (this._lastStuckDist === undefined || dist < this._lastStuckDist - 0.02) {
+      this._lastStuckDist = dist;
+      this._stuckTimer = 0;
+    } else {
+      this._stuckTimer = (this._stuckTimer || 0) + dt;
+      if (this._stuckTimer > 2 && !this._loggedStuck) {
+        const activity = this.curTask ?? this.state ?? 'unknown';
+        console.warn(
+          `[stuck] ${this.name} (${this.type}) stuck during "${activity}" at ` +
+          `(${this.x.toFixed(1)}, ${this.z.toFixed(1)}) heading to (${tgt.x}, ${tgt.z})`
+        );
+        this._loggedStuck = true;
+      }
+    }
+
     if (dist < step + 0.05) {
       this.x = tgt.x;
       this.z = tgt.z;
       this.pathIdx++;
+      this._stuckTimer = 0;
+      this._loggedStuck = false;
+      this._lastStuckDist = undefined;
     } else {
       this.x += (dx / dist) * step;
       this.z += (dz / dist) * step;

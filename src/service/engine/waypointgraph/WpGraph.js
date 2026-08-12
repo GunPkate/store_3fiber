@@ -21,7 +21,11 @@ export class WpGraph {
         this._autoConnect(2.2);
         specialPoints.forEach(([t, p]) =>{
             this._rawAdd(p.x, p.z, t)
-            this._connectSpecialPointsFrontBack(p)
+            if (t === 'stock') {
+                this._connectStockToWaypoint(p, -14, 5.5);
+            } else {
+                this._connectSpecialPointsFrontBack(p)
+            }
         })
         shelfPoints.forEach((s) => {
             this._rawAdd(s.x, s.z, 'shelf');
@@ -71,6 +75,28 @@ export class WpGraph {
             const z2 = Math.max(posEnd[0].z, posEnd[1].z);
             return x > x1 && x < x2 && z > z1 && z < z2;
         });
+    }
+
+    /**
+     * Connects the 'stock' special point directly to a specific existing grid
+     * node (wx, wz), rather than deriving a border via the generic row-matching
+     * heuristic (no OBSTACLE_POINTS row sits near x=-14, so that heuristic can't
+     * resolve this corridor). LOS-checked so a bad coordinate fails silently
+     * instead of producing an edge that visually cuts through a wall.
+     */
+    _connectStockToWaypoint(sp, wx, wz) {
+        const specialNode = this.nodes.find(
+            (n) => Math.hypot(n.x - sp.x, n.z - sp.z) < 0.4
+        );
+        if (!specialNode) return;
+
+        const target = this.nodes.find(
+            (n) => Math.abs(n.x - wx) < 0.1 && Math.abs(n.z - wz) < 0.1
+        );
+        if (!target) return;
+
+        if (!this._los(specialNode, target)) return;
+        this.linkNodes(specialNode, target);
     }
 
 _connectSpecialPointsRightLeft(sp) {

@@ -4,6 +4,27 @@ import { Npc } from "./Npc";
 export const TASK_PRI = { cashier: 100, assistCustomer: 80, restock: 60, cleaningFloor: 40, patrol: 20, idle: 0 };
 export const ROLE_TASK = { cashier: 'patrol', floorStaff: 'cleaningFloor', stocker: 'restock' };
 
+// Manual route in/out of the stock room. The narrow back corridor isn't
+// reliably routed by the generic waypoint grid, so it's a fixed sequence
+// from the shop floor (-10,-3.5) up the corridor to (-14,5.5), just outside
+// the stock point. The return trip reuses this same list in reverse, then
+// hands off to normal pathXZ for the remainder to the actual shelf/fridge.
+const STOCK_CORRIDOR = [
+  { x: -10, z: -3.5 },
+  { x: -11, z: -3.5 },
+  { x: -12, z: -3.5 },
+  { x: -14, z: -3.5 },
+  { x: -14, z: -2.5 },
+  { x: -14, z: -1.5 },
+  { x: -14, z: -0.5 },
+  { x: -14, z: 0.5 },
+  { x: -14, z: 1.5 },
+  { x: -14, z: 2.5 },
+  { x: -14, z: 3.5 },
+  { x: -14, z: 4.5 },
+  { x: -14, z: 5.5 },
+];
+
 export class Employee extends Npc {
   constructor(engine, x, z, name) {
     super(engine, 'employee', x, z);
@@ -20,7 +41,7 @@ export class Employee extends Npc {
     this._restockIdx = 0;
     this._restockPhase = '';
     this._custHelp = null;
-    this.name = name
+    this.name = name || `Employee-${this.id.toString().slice(-4)}`;
   }
   get state() {
     return this.decision.state;
@@ -93,7 +114,25 @@ export class Employee extends Npc {
     this._restockIdx = target;
     this._restockPhase = 'toStock';
     eng.addEvt(`📦 ${this.name} start restock`);
-    this.moveTo(eng.STOCK3D.x, eng.STOCK3D.z);
+    this._moveToStock();
+  }
+
+  /** Normal pathfinding to the corridor entrance, then the fixed corridor into the stock room. */
+  _moveToStock() {
+    const eng = this.engine;
+    const entrance = STOCK_CORRIDOR[0];
+    const toEntrance = this.graph.pathXZ(this.x, this.z, entrance.x, entrance.z);
+    this.path = [...toEntrance, ...STOCK_CORRIDOR.slice(1), { x: eng.STOCK3D.x, z: eng.STOCK3D.z }];
+    this.pathIdx = 0;
+  }
+
+  /** Same corridor, reversed, back out to the shop floor — then normal pathfinding to the shelf/fridge. */
+  _moveToShelf(selectedShelf) {
+    const exit = STOCK_CORRIDOR[0];
+    const corridorBack = [...STOCK_CORRIDOR].reverse();
+    const toShelf = this.graph.pathXZ(exit.x, exit.z, selectedShelf.x, selectedShelf.z);
+    this.path = [...corridorBack, ...toShelf];
+    this.pathIdx = 0;
   }
   checkStockByCustomer(cust, itemName) {
     const si = this.engine.items.find((s) => s.name === itemName);
@@ -202,7 +241,7 @@ export class Employee extends Npc {
       if (selectedShelf && validateStock && !eng.restockQue.includes(this._restockIdx) ){
         eng.restockQue.push(this._restockIdx)
         this._restockPhase = 'toShelf';
-        this.moveTo(selectedShelf.x, selectedShelf.z);
+        this._moveToShelf(selectedShelf);
         eng.restockQue = eng.restockQue.filter( x => x!= this._restockIdx)
       } else if(!validateStock){
         this.restoreTask();

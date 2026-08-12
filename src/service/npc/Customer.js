@@ -3,6 +3,7 @@ import { Npc } from "./Npc";
 export class Customer extends Npc {
   constructor(engine, x, z) {
     super(engine, 'customer', x, z);
+    this.name = 'customer';
     this.color = `hsl(${Math.floor(Math.random() * 360)}, 65%, 60%)`;
     this.capital = {
       npcId: this.id,

@@ -105,7 +105,7 @@ export const OBJECT_3D = [
   // ATM
   { x: 6.5, z: 6, hw: 0.3, hd: 0.4, objType: 'ATM' },
   // stock room
-  { x: -16, z: 4.5, hw: 0.8, hd: 1, objType: 'Stock' },
+  { x: -16, z: 4.5, hw: 0.8, hd: 1, side:"left", objType: 'Stock' },
   // break room back-right
   { x: 6.5, z: 1.5, hw: 0.8, hd: 0.7, objType: 'Break' },
   // outer walls

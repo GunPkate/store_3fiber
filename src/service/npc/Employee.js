@@ -4,27 +4,6 @@ import { Npc } from "./Npc";
 export const TASK_PRI = { cashier: 100, assistCustomer: 80, restock: 60, cleaningFloor: 40, patrol: 20, idle: 0 };
 export const ROLE_TASK = { cashier: 'patrol', floorStaff: 'cleaningFloor', stocker: 'restock' };
 
-// Manual route in/out of the stock room. The narrow back corridor isn't
-// reliably routed by the generic waypoint grid, so it's a fixed sequence
-// from the shop floor (-10,-3.5) up the corridor to (-14,5.5), just outside
-// the stock point. The return trip reuses this same list in reverse, then
-// hands off to normal pathXZ for the remainder to the actual shelf/fridge.
-const STOCK_CORRIDOR = [
-  { x: -10, z: -3.5 },
-  { x: -11, z: -3.5 },
-  { x: -12, z: -3.5 },
-  { x: -14, z: -3.5 },
-  { x: -14, z: -2.5 },
-  { x: -14, z: -1.5 },
-  { x: -14, z: -0.5 },
-  { x: -14, z: 0.5 },
-  { x: -14, z: 1.5 },
-  { x: -14, z: 2.5 },
-  { x: -14, z: 3.5 },
-  { x: -14, z: 4.5 },
-  { x: -14, z: 5.5 },
-];
-
 export class Employee extends Npc {
   constructor(engine, x, z, name) {
     super(engine, 'employee', x, z);
@@ -41,20 +20,20 @@ export class Employee extends Npc {
     this._restockIdx = 0;
     this._restockPhase = '';
     this._custHelp = null;
-    this.name = name || `Employee-${this.id.toString().slice(-4)}`;
+    this.name = name
   }
   get state() {
     return this.decision.state;
   }
-  set state(s) {
-    this.decision.state = s;
+  set state(newState) {
+    this.decision.state = newState;
   }
   get curTask() {
     return this.task.task;
   }
-  setTask(t) {
+  setTask(taskName) {
     this.previousTask.task = this.task.task;
-    this.task.task = t;
+    this.task.task = taskName;
     this._tTimer = 0;
     this._initTask();
   }
@@ -62,21 +41,21 @@ export class Employee extends Npc {
     this.task.task = this.previousTask.task;
     this._initTask();
   }
-  assignTask(t) {
-    if ((TASK_PRI[t] ?? -1) >= (TASK_PRI[this.curTask] ?? 0)) this.setTask(t);
+  assignTask(taskName) {
+    if ((TASK_PRI[taskName] ?? -1) >= (TASK_PRI[this.curTask] ?? 0)) this.setTask(taskName);
   }
   getTooltipLines() {
     return ['Employee', `Role: ${this.role.role}`, `Task: ${this.curTask}`, `State: ${this.state}`];
   }
 
   _initTask() {
-    const eng = this.engine;
+    const engine = this.engine;
     switch (this.curTask) {
       case 'cashier':
-        this.moveTo(eng.POS3D.x + (-1.5), eng.POS3D.z + 2);
+        this.moveTo(engine.POS3D.x + (-1.5), engine.POS3D.z + 2);
         break;
       case 'idle':
-        this.moveTo(eng.WAIT3D.x + Math.random() * 0.8 - 0.4, eng.WAIT3D.z + Math.random() * 0.8 - 0.4);
+        this.moveTo(engine.WAIT3D.x + Math.random() * 0.8 - 0.4, engine.WAIT3D.z + Math.random() * 0.8 - 0.4);
         break;
       case 'patrol':
         this._patrolIdx = 0;
@@ -97,46 +76,28 @@ export class Employee extends Npc {
       { x: 0, z: 2 },
       { x: -4, z: 2 },
     ];
-    const p = pts[this._patrolIdx % pts.length];
-    this.moveTo(p.x, p.z);
+    const nextPoint = pts[this._patrolIdx % pts.length];
+    this.moveTo(nextPoint.x, nextPoint.z);
     this._patrolIdx++;
   }
   _startRestock() {
-    const eng = this.engine;
-    let minQ = Infinity,
+    const engine = this.engine;
+    let lowestQty = Infinity,
       target = 0;
-    eng.items.forEach((s, i) => {
-      if (s.qty < s.maxQty * 0.6 && s.qty < minQ) {
-        minQ = s.qty;
-        target = i;
+    engine.items.forEach((item, index) => {
+      if (item.qty < item.maxQty * 0.6 && item.qty < lowestQty) {
+        lowestQty = item.qty;
+        target = index;
       }
     });
     this._restockIdx = target;
     this._restockPhase = 'toStock';
-    eng.addEvt(`📦 ${this.name} start restock`);
-    this._moveToStock();
-  }
-
-  /** Normal pathfinding to the corridor entrance, then the fixed corridor into the stock room. */
-  _moveToStock() {
-    const eng = this.engine;
-    const entrance = STOCK_CORRIDOR[0];
-    const toEntrance = this.graph.pathXZ(this.x, this.z, entrance.x, entrance.z);
-    this.path = [...toEntrance, ...STOCK_CORRIDOR.slice(1), { x: eng.STOCK3D.x, z: eng.STOCK3D.z }];
-    this.pathIdx = 0;
-  }
-
-  /** Same corridor, reversed, back out to the shop floor — then normal pathfinding to the shelf/fridge. */
-  _moveToShelf(selectedShelf) {
-    const exit = STOCK_CORRIDOR[0];
-    const corridorBack = [...STOCK_CORRIDOR].reverse();
-    const toShelf = this.graph.pathXZ(exit.x, exit.z, selectedShelf.x, selectedShelf.z);
-    this.path = [...corridorBack, ...toShelf];
-    this.pathIdx = 0;
+    engine.addEvt(`📦 ${this.name} start restock`);
+    this.moveTo(engine.STOCK3D.x, engine.STOCK3D.z);
   }
   checkStockByCustomer(cust, itemName) {
-    const si = this.engine.items.find((s) => s.name === itemName);
-    if (!si) return;
+    const stockItem = this.engine.items.find((item) => item.name === itemName);
+    if (!stockItem) return;
     this.state = 'occupied';
     this._custHelp = cust;
     this.setTask('restock');
@@ -173,17 +134,17 @@ export class Employee extends Npc {
     }
   }
   _checkPOSNeed(dt) {
-    const eng = this.engine;
-    if (eng.posQueue.length > 0 && this.curTask !== 'cashier' && this.state !== 'occupied') {
-      const hasCashier = eng.npcs.some(
-        (n) => n.type === 'employee' && n.curTask === 'cashier' && n.state !== 'break'
+    const engine = this.engine;
+    if (engine.posQueue.length > 0 && this.curTask !== 'cashier' && this.state !== 'occupied') {
+      const hasCashier = engine.npcs.some(
+        (npc) => npc.type === 'employee' && npc.curTask === 'cashier' && npc.state !== 'break'
       );
       if (!hasCashier) {
         this.assignTask('cashier');
         this._posWait = 0;
       }
     }
-    if (this.curTask === 'cashier' && eng.posQueue.length === 0) {
+    if (this.curTask === 'cashier' && engine.posQueue.length === 0) {
       this._posWait += dt;
       if (this._posWait > 5) {
         this.restoreTask();
@@ -192,19 +153,19 @@ export class Employee extends Npc {
     } else this._posWait = 0;
   }
   _updateCashier(dt) {
-    const eng = this.engine;
+    const engine = this.engine;
     if (!this.isAtTarget()) {
       this._followPath(dt);
       return;
     }
-    if (eng.posQueue.length > 0) {
-      const cust = eng.posQueue[0];
+    if (engine.posQueue.length > 0) {
+      const cust = engine.posQueue[0];
 
       if (cust.state === 'checkingout' ) {
-        // eng.addEvt(`👤 Customer ${cust.statee}`);
+        // engine.addEvt(`👤 Customer ${cust.statee}`);
         this._tTimer += dt;
         if (this._tTimer > 2) {
-          eng.posQueue.shift();
+          engine.posQueue.shift();
           cust.completePurchase();
           this._tTimer = 0;
         }
@@ -213,12 +174,12 @@ export class Employee extends Npc {
   }
   _updateClean(dt) {
     if (this.isAtTarget()) {
-      let tx, tz;
+      let targetX, targetZ;
       do {
-        tx = -7 + Math.random() * 14;
-        tz = -5 + Math.random() * 11;
-      } while (inObs(tx, tz, 0.3));
-      this.moveTo(tx, tz);
+        targetX = -7 + Math.random() * 14;
+        targetZ = -5 + Math.random() * 11;
+      } while (inObs(targetX, targetZ, 0.3));
+      this.moveTo(targetX, targetZ);
     }
     this._followPath(dt);
   }
@@ -227,22 +188,22 @@ export class Employee extends Npc {
     this._followPath(dt);
   }
   _updateRestock(dt) {
-    const eng = this.engine;
+    const engine = this.engine;
     if (!this.isAtTarget()) {
       this._followPath(dt);
       return;
     }
-    const toRestockItem = eng.items[this._restockIdx];
-    const storageItems = eng.storageItems[this._restockIdx];
+    const toRestockItem = engine.items[this._restockIdx];
+    const storageItems = engine.storageItems[this._restockIdx];
     const validateStock = this._validateStockItem(storageItems,toRestockItem)
     
     if (this._restockPhase === 'toStock') {
-      const selectedShelf = eng.SHELF3D[this._restockIdx];
-      if (selectedShelf && validateStock && !eng.restockQue.includes(this._restockIdx) ){
-        eng.restockQue.push(this._restockIdx)
+      const selectedShelf = engine.SHELF3D[this._restockIdx];
+      if (selectedShelf && validateStock && !engine.restockQue.includes(this._restockIdx) ){
+        engine.restockQue.push(this._restockIdx)
         this._restockPhase = 'toShelf';
-        this._moveToShelf(selectedShelf);
-        eng.restockQue = eng.restockQue.filter( x => x!= this._restockIdx)
+        this.moveTo(selectedShelf.x, selectedShelf.z);
+        engine.restockQue = engine.restockQue.filter( idx => idx != this._restockIdx)
       } else if(!validateStock){
         this.restoreTask();
       }
@@ -257,12 +218,12 @@ export class Employee extends Npc {
           fridgeId: toRestockItem.fridgeIdx,
           itemName: toRestockItem.name,
           qty: toRestockItem.qty,
-          date: eng.formatTime(),
+          date: engine.formatTime(),
           empName: this.name,
         }
-        eng.stockWithdraw.push(withdraw)
-        eng.addEvt(`📦 ${this.name} withdraw ${storageItems.name} remains ${storageItems.qty}`);
-        eng.addEvt(`📦 ${this.name} restocked ${toRestockItem.name} ${toRestockItem.qty}`);
+        engine.stockWithdraw.push(withdraw)
+        engine.addEvt(`📦 ${this.name} withdraw ${storageItems.name} remains ${storageItems.qty}`);
+        engine.addEvt(`📦 ${this.name} restocked ${toRestockItem.name} ${toRestockItem.qty}`);
       }
       if (this.state === 'occupied') {
         this.state = 'working';

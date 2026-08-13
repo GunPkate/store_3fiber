@@ -3,19 +3,18 @@ import { Npc } from "./Npc";
 export class Customer extends Npc {
   constructor(engine, x, z) {
     super(engine, 'customer', x, z);
-    this.name = 'customer';
     this.color = `hsl(${Math.floor(Math.random() * 360)}, 65%, 60%)`;
     this.capital = {
       npcId: this.id,
       cash: (200 + Math.random() * 600) | 0,
       bankAccount: [{ bank: 'KBB', amount: (300 + Math.random() * 1500) | 0 }],
     };
-    const ITEMS = engine.items;
-    const ni = 1 + Math.floor(Math.random() * 4);
-    const shuffled = [...ITEMS].sort(() => Math.random() - 0.5).slice(0, ni);
+    const storeItems = engine.items;
+    const wantedItemCount = 1 + Math.floor(Math.random() * 4);
+    const shuffledItems = [...storeItems].sort(() => Math.random() - 0.5).slice(0, wantedItemCount);
     this.wantedItem = {
       npcId: this.id,
-      item: shuffled.map((s) => ({ name: s.name, qty: 1 + Math.floor(Math.random() * 4) })),
+      item: shuffledItems.map((storeItem) => ({ name: storeItem.name, qty: 1 + Math.floor(Math.random() * 4) })),
     };
     this.cart = [];
     this.decision = { npcId: this.id, state: 'buying' };
@@ -26,15 +25,15 @@ export class Customer extends Npc {
   get state() {
     return this.decision.state;
   }
-  set state(s) {
-    this.decision.state = s;
+  set state(newState) {
+    this.decision.state = newState;
   }
   curItem() {
     return this.wantedItem.item[this._itemIdx] || null;
   }
   shelfFor(name) {
-    const i = this.engine.items.findIndex((s) => s.name === name);
-    return i >= 0 ? this.engine.SHELF3D[i] : null;
+    const itemIndex = this.engine.items.findIndex((item) => item.name === name);
+    return itemIndex >= 0 ? this.engine.SHELF3D[itemIndex] : null;
   }
   getTooltipLines() {
     return [
@@ -42,7 +41,7 @@ export class Customer extends Npc {
       `State: ${this.state}`,
       `Cash: $${this.capital.cash | 0}`,
       `Cart: ${this.cart.length} items`,
-      `Wants: ${this.wantedItem.item.map((i) => i.name).join(', ')}`,
+      `Wants: ${this.wantedItem.item.map((wanted) => wanted.name).join(', ')}`,
     ];
   }
 
@@ -68,12 +67,12 @@ export class Customer extends Npc {
     }
   }
   _buying(dt) {
-    const eng = this.engine;
+    const engine = this.engine;
     const item = this.curItem();
     if (!item) {
       this.state = 'checkingout';
-      this.moveTo(eng.POS3D.x, eng.POS3D.z);
-      if (!this._posJoin) this._posJoin = eng.gameTime;
+      this.moveTo(engine.POS3D.x, engine.POS3D.z);
+      if (!this._posJoin) this._posJoin = engine.gameTime;
       return;
     }
     const shelf = this.shelfFor(item.name);
@@ -86,12 +85,12 @@ export class Customer extends Npc {
       return;
     }
     // at shelf
-    const shelfItem = eng.items.find((s) => s.name === item.name);
+    const shelfItem = engine.items.find((storeItem) => storeItem.name === item.name);
     if (!shelfItem || shelfItem.qty <= 0) {
       if (Math.random() > 0.5) {
-        const emp = eng.findAvailEmp();
-        if (emp) {
-          emp.checkStockByCustomer(this, item.name);
+        const availableEmployee = engine.findAvailEmp();
+        if (availableEmployee) {
+          availableEmployee.checkStockByCustomer(this, item.name);
           this.state = 'thinking';
           return;
         }
@@ -112,31 +111,31 @@ export class Customer extends Npc {
     this._thinkTimer = 0.3;
   }
   _thinking(dt) {
-    const eng = this.engine;
+    const engine = this.engine;
     this.wander(dt, this.x, this.z, 0.8);
     this._thinkTimer -= dt;
     if (this._thinkTimer > 0) return;
     if (this._itemIdx < this.wantedItem.item.length) {
       const next = this.wantedItem.item[this._itemIdx];
-      const shelfItem = eng.items.find((s) => s.name === next?.name);
+      const shelfItem = engine.items.find((storeItem) => storeItem.name === next?.name);
       const needed = shelfItem ? shelfItem.price * next.qty : 0;
       if (needed > 0 && this.capital.cash < needed) {
         this.state = 'withdrawing';
-        this.moveTo(eng.ATM3D.x, eng.ATM3D.z);
+        this.moveTo(engine.ATM3D.x, engine.ATM3D.z);
       } else {
         const shelf = this.shelfFor(next.name);
         if (shelf) this.moveTo(shelf.x, shelf.z);
         this.state = 'buying';
       }
     } else {
-      const total = this.cart.reduce((s, c) => s + c.total, 0);
+      const total = this.cart.reduce((sum, cartItem) => sum + cartItem.total, 0);
       if (this.capital.cash < total) {
         this.state = 'withdrawing';
-        this.moveTo(eng.ATM3D.x, eng.ATM3D.z);
+        this.moveTo(engine.ATM3D.x, engine.ATM3D.z);
       } else {
         this.state = 'checkingout';
-        this.moveTo(eng.POS3D.x, eng.POS3D.z);
-        if (!this._posJoin) this._posJoin = eng.gameTime;
+        this.moveTo(engine.POS3D.x, engine.POS3D.z);
+        if (!this._posJoin) this._posJoin = engine.gameTime;
       }
     }
   }
@@ -155,9 +154,9 @@ export class Customer extends Npc {
     }
     for (const acc of this.capital.bankAccount) {
       if (acc.amount > 0) {
-        const w = Math.min(acc.amount, (300 + Math.random() * 500) | 0);
-        acc.amount -= w;
-        this.capital.cash += w;
+        const withdrawAmount = Math.min(acc.amount, (300 + Math.random() * 500) | 0);
+        acc.amount -= withdrawAmount;
+        this.capital.cash += withdrawAmount;
         break;
       }
     }
@@ -178,14 +177,14 @@ export class Customer extends Npc {
     else this.engine.npcsToRemove.push(this.id);
   }
   completePurchase() {
-    const eng = this.engine;
-    const total = this.cart.reduce((s, c) => s + c.total, 0);
+    const engine = this.engine;
+    const total = this.cart.reduce((sum, cartItem) => sum + cartItem.total, 0);
     this.capital.cash -= total;
-    eng.revenue += total;
-    eng.served++;
-    if (this._posJoin) eng.totalWait += eng.gameTime - this._posJoin;
+    engine.revenue += total;
+    engine.served++;
+    if (this._posJoin) engine.totalWait += engine.gameTime - this._posJoin;
     this.state = 'done';
-    this.moveTo(eng.EXIT3D.x, eng.EXIT3D.z);
-    eng.addEvt(`💳 Customer paid $${total.toFixed(2)}`);
+    this.moveTo(engine.EXIT3D.x, engine.EXIT3D.z);
+    engine.addEvt(`💳 Customer paid $${total.toFixed(2)}`);
   }
 }

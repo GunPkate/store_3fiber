@@ -36,6 +36,7 @@ export function CeilingLights() {
               intensity={5}
               position={[lx, ly, lx]}
               penumbra={0.5}
+              angle={3}
               castShadow
               shadow-mapSize-width={2048}                                 
               shadow-mapSize-height={2048}

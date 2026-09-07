@@ -4,6 +4,22 @@ import { Npc } from "./Npc";
 export const TASK_PRI = { cashier: 100, assistCustomer: 80, restock: 60, cleaningFloor: 40, patrol: 20, idle: 0 };
 export const ROLE_TASK = { cashier: 'patrol', floorStaff: 'cleaningFloor', stocker: 'restock' };
 
+const STOCK_CORRIDOR = [
+  { x: -10, z: -3.5 },
+  { x: -11, z: -3.5 },
+  { x: -12, z: -3.5 },
+  { x: -14, z: -3.5 },
+  { x: -14, z: -2.5 },
+  { x: -14, z: -1.5 },
+  { x: -14, z: -0.5 },
+  { x: -14, z: 0.5 },
+  { x: -14, z: 1.5 },
+  { x: -14, z: 2.5 },
+  { x: -14, z: 3.5 },
+  { x: -14, z: 4.5 },
+  { x: -14, z: 5.5 },
+];
+
 export class Employee extends Npc {
   constructor(engine, x, z, name) {
     super(engine, 'employee', x, z);
@@ -93,8 +109,27 @@ export class Employee extends Npc {
     this._restockIdx = target;
     this._restockPhase = 'toStock';
     engine.addEvt(`📦 ${this.name} start restock`);
-    this.moveTo(engine.STOCK3D.x, engine.STOCK3D.z);
+    // this.moveTo(engine.STOCK3D.x, engine.STOCK3D.z);
+    this._moveToStock();
   }
+
+
+  _moveToStock() {
+    const engine = this.engine;
+    const entrance = STOCK_CORRIDOR[0];
+    const toEntrance = this.graph.pathXZ(this.x, this.z, entrance.x, entrance.z);
+    this.path = [...toEntrance, ...STOCK_CORRIDOR.slice(1), { x: engine.STOCK3D.x, z: engine.STOCK3D.z }];
+    this.pathIdx = 0;
+  }
+
+  _moveToShelf(selectedShelf) {
+    const exit = STOCK_CORRIDOR[0];
+    const corridorBack = [...STOCK_CORRIDOR].reverse();
+    const toShelf = this.graph.pathXZ(exit.x, exit.z, selectedShelf.x, selectedShelf.z);
+    this.path = [...corridorBack, ...toShelf];
+    this.pathIdx = 0;
+  }
+
   checkStockByCustomer(cust, itemName) {
     const stockItem = this.engine.items.find((item) => item.name === itemName);
     if (!stockItem) return;
@@ -202,7 +237,8 @@ export class Employee extends Npc {
       if (selectedShelf && validateStock && !engine.restockQue.includes(this._restockIdx) ){
         engine.restockQue.push(this._restockIdx)
         this._restockPhase = 'toShelf';
-        this.moveTo(selectedShelf.x, selectedShelf.z);
+        // this.moveTo(selectedShelf.x, selectedShelf.z);
+        this._moveToShelf(selectedShelf);
         engine.restockQue = engine.restockQue.filter( idx => idx != this._restockIdx)
       } else if(!validateStock){
         this.restoreTask();

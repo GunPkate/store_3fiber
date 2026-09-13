@@ -8,8 +8,6 @@ import { simulationEngine, useUIStore } from '../service/state/uiState.js';
 import Waypoints from './waypoint/PathWayPoint.jsx';
 import { useRef } from 'react';
 import CameraRig from './carmera/CameraRig.jsx';
-import { useControls } from "leva";
-import AvatarEmployee from './npc/avatar/AvatarEmployee.jsx';
 
 export default function Experience() {
   const currentTool = useUIStore((s) => s.currentTool);
@@ -18,14 +16,6 @@ export default function Experience() {
   const setSelectedWP = useUIStore((s) => s.setSelectedWP);
   const fov = useUIStore((s) => s.fov);
 
-  const { avatar } = useControls("VRM", {
-    avatar: {
-      value: "8087383217573817818.vrm",
-      options: [
-        "8087383217573817818.vrm",
-      ],
-    },
-  });
 
   const handleFloorClick = ({ x, z }) => {
     switch (currentTool) {
@@ -95,9 +85,6 @@ export default function Experience() {
       <StoreModel onFloorClick={handleFloorClick} />
       <Waypoints />
       <CharacterManager />
-      <group position={[-5,0,0]}>
-        <AvatarEmployee avatar={avatar}/>
-      </group>
       <SimulationLoop />
     </>
   );

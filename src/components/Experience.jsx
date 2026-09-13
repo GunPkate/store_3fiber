@@ -16,6 +16,7 @@ export default function Experience() {
   const setSelectedWP = useUIStore((s) => s.setSelectedWP);
   const fov = useUIStore((s) => s.fov);
 
+
   const handleFloorClick = ({ x, z }) => {
     switch (currentTool) {
       case 'add-wp':

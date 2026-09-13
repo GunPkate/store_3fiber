@@ -24,7 +24,6 @@ export function CeilingLights() {
             color={i ==7 || i==6 ? "#75caff" : 0xfffacc}
             intensity={.5}
             distance={2}
-            castShadow
             shadow-mapSize-width={1024}
             shadow-mapSize-height={1024}
             shadow-camera-near={0.1}

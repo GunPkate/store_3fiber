@@ -6,22 +6,16 @@ import { Vector3, BufferGeometry } from 'three';
 import { useControls } from "leva";
 import AvatarEmployee from '../npc/avatar/AvatarEmployee';
 
-export default function Character({ npc }){
+export default function Character({ npc, avatartype }){
     const groupRef = useRef();
     const lineRef = useRef();
     const labelRef = useRef();
     const currentTool = useUIStore((s) => s.currentTool);
     const setHoveredNpc = useUIStore((s) => s.setHoveredNpc);
 
-    const { avatar } = useControls("VRM", {
-    avatar: {
-      value: npc.type === 'customer' ? "262410318834873893.vrm" : "8087383217573817818.vrm",
-      options: [
-        "8087383217573817818.vrm",
-        "3859814441197244330.vrm",
-      ],
-    },
-  });
+
+    const baseAvatar = avatartype[npc.type];
+
 
     useFrame(() => {
         if (groupRef.current) {
@@ -91,7 +85,7 @@ return (
           onPointerOut={handleOut}
         >
             <group position={[0,0,0]}>
-                <AvatarEmployee avatar={avatar}/>
+                <AvatarEmployee avatar={baseAvatar}/>
             </group>
 
             <Html position={[0, 1.85, 0]} center distanceFactor={9} occlude={false} style={{ pointerEvents: 'none' }}>

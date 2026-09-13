@@ -1,5 +1,7 @@
 import { VRMLoaderPlugin } from '@pixiv/three-vrm';
 import { useGLTF } from '@react-three/drei';
+import { useMemo } from 'react';
+import { clone as cloneSkeleton } from 'three/examples/jsm/utils/SkeletonUtils.js';
 
 export default function AvatarEmployee({ avatar, ...props }) {
   const { scene } = useGLTF(
@@ -13,9 +15,14 @@ export default function AvatarEmployee({ avatar, ...props }) {
     }
   );
 
+  const cloned = useMemo(() => cloneSkeleton(scene), [scene]);
+
   return (
     <group {...props}>
-      <primitive object={scene} />
+      <primitive
+        rotation={[0,Math.PI,0]} 
+        object={cloned}
+      />
     </group>
   );
 }

@@ -3,6 +3,8 @@ import { useFrame } from '@react-three/fiber';
 import { simulationEngine, useUIStore } from '../../service/state/uiState'
 import { Html } from '@react-three/drei';
 import { Vector3, BufferGeometry } from 'three';
+import { useControls } from "leva";
+import AvatarEmployee from '../npc/avatar/AvatarEmployee';
 
 export default function Character({ npc }){
     const groupRef = useRef();
@@ -11,8 +13,15 @@ export default function Character({ npc }){
     const currentTool = useUIStore((s) => s.currentTool);
     const setHoveredNpc = useUIStore((s) => s.setHoveredNpc);
 
-    const bodyColor = npc.type === 'customer' ? npc.color : npc.bodyColor;
-    const headColor = npc.type === 'customer' ? npc.color : npc.headColor;
+    const { avatar } = useControls("VRM", {
+    avatar: {
+      value: npc.type === 'customer' ? "262410318834873893.vrm" : "8087383217573817818.vrm",
+      options: [
+        "8087383217573817818.vrm",
+        "3859814441197244330.vrm",
+      ],
+    },
+  });
 
     useFrame(() => {
         if (groupRef.current) {
@@ -81,21 +90,11 @@ return (
           onPointerMove={handleMove}
           onPointerOut={handleOut}
         >
-            <mesh position={[0, 0.35, 0]} castShadow>
-            <cylinderGeometry args={[0.18, 0.22, 0.7, 10]} />
-            <meshLambertMaterial color={bodyColor} />
-            </mesh>
-            <mesh position={[0, 0.95, 0]} castShadow>
-            <sphereGeometry args={[0.2, 10, 8]} />
-            <meshToonMaterial color={headColor} />
-            </mesh>
-            {[-0.07, 0.07].map((ox) => (
-                <mesh key={ox} position={[ox, 0.98, 0.17]}>
-                <sphereGeometry args={[0.04, 6, 4]} />
-                <meshBasicMaterial color={0x111111} />
-            </mesh>
-            ))}
-            <Html position={[0, 1.5, 0]} center distanceFactor={9} occlude={false} style={{ pointerEvents: 'none' }}>
+            <group position={[0,0,0]}>
+                <AvatarEmployee avatar={avatar}/>
+            </group>
+
+            <Html position={[0, 1.85, 0]} center distanceFactor={9} occlude={false} style={{ pointerEvents: 'none' }}>
             <div
                 ref={labelRef}
                 style={{
